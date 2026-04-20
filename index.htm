@@ -12,7 +12,10 @@ body {
   color:black;
 }
 
-/* BOOT */
+/* =========================
+   BOOT SYSTEM (UPGRADED)
+========================= */
+
 #boot1 {
   position:fixed;
   width:100%;
@@ -24,6 +27,17 @@ body {
   justify-content:center;
   font-family:monospace;
   z-index:9999;
+  flex-direction:column;
+}
+
+.bootText {
+  animation: blink 0.8s infinite;
+}
+
+@keyframes blink {
+  0% {opacity:1;}
+  50% {opacity:0.4;}
+  100% {opacity:1;}
 }
 
 /* LOGIN */
@@ -32,7 +46,7 @@ body {
   width:100%;
   height:100%;
   background:#007070;
-  display:flex;
+  display:none;
   align-items:center;
   justify-content:center;
 }
@@ -89,16 +103,13 @@ input {
   font-size:16px;
 }
 
-.icon span { display:block; font-size:13px; }
-
 .tapes { top:80px; left:40px; }
 .files { top:160px; left:40px; }
 .notes { top:240px; left:40px; }
 .aol { top:320px; left:40px; }
 .cams { top:400px; left:40px; }
-.staff { top:480px; left:40px; }
 
-/* WINDOW CORE (DRAG + RESIZE) */
+/* WINDOWS */
 .window {
   width:460px;
   height:330px;
@@ -112,7 +123,6 @@ input {
   overflow:auto;
 }
 
-/* DRAG BAR */
 .bar {
   background:#000080;
   color:white;
@@ -121,30 +131,24 @@ input {
   cursor:move;
 }
 
-.close {
-  float:right;
-  background:red;
+.close, .back {
   padding:2px 6px;
   cursor:pointer;
+  margin-right:4px;
 }
 
-.back {
-  float:left;
-  background:green;
-  padding:2px 6px;
-  cursor:pointer;
-}
+.close { float:right; background:red; }
+.back { float:left; background:green; }
 
 .content {
   padding:10px;
-  font-size:13px;
   font-family:"MS Sans Serif";
+  font-size:13px;
 }
 
-/* AOL SYSTEM */
+/* AOL */
 #aolApp {
   display:none;
-  position:absolute;
   width:100%;
   height:100%;
   background:#007070;
@@ -163,16 +167,20 @@ input {
   font-size:40px;
   z-index:10000;
 }
-
-button {
-  font-family:"MS Sans Serif";
-}
 </style>
 </head>
 
 <body>
 
-<div id="boot1">LUMINAR BIOS CHECK... OK</div>
+<!-- =========================
+     BOOT SEQUENCE (UPGRADED)
+========================= -->
+
+<div id="boot1">
+  <div class="bootText">LUMINAR BIOS INITIALIZING...</div>
+  <div class="bootText">CHECKING MEMORY SECTOR Z-13...</div>
+  <div class="bootText">LOADING SYSTEM MODULES...</div>
+</div>
 
 <!-- LOGIN -->
 <div id="login">
@@ -187,7 +195,8 @@ button {
   </div>
 </div>
 
-<div id="boot2">VERIFYING SYSTEM FILES... Z-13 OK</div>
+<!-- BOOT 2 -->
+<div id="boot2">VERIFYING Z-13 CORE... OK</div>
 
 <!-- DESKTOP -->
 <div id="desktop">
@@ -195,208 +204,136 @@ button {
 <div class="icon tapes" onclick="openW('tapes')">📼<span>Tapes</span></div>
 <div class="icon files" onclick="openW('files')">📁<span>Files</span></div>
 <div class="icon notes" onclick="openW('notes')">📝<span>Notes</span></div>
-<div class="icon aol" onclick="openAOL()">🅰️<span>America Online</span></div>
+<div class="icon aol" onclick="openAOL()">🅰️<span>AOL</span></div>
 <div class="icon cams" onclick="openW('cams')">📹<span>Cameras</span></div>
-<div class="icon staff" onclick="openW('staffLogin')">👤<span>Staff</span></div>
 
-<!-- TAPES -->
+</div>
+
+<!-- WINDOWS -->
 <div id="tapes" class="window">
-<div class="bar" onmousedown="drag(this.parentNode)">
-<span class="back" onclick="closeW('tapes')">←</span>
-Tapes
-<span class="close" onclick="closeW('tapes')">X</span>
-</div>
+<div class="bar"><span class="back" onclick="closeW('tapes')">←</span>Tapes<span class="close" onclick="closeW('tapes')">X</span></div>
 <div class="content">
-Tape Archive (Internal)<br><br>
-<button onclick="setTape('Tape 1: Z-13 ENTRY LOG')">Tape 1</button>
-<button onclick="setTape('Tape 2: TRAINER TEST')">Tape 2</button>
-<button onclick="setTape('Tape 3: LUMINAR EVENT')">Tape 3</button>
-<button onclick="setTape('Tape 4: AIM BREACH')">Tape 4</button>
-<br><br>
-<div id="tapeOut">No tape loaded.</div>
+Tape System<br>
+<button onclick="setTape('Z-13 ENTRY LOG')">Tape 1</button>
+<button onclick="setTape('TRAINER RECORD')">Tape 2</button>
+<div id="tapeOut"></div>
 </div>
 </div>
 
-<!-- FILES -->
 <div id="files" class="window">
-<div class="bar" onmousedown="drag(this.parentNode)">
-<span class="back" onclick="closeW('files')">←</span>
-Files
-<span class="close" onclick="closeW('files')">X</span>
-</div>
+<div class="bar"><span class="back" onclick="closeW('files')">←</span>Files<span class="close" onclick="closeW('files')">X</span></div>
 <div class="content">
-log.sys<br>
-z13_core.dat<br>
-luminar_ai.bin
+log.sys<br>z13.dat<br>luminar.bin
 </div>
 </div>
 
-<!-- NOTES -->
 <div id="notes" class="window">
-<div class="bar" onmousedown="drag(this.parentNode)">
-<span class="back" onclick="closeW('notes')">←</span>
-Notes
-<span class="close" onclick="closeW('notes')">X</span>
-</div>
+<div class="bar"><span class="back" onclick="closeW('notes')">←</span>Notes<span class="close" onclick="closeW('notes')">X</span></div>
 <div class="content">
 Z-13 unstable<br>
-Luminar learning rate increasing<br>
-Trainer active<br>
-Kane field agent<br>
-Octogal anomaly<br>
+Luminar learning<br>
 System evolving
 </div>
 </div>
 
-<!-- CAMERAS -->
 <div id="cams" class="window">
-<div class="bar" onmousedown="drag(this.parentNode)">
-<span class="back" onclick="closeW('cams')">←</span>
-Cameras
-<span class="close" onclick="closeW('cams')">X</span>
-</div>
+<div class="bar"><span class="back" onclick="closeW('cams')">←</span>Cameras<span class="close" onclick="closeW('cams')">X</span></div>
 <div class="content">
-Internal Feed (Simulated)<br><br>
-<img src="https://i.imgur.com/3Q3ZQ3k.jpg" width="100%">
+Internal Feed Active<br>
+(No external links)
 </div>
 </div>
 
-</div>
-
-<!-- AOL APP (MERGED SYSTEM) -->
+<!-- AOL -->
 <div id="aolApp">
 
-<div class="window" id="aolWindow" style="display:block;">
-<div class="bar" onmousedown="drag(this.parentNode)">
-<span class="back" onclick="closeAOL()">←</span>
-America Online
-<span class="close" onclick="closeAOL()">X</span>
-</div>
-
+<div class="window" style="display:block;">
+<div class="bar"><span class="back" onclick="closeAOL()">←</span>AOL<span class="close" onclick="closeAOL()">X</span></div>
 <div class="content">
-<h3>🅰️ America Online</h3>
-
-<p><b>Luminar Will Always Be with you Throughout</b></p>
-
-<button onclick="openMail()">📧 You’ve Got Mail</button>
-<button onclick="openNews()">📰 You’ve Got News</button>
-
-<br><br>
-
-<div id="aolAds">Loading ads...</div>
-
-</div>
-</div>
-
-<!-- MAIL -->
-<div class="window" id="mail" style="display:none;">
-<div class="bar" onmousedown="drag(this.parentNode)">
-<span class="back" onclick="backAOLSub('mail')">←</span>
-Mail
-<span class="close" onclick="closeW('mail')">X</span>
-</div>
-<div class="content">
-Trainer: System stable<br>
-Kane: Monitoring Z-13<br>
-Octogal: still active
-</div>
-</div>
-
-<!-- NEWS -->
-<div class="window" id="news" style="display:none;">
-<div class="bar" onmousedown="drag(this.parentNode)">
-<span class="back" onclick="backAOLSub('news')">←</span>
-News
-<span class="close" onclick="closeW('news')">X</span>
-</div>
-<div class="content">
-<b>Luminar Report:</b> Neural expansion detected<br>
-<b>Update:</b> Staff behavior anomaly rising<br>
-<b>Alert:</b> System autonomy increasing
+<b>Luminar Will Always Be with you Throughout</b><br><br>
+<button onclick="alert('Mail')">📧 Mail</button>
+<button onclick="alert('News')">📰 News</button>
 </div>
 </div>
 
 </div>
 
 <!-- ZOMBIE -->
-<div id="zombie">SYSTEM BREACH DETECTED</div>
+<div id="zombie">SYSTEM BREACH</div>
 
 <script>
 
+/* =========================
+   SAFE BOOT FIX (INTEGRATED)
+========================= */
+
+function $(id){ return document.getElementById(id); }
+
+window.addEventListener("load", function () {
+
+  let boot = $("boot1");
+
+  if(!boot) return;
+
+  let forceExit = setTimeout(()=>{
+    boot.style.display = "none";
+    $("login").style.display = "flex";
+  }, 4000);
+
+  setTimeout(()=>{
+    clearTimeout(forceExit);
+    boot.style.display = "none";
+    $("login").style.display = "flex";
+  }, 2500);
+
+});
+
 /* LOGIN */
+let logging=false;
+
 function login(){
-  let u=user.value, p=pass.value;
+
+  if(logging) return;
+  logging=true;
+
+  let u=$("user").value;
+  let p=$("pass").value;
 
   if(u==="LTrainer_87" && p==="Z13X17"){
-    login.style.display="none";
-    boot2.style.display="flex";
+
+    $("login").style.display="none";
+    $("boot2").style.display="flex";
 
     setTimeout(()=>{
-      boot2.style.display="none";
-      desktop.style.display="block";
-    },2200);
+      $("boot2").style.display="none";
+      $("desktop").style.display="block";
+      logging=false;
+    },2000);
+
   } else {
-    err.innerText="ACCESS DENIED";
+    $("err").innerText="ACCESS DENIED";
+    logging=false;
   }
 }
+
+/* WINDOWS */
+function openW(id){ $(id).style.display="block"; }
+function closeW(id){ $(id).style.display="none"; }
 
 /* AOL */
 function openAOL(){
-  desktop.style.display="none";
-  aolApp.style.display="block";
-  startAds();
+  $("desktop").style.display="none";
+  $("aolApp").style.display="block";
 }
 
 function closeAOL(){
-  aolApp.style.display="none";
-  desktop.style.display="block";
-}
-
-/* SUB WINDOWS */
-function openMail(){ mail.style.display="block"; }
-function openNews(){ news.style.display="block"; }
-
-function backAOLSub(id){
-  document.getElementById(id).style.display="none";
+  $("aolApp").style.display="none";
+  $("desktop").style.display="block";
 }
 
 /* TAPES */
-function setTape(t){ tapeOut.innerText=t; }
-
-/* WINDOWS */
-function openW(id){ document.getElementById(id).style.display="block"; }
-function closeW(id){ document.getElementById(id).style.display="none"; }
-
-/* ADS */
-let ads=[
-"Luminar is watching",
-"Neural drift stabilized",
-"Z-13 containment active",
-"System learning continues"
-];
-
-let i=0;
-function startAds(){
-  setInterval(()=>{
-    aolAds.innerText=ads[i];
-    i=(i+1)%ads.length;
-  },30000);
-}
-
-/* DRAG SYSTEM */
-let dragTarget=null;
-
-function drag(el){
-  dragTarget=el;
-  document.onmousemove=move;
-  document.onmouseup=()=>dragTarget=null;
-}
-
-function move(e){
-  if(dragTarget){
-    dragTarget.style.left=e.clientX+"px";
-    dragTarget.style.top=e.clientY+"px";
-  }
+function setTape(t){
+  $("tapeOut").innerText=t;
 }
 
 </script>
