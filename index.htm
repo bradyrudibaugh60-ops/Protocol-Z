@@ -1,248 +1,278 @@
-<!-- Protocol Z v3.3 FULL WINDOWS 95 OVERHAUL -->
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>Protocol Z v3.3</title>
+<title>PROTOCOL Z v3.3</title>
+
 <style>
 body{
   margin:0;
-  font-family:Tahoma, sans-serif;
-  background:#008080;
   overflow:hidden;
+  background:#007070;
+  font-family:"MS Sans Serif", Tahoma, sans-serif;
+}
+
+/* BOOT / LOGIN LAYERS */
+.screen{
+  position:fixed;
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+#boot1,#boot2{
+  background:black;
+  color:lime;
+  z-index:9999;
+  font-family:monospace;
+}
+
+#login{
+  display:none;
+  background:#007070;
+  z-index:5000;
+}
+
+/* LOGIN BOX */
+.box{
+  width:320px;
+  background:#c0c0c0;
+  border:2px solid black;
+}
+
+.title{
+  background:#000080;
+  color:white;
+  padding:6px;
+}
+
+.body{ padding:10px; }
+
+input{
+  width:95%;
+  margin:5px 0;
+  padding:5px;
 }
 
 /* DESKTOP */
 #desktop{
-  width:100vw;
-  height:100vh;
-  position:relative;
-  background:#008080;
+  display:none;
+  width:100%;
+  height:100%;
+  background:#007070;
 }
 
-/* APP GRID (1x6) */
-#appGrid{
-  display:grid;
-  grid-template-columns: repeat(6, 120px);
-  gap:15px;
-  padding:20px;
-}
-.app{
-  width:100px;
-  height:100px;
-  background:#c0c0c0;
-  border:2px outset #fff;
+/* ICONS */
+.icon{
+  position:absolute;
+  width:110px;
   text-align:center;
-  padding:10px;
+  cursor:pointer;
+  font-size:12px;
+}
+
+.icon .emoji{ font-size:28px; }
+.icon span{ display:block; }
+
+.tapes{top:80px;left:40px;}
+.files{top:170px;left:40px;}
+.aol{top:260px;left:40px;}
+.staff{top:350px;left:40px;}
+.notes{top:440px;left:40px;}
+.cams{top:530px;left:40px;}
+.brief{top:620px;left:40px;}
+
+/* WINDOWS */
+.window{
+  width:420px;
+  height:300px;
+  background:#bcbcbc;
+  border:2px solid black;
+  position:absolute;
+  display:none;
+}
+
+.bar{
+  background:#000080;
+  color:white;
+  padding:4px;
+  cursor:move;
+  font-size:12px;
+}
+
+.close{
+  float:right;
+  background:red;
+  padding:2px 6px;
   cursor:pointer;
 }
-.app:active{
-  border:2px inset #000;
-}
 
-/* WINDOW STYLE */
-.window{
-  position:absolute;
-  top:50px;
-  left:50px;
-  width:500px;
-  height:400px;
-  background:#c0c0c0;
-  border:2px outset #fff;
-  display:none;
-  flex-direction:column;
-}
-.titlebar{
-  background:navy;
-  color:white;
-  padding:5px;
-  display:flex;
-  justify-content:space-between;
-}
-.content{
-  padding:10px;
-  overflow:auto;
-  flex:1;
-}
+.content{ padding:10px; font-size:12px; }
 
 /* TASKBAR */
-#taskbar{
-  position:absolute;
+.taskbar{
+  position:fixed;
   bottom:0;
-  left:0;
   width:100%;
-  height:40px;
+  height:28px;
   background:#c0c0c0;
-  border-top:2px solid #fff;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 10px;
-}
-
-button{
-  background:#c0c0c0;
-  border:2px outset #fff;
-  cursor:pointer;
-}
-button:active{ border:2px inset #000; }
-
-/* LOGIN */
-#login{
-  position:absolute;
-  width:100vw;
-  height:100vh;
-  background:#000;
-  color:#0f0;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
+  border-top:2px solid white;
 }
 </style>
 </head>
+
 <body>
 
+<!-- BOOT 1 (FORCED SAFE START) -->
+<div id="boot1" class="screen">LUMINAR BIOS CHECK... OK</div>
+
 <!-- LOGIN -->
-<div id="login">
-  <h2>LUMINAR ACCESS TERMINAL</h2>
-  <input id="user" placeholder="User"><br><br>
-  <input id="pass" type="password" placeholder="Pass"><br><br>
-  <button onclick="login()">ENTER</button>
+<div id="login" class="screen">
+  <div class="box">
+    <div class="title">PROTOCOL Z LOGIN</div>
+    <div class="body">
+      <input id="user" placeholder="Username">
+      <input id="pass" type="password" placeholder="Password">
+      <button onclick="login()">ENTER</button>
+      <p id="msg"></p>
+    </div>
+  </div>
+</div>
+
+<!-- BOOT 2 -->
+<div id="boot2" class="screen" style="display:none;">
+SYSTEM VERIFYING...
 </div>
 
 <!-- DESKTOP -->
-<div id="desktop" style="display:none">
+<div id="desktop">
 
-  <!-- APP GRID -->
-  <div id="appGrid">
-    <div class="app" onclick="openWin('tapesWin')">Tapes</div>
-    <div class="app" onclick="openWin('newsWin')">News</div>
-    <div class="app" onclick="openWin('securityWin')">Security</div>
-    <div class="app" onclick="openWin('staffWin')">Staff Directory</div>
-  </div>
+  <div class="icon tapes" onclick="openW('tapes')"><div class="emoji">📼</div><span>Tapes</span></div>
+  <div class="icon files" onclick="openW('files')"><div class="emoji">📁</div><span>Files</span></div>
+  <div class="icon aol" onclick="openW('aol')"><div class="emoji">💬</div><span>AOL</span></div>
+  <div class="icon staff" onclick="openW('staff')"><div class="emoji">🧪</div><span>Staff</span></div>
+  <div class="icon notes" onclick="openW('notes')"><div class="emoji">📝</div><span>Notes</span></div>
+  <div class="icon cams" onclick="openW('cams')"><div class="emoji">📹</div><span>Cams</span></div>
+  <div class="icon brief" onclick="openW('brief')"><div class="emoji">🔒</div><span>Brief</span></div>
 
-  <!-- TAPES WINDOW -->
-  <div class="window" id="tapesWin">
-    <div class="titlebar">Tapes <button onclick="closeWin('tapesWin')">X</button></div>
+  <!-- WINDOWS -->
+  <div id="tapes" class="window"><div class="bar">Tapes <span class="close" onclick="closeW('tapes')">X</span></div><div class="content">Tape System</div></div>
+
+  <div id="files" class="window"><div class="bar">Files <span class="close" onclick="closeW('files')">X</span></div><div class="content">Files</div></div>
+
+  <div id="notes" class="window"><div class="bar">Notes <span class="close" onclick="closeW('notes')">X</span></div><div class="content">Trainer notes: Z-13 unstable</div></div>
+
+  <div id="cams" class="window"><div class="bar">Cameras <span class="close" onclick="closeW('cams')">X</span></div><div class="content">Feeds unstable</div></div>
+
+  <div id="brief" class="window"><div class="bar">Brief <span class="close" onclick="closeW('brief')">X</span></div><div class="content">LOCKED</div></div>
+
+  <!-- AOL -->
+  <div id="aol" class="window"><div class="bar">AOL <span class="close" onclick="closeW('aol')">X</span></div><div class="content">Mail / News / Ads system</div></div>
+
+  <!-- STAFF SYSTEM -->
+  <div id="staff" class="window">
+
+    <div class="bar">Staff <span class="close" onclick="closeW('staff')">X</span></div>
+
     <div class="content">
-      <button onclick="playTape(1)">Tape 1</button>
-      <button onclick="playTape(4)">Tape 4</button>
-      <div id="tapeOut"></div>
-    </div>
-  </div>
 
-  <!-- NEWS WINDOW -->
-  <div class="window" id="newsWin">
-    <div class="titlebar">Luminar News <button onclick="closeWin('newsWin')">X</button></div>
-    <div class="content" id="newsContent"></div>
-  </div>
+      <div id="staffLoginBox">
+        <input id="suser" placeholder="User">
+        <input id="spass" type="password" placeholder="Pass">
+        <button onclick="staffLogin()">Login</button>
+        <p id="smsg"></p>
+      </div>
 
-  <!-- SECURITY WINDOW -->
-  <div class="window" id="securityWin">
-    <div class="titlebar">Security Footage <button onclick="closeWin('securityWin')">X</button></div>
-    <div class="content">
-      <button onclick="feed(1)">Feed 1 Exterior</button>
-      <button onclick="feed(2)">Feed 2 Hallway</button>
-      <button onclick="feed(3)">Feed 3 Daniel Reyes</button>
-      <button onclick="feed(4)">Feed 4 Sublevel 4</button>
-      <div id="feedOut"></div>
-    </div>
-  </div>
+      <div id="labHome" style="display:none;">
+        <b>LAB HOME</b><br><br>
+        <button onclick="alert('LOCKED')">Z-13 Wing</button><br><br>
+        <button onclick="alert('LOCKED')">Simulation</button><br><br>
+        <button onclick="logoutStaff()">Logout</button>
+      </div>
 
-  <!-- STAFF DIRECTORY -->
-  <div class="window" id="staffWin">
-    <div class="titlebar">Staff Directory <button onclick="closeWin('staffWin')">X</button></div>
-    <div class="content">
-      <input id="staffUser" placeholder="User"><br>
-      <input id="staffPass" type="password" placeholder="Pass"><br>
-      <button onclick="staffLogin()">Login</button>
-      <div id="staffHub"></div>
     </div>
-  </div>
 
-  <!-- TASKBAR -->
-  <div id="taskbar">
-    <button onclick="startMenu()">Start</button>
-    <div>
-      Volume | Brightness | Settings | Weather: OK | Clock: <span id="clock"></span>
-    </div>
   </div>
 
 </div>
 
 <script>
+
+/* =========================
+   🔥 SAFE BOOT SYSTEM (NO FREEZE EVER)
+========================= */
+
+(function bootFix(){
+
+  // FORCE RESET EVERYTHING FIRST
+  document.getElementById("boot1").style.display="flex";
+  document.getElementById("login").style.display="none";
+  document.getElementById("desktop").style.display="none";
+  document.getElementById("boot2").style.display="none";
+
+  // STEP 1 -> BOOT SCREEN
+  setTimeout(function(){
+    document.getElementById("boot1").style.display="none";
+    document.getElementById("login").style.display="flex";
+  },1400);
+
+})();
+
+/* LOGIN */
 function login(){
-  if(document.getElementById('user').value && document.getElementById('pass').value){
-    document.getElementById('login').style.display='none';
-    document.getElementById('desktop').style.display='block';
-    loadNews();
-    setInterval(clock,1000);
-  }
-}
 
-function openWin(id){
-  document.getElementById(id).style.display='flex';
-}
-function closeWin(id){
-  document.getElementById(id).style.display='none';
-}
+  var u=document.getElementById("user").value;
+  var p=document.getElementById("pass").value;
 
-// TAPES (INTERNAL YOUTUBE-LIKE SYSTEM)
-function playTape(n){
-  let out=document.getElementById('tapeOut');
-  if(n===1){
-    out.innerHTML="[Tape 1]\nSystem initialization of Luminar begins...";
-  }
-  if(n===4){
-    out.innerHTML="[Tape 4 - AOL NODE]\nTrainer: 'We are inside the network.'<br>Kane: 'Signal locked.'<br>Octogal: 'Entity presence detected.'";
-  }
-}
+  if(u==="LTrainer_87" && p==="Z13X17"){
 
-// NEWS ABOUT LUMINAR
-function loadNews(){
-  document.getElementById('newsContent').innerHTML=`
-  <h3>Luminar System Bulletin</h3>
-  <p>- Z-13 Compound instability increasing</p>
-  <p>- Director override protocols tested successfully</p>
-  <p>- Unknown entity detected in Sublevel 4 corridor</p>
-  `;
-}
+    document.getElementById("login").style.display="none";
+    document.getElementById("boot2").style.display="flex";
 
-// SECURITY FEEDS (INTERNAL LINK SYSTEM)
-function feed(n){
-  let out=document.getElementById('feedOut');
-  let feeds={
-    1:'Exterior Feed: Clear skies, perimeter stable',
-    2:'Main Hallway: flickering lights detected',
-    3:'Daniel Reyes Room: static interference present',
-    4:'SUBLEVEL 4: motion detected near corridor end'
-  };
-  out.innerHTML=feeds[n];
-}
+    setTimeout(function(){
+      document.getElementById("boot2").style.display="none";
+      document.getElementById("desktop").style.display="block";
+    },1400);
 
-// STAFF LOGIN
-function staffLogin(){
-  let u=document.getElementById('staffUser').value;
-  let p=document.getElementById('staffPass').value;
-  if(u==='LeeTrainer' && p==='Z13X17'){
-    document.getElementById('staffHub').innerHTML=`
-    <h3>Luminar Staff Hub</h3>
-    <p>Access Granted: Director Channel Open</p>
-    <button onclick="alert('Director Logs Unlocked')">Director Logs</button>
-    `;
   } else {
-    document.getElementById('staffHub').innerHTML="ACCESS DENIED";
+    document.getElementById("msg").innerText="DENIED";
   }
 }
 
-// CLOCK
-function clock(){
-  let d=new Date();
-  document.getElementById('clock').innerText=d.toLocaleTimeString();
+/* WINDOWS */
+function openW(id){
+  document.getElementById(id).style.display="block";
 }
 
-function startMenu(){ alert('Start Menu Placeholder'); }
+function closeW(id){
+  document.getElementById(id).style.display="none";
+}
+
+/* STAFF SYSTEM */
+function staffLogin(){
+
+  var u=document.getElementById("suser").value;
+  var p=document.getElementById("spass").value;
+
+  if(u==="LeeTrainer" && p==="Z13X17"){
+    document.getElementById("smsg").innerText="ACCESS GRANTED";
+
+    setTimeout(function(){
+      document.getElementById("staffLoginBox").style.display="none";
+      document.getElementById("labHome").style.display="block";
+    },300);
+
+  } else {
+    document.getElementById("smsg").innerText="DENIED";
+  }
+}
+
+function logoutStaff(){
+  document.getElementById("labHome").style.display="none";
+  document.getElementById("staffLoginBox").style.display="block";
+}
+
 </script>
 
 </body>
