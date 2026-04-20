@@ -6,7 +6,7 @@
 <style>
 body {
   margin:0;
-  font-family:Tahoma;
+  font-family:"MS Sans Serif", Tahoma;
   background:#007070;
   overflow:hidden;
   color:black;
@@ -49,9 +49,7 @@ body {
   padding:5px;
 }
 
-.body {
-  padding:10px;
-}
+.body { padding:10px; }
 
 input {
   width:95%;
@@ -84,30 +82,31 @@ input {
 /* ICONS */
 .icon {
   position:absolute;
-  width:90px;
+  width:120px;
   text-align:center;
   color:#e0e0e0;
   cursor:pointer;
-  font-size:12px;
+  font-size:16px; /* BIGGER EMOJIS */
 }
 
-.icon span { display:block; font-size:11px; }
+.icon span { display:block; font-size:13px; }
 
 .tapes { top:80px; left:40px; }
 .files { top:160px; left:40px; }
-.locked { top:240px; left:40px; }
-.aol { top:320px; left:40px; }
-.camera { top:400px; left:40px; }
+.notes { top:240px; left:40px; }
+.mail { top:320px; left:40px; }
+.news { top:400px; left:40px; }
+.staff { top:480px; left:40px; }
 
 /* WINDOWS */
 .window {
-  width:420px;
-  height:300px;
+  width:450px;
+  height:320px;
   background:#bcbcbc;
   border:2px solid black;
   position:absolute;
   top:120px;
-  left:200px;
+  left:220px;
   display:none;
 }
 
@@ -127,7 +126,8 @@ input {
 
 .content {
   padding:10px;
-  font-size:12px;
+  font-size:13px;
+  font-family:"MS Sans Serif";
 }
 
 /* TASKBAR */
@@ -138,7 +138,7 @@ input {
   height:28px;
   background:#c0c0c0;
   display:flex;
-  justify-content:flex-end;
+  justify-content:space-between;
   align-items:center;
   border-top:2px solid white;
 }
@@ -147,6 +147,12 @@ input {
   margin-right:10px;
   font-size:11px;
   font-family:monospace;
+}
+
+/* ADS */
+#adBar {
+  margin-left:10px;
+  font-size:11px;
 }
 
 /* AOL */
@@ -166,10 +172,23 @@ input {
   margin:80px auto;
 }
 
-/* TAPE OUTPUT */
-#tapeOut {
-  margin-top:10px;
-  font-weight:bold;
+/* STAFF LOGIN */
+#staffLogin, #staffHome {
+  display:none;
+}
+
+/* ZOMBIE */
+#zombie {
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:black;
+  color:red;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  font-size:40px;
+  z-index:10000;
 }
 
 </style>
@@ -177,7 +196,7 @@ input {
 
 <body>
 
-<!-- BOOT 1 -->
+<!-- BOOT -->
 <div id="boot1">LUMINAR BIOS CHECK... OK</div>
 
 <!-- LOGIN -->
@@ -194,27 +213,28 @@ input {
 </div>
 
 <!-- BOOT 2 -->
-<div id="boot2">VERIFYING SYSTEM FILES... Z-13 CHECKSUM OK</div>
+<div id="boot2">VERIFYING SYSTEM FILES... Z-13 OK</div>
 
 <!-- DESKTOP -->
 <div id="desktop">
 
 <!-- ICONS -->
-<div class="icon tapes" onclick="playClick(); openW('tapes')">📼<span>Tapes</span></div>
-<div class="icon files" onclick="playClick(); openW('files')">📁<span>Files</span></div>
-<div class="icon locked" onclick="playClick(); openW('locked')">🔒<span>Briefcase</span></div>
-<div class="icon aol" onclick="playClick(); openAOLHome()">💬<span>AOL</span></div>
-<div class="icon camera" onclick="playClick(); openW('cams')">📹<span>Cameras</span></div>
+<div class="icon tapes" onclick="clickS(); openW('tapes')">📼<span>Tapes</span></div>
+<div class="icon files" onclick="clickS(); openW('files')">📁<span>Files</span></div>
+<div class="icon notes" onclick="clickS(); openW('notes')">📝<span>Notes</span></div>
+<div class="icon mail" onclick="openAOL()">📧<span>You've Got Mail</span></div>
+<div class="icon news" onclick="openNews()">📰<span>You've Got News</span></div>
+<div class="icon staff" onclick="openStaffLogin()">👤<span>Luminar Staff</span></div>
 
 <!-- TAPES -->
 <div id="tapes" class="window">
-<div class="bar">Tape Archive <span class="close" onclick="closeW('tapes')">X</span></div>
+<div class="bar">Tapes <span class="close" onclick="closeW('tapes')">X</span></div>
 <div class="content">
-<button onclick="setTape('Tape 1: ENTRY LOG')">Tape 1</button><br>
-<button onclick="setTape('Tape 2: SUBJECT TRAINER // ACTIVE')">Tape 2</button><br>
-<button onclick="setTape('Tape 3: CORRUPTION DETECTED')">Tape 3</button><br>
-<button onclick="setTape('Tape 4: AIM BREACH EVENT')">Tape 4</button><br>
-
+<button onclick="loadTape('https://youtube.com')">Tape 1 (YouTube)</button><br>
+<button onclick="loadTape('https://youtube.com')">Tape 2 (YouTube)</button><br>
+<button onclick="loadTape('https://youtube.com')">Tape 3 (YouTube)</button><br>
+<button onclick="loadTape('https://youtube.com')">Tape 4 (YouTube)</button><br>
+<br>
 <div id="tapeOut">No tape loaded.</div>
 </div>
 </div>
@@ -224,27 +244,59 @@ input {
 <div class="bar">Files <span class="close" onclick="closeW('files')">X</span></div>
 <div class="content">
 log.txt<br>
-trainer_notes.txt<br>
 z13_data.txt<br>
-octogal_scan.sys
+luminar_core.sys
 </div>
 </div>
 
-<!-- BRIEFCASE -->
-<div id="locked" class="window">
-<div class="bar">My Briefcase <span class="close" onclick="closeW('locked')">X</span></div>
+<!-- NOTES -->
+<div id="notes" class="window">
+<div class="bar">Z-13 NOTES <span class="close" onclick="closeW('notes')">X</span></div>
 <div class="content">
-🔒 RESTRICTED SYSTEM AREA<br>
-Z-13 AUTHORIZATION REQUIRED
+• Subject Z-13 unstable neural mapping<br>
+• Luminar system partially sentient<br>
+• Trainer access override active<br>
+• Octogal behavior unpredictable<br>
+• Kane Park field operative<br>
+• AIM channel still open<br>
+• Facility cameras looping<br>
+• Memory leak detected in node 4<br>
+• Staff ignoring containment rules<br>
+• System still learning language patterns
 </div>
 </div>
 
-<!-- CAMERAS -->
-<div id="cams" class="window">
-<div class="bar">Facility Cameras <span class="close" onclick="closeW('cams')">X</span></div>
+<!-- NEWS -->
+<div id="news" class="window">
+<div class="bar">Luminar News <span class="close" onclick="closeW('news')">X</span></div>
 <div class="content">
-<img src="https://i.imgur.com/3Q3ZQ3k.jpg" width="100%"><br>
-<img src="https://i.imgur.com/5Q5Q5Q5.gif" width="100%">
+<b>BREAKING:</b> Luminar reports increased Z-13 signal activity<br><br>
+<b>UPDATE:</b> Staff confirm “system awareness events”<br><br>
+<b>REPORT:</b> Internal network behaving autonomously<br><br>
+<b>NOTICE:</b> All personnel advised to stay offline
+</div>
+</div>
+
+<!-- STAFF LOGIN -->
+<div id="staffLogin" class="window">
+<div class="bar">Staff Login <span class="close" onclick="closeW('staffLogin')">X</span></div>
+<div class="content">
+<input id="suser" placeholder="Staff ID"><br>
+<input id="spass" type="password" placeholder="Pass"><br>
+<button onclick="staffLogin()">Login</button>
+</div>
+</div>
+
+<!-- STAFF HOME -->
+<div id="staffHome" class="window">
+<div class="bar">Staff Home <span class="close" onclick="closeW('staffHome')">X</span></div>
+<div class="content">
+<button>Lab Access</button>
+<button>Security Logs</button>
+<button>Experiment Data</button>
+<button>AI Core</button>
+<button>Containment</button>
+<button>System Override</button>
 </div>
 </div>
 
@@ -260,89 +312,100 @@ Z-13 AUTHORIZATION REQUIRED
 
 <div id="aolChat">
 <div class="aolBox">
-<h3>Chatroom</h3>
-<p><b>Trainer:</b> System instability detected.</p>
-<p><b>Kane:</b> Confirmed.</p>
-<p><b>Octogal:</b> It’s inside the network.</p>
+<h3>Chat</h3>
+<p>Trainer: System active.</p>
+<p>Kane: Confirmed.</p>
 <button onclick="backAOL()">Exit</button>
 </div>
 </div>
 
+<!-- ZOMBIE -->
+<div id="zombie">SYSTEM BREACH DETECTED</div>
+
 <!-- TASKBAR -->
 <div class="taskbar">
+<div id="adBar">Ad: Luminar improves cognitive stability systems</div>
 <div class="right">⏰ <span id="clock"></span></div>
 </div>
 
-<!-- SOUND SYSTEM -->
-<audio id="bootSound" src="boot.mp3"></audio>
-<audio id="loginSound" src="login.mp3"></audio>
-<audio id="aolSound" src="aol.mp3"></audio>
-<audio id="clickSound" src="click.mp3"></audio>
+<!-- SOUND -->
+<audio id="bootS" src="boot.mp3"></audio>
+<audio id="loginS" src="login.mp3"></audio>
+<audio id="clickS" src="click.mp3"></audio>
+<audio id="aolS" src="aol.mp3"></audio>
+<audio id="camS" src="camera.mp3"></audio>
 
 <script>
 
-/* BOOT 1 */
-setTimeout(()=>{
-  document.getElementById("boot1").style.display="none";
-  document.getElementById("bootSound").play();
-},2000);
+/* BOOT */
+setTimeout(()=>{document.getElementById("boot1").style.display="none";},2000);
 
 /* LOGIN */
 function login(){
-  let u=document.getElementById("user").value;
-  let p=document.getElementById("pass").value;
+  let u=user.value, p=pass.value;
 
   if(u==="LTrainer_87" && p==="Z13X17"){
-
-    document.getElementById("loginSound").play();
-
-    document.getElementById("login").style.display="none";
-    document.getElementById("boot2").style.display="flex";
+    loginS.play();
+    login.style.display="none";
+    boot2.style.display="flex";
 
     setTimeout(()=>{
-      document.getElementById("boot2").style.display="none";
-      document.getElementById("desktop").style.display="block";
+      boot2.style.display="none";
+      desktop.style.display="block";
+      zombieJump();
     },2500);
-
   } else {
-    document.getElementById("err").innerText="ACCESS DENIED";
+    err.innerText="ACCESS DENIED";
   }
 }
 
-/* CLICK */
-function playClick(){
-  document.getElementById("clickSound").play();
+/* ZOMBIE */
+function zombieJump(){
+  zombie.style.display="flex";
+  setTimeout(()=> zombie.style.display="none",1200);
+}
+
+/* ADS */
+let ads=[
+"Ad: Luminar stabilizes neural drift",
+"Ad: Z-13 containment upgraded",
+"Ad: Staff compliance at 67%",
+"Ad: AI learning rate increased"
+];
+let i=0;
+setInterval(()=>{
+  adBar.innerText=ads[i];
+  i=(i+1)%ads.length;
+},30000);
+
+/* TAPES */
+function loadTape(url){
+  tapeOut.innerHTML=`<a href="${url}" target="_blank">Open Tape Source</a>`;
 }
 
 /* WINDOWS */
-function openW(id){ document.getElementById(id).style.display="block"; }
-function closeW(id){ document.getElementById(id).style.display="none"; }
+function openW(id){document.getElementById(id).style.display="block";}
+function closeW(id){document.getElementById(id).style.display="none";}
 
-/* TAPES */
-function setTape(t){
-  document.getElementById("tapeOut").innerText=t;
+/* STAFF */
+function openStaffLogin(){openW('staffLogin');}
+function staffLogin(){
+  if(suser.value==="admin" && spass.value==="Z13"){
+    staffLogin.style.display="none";
+    staffHome.style.display="block";
+  }
 }
 
 /* AOL */
-function openAOLHome(){
-  document.getElementById("aolSound").play();
-  document.getElementById("aolHome").style.display="block";
-}
+function openAOL(){aolS.play();aolHome.style.display="block";}
+function openChat(){aolHome.style.display="none";aolChat.style.display="block";}
+function backAOL(){aolChat.style.display="none";aolHome.style.display="block";}
 
-function openChat(){
-  document.getElementById("aolHome").style.display="none";
-  document.getElementById("aolChat").style.display="block";
-}
-
-function backAOL(){
-  document.getElementById("aolChat").style.display="none";
-  document.getElementById("aolHome").style.display="block";
-}
+/* CLICK */
+function clickS(){clickS.play();}
 
 /* CLOCK */
-setInterval(()=>{
-  document.getElementById("clock").innerText=new Date().toLocaleTimeString();
-},1000);
+setInterval(()=>clock.innerText=new Date().toLocaleTimeString(),1000);
 
 </script>
 
