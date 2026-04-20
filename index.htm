@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>PROTOCOL Z // KERNEL v5</title>
+<title>PROTOCOL Z // LUMINAR SYSTEM v5.3</title>
 
 <style>
 body{
@@ -46,35 +46,44 @@ body{
 .title{background:#000080;color:white;padding:5px;}
 .body{padding:10px;}
 
-input{width:95%;margin:5px 0;padding:5px;}
+input{
+  width:95%;
+  margin:5px 0;
+  padding:5px;
+}
 
-/* DESKTOP */
+/* DESKTOP GRID */
 #desktop{
   display:none;
   width:100%;
   height:100%;
   background:#007070;
+  position:relative;
 }
 
-/* ICONS */
+/* ICON GRID (FIRST ROW STYLE + MISC) */
 .icon{
   position:absolute;
-  width:120px;
+  width:110px;
   text-align:center;
   color:#e0e0e0;
   cursor:pointer;
-  font-size:16px;
+  font-size:15px;
 }
 
-.tapes{top:80px;left:40px;}
-.cams{top:160px;left:40px;}
-.aol{top:240px;left:40px;}
-.director{top:320px;left:40px;}
+.icon span{display:block;font-size:12px;}
+
+.tapes{top:70px;left:40px;}
+.cams{top:70px;left:160px;}
+.aol{top:70px;left:280px;}
+.notes{top:70px;left:400px;}
+.misc1{top:180px;left:40px;}
+.misc2{top:180px;left:160px;}
 
 /* WINDOWS */
 .window{
-  width:500px;
-  height:350px;
+  width:520px;
+  height:360px;
   background:#bcbcbc;
   border:2px solid black;
   position:absolute;
@@ -89,7 +98,6 @@ input{width:95%;margin:5px 0;padding:5px;}
   background:#000080;
   color:white;
   padding:4px;
-  cursor:move;
 }
 
 .close{
@@ -111,15 +119,6 @@ input{width:95%;margin:5px 0;padding:5px;}
   font-size:13px;
 }
 
-/* AOL */
-#aol{
-  display:none;
-  position:absolute;
-  width:100%;
-  height:100%;
-  background:#007070;
-}
-
 /* DIRECTOR */
 #director{
   display:none;
@@ -134,8 +133,6 @@ input{width:95%;margin:5px 0;padding:5px;}
   justify-content:center;
   flex-direction:column;
 }
-
-button{font-family:"MS Sans Serif";}
 </style>
 </head>
 
@@ -143,18 +140,18 @@ button{font-family:"MS Sans Serif";}
 
 <!-- BOOT -->
 <div id="boot">
-<div>LOADING LUMINAR KERNEL v5...</div>
-<div>CHECKING SYSTEM INTEGRITY...</div>
-<div>INITIALIZING UI SHELL...</div>
+  <div>LOADING LUMINAR KERNEL v5.3...</div>
+  <div>INITIALIZING DESKTOP GRID...</div>
+  <div>SYNCING LINK REGISTRY...</div>
 </div>
 
 <!-- LOGIN -->
 <div id="login">
   <div class="box">
-    <div class="title">Security Login</div>
+    <div class="title">Secure Login</div>
     <div class="body">
-      <input id="user" placeholder="Username">
-      <input id="pass" type="password" placeholder="Password">
+      <input id="user">
+      <input id="pass" type="password">
       <button onclick="login()">ENTER</button>
       <p id="err"></p>
     </div>
@@ -164,66 +161,93 @@ button{font-family:"MS Sans Serif";}
 <!-- DESKTOP -->
 <div id="desktop">
 
+<!-- PRIMARY ROW -->
 <div class="icon tapes" onclick="openW('tapes')">📼<span>Tapes</span></div>
 <div class="icon cams" onclick="openW('cams')">📹<span>Cameras</span></div>
-<div class="icon aol" onclick="openAOL()">🅰️<span>AOL</span></div>
-<div class="icon director" onclick="openDirector()">🧠<span>Director</span></div>
+<div class="icon aol" onclick="openW('aol')">🅰️<span>AOL</span></div>
+<div class="icon notes" onclick="openW('notes')">📝<span>Notes</span></div>
+
+<!-- MISC APPS -->
+<div class="icon misc1" onclick="alert('System Tools')">🧰<span>Tools</span></div>
+<div class="icon misc2" onclick="alert('Logs Viewer')">📊<span>Logs</span></div>
 
 </div>
 
 <!-- TAPES -->
 <div id="tapes" class="window">
-<div class="bar"><span class="back" onclick="closeW('tapes')">←</span>Tapes<span class="close" onclick="closeW('tapes')">X</span></div>
+<div class="bar">
+<span class="back" onclick="closeW('tapes')">←</span>
+Tape Archive
+<span class="close" onclick="closeW('tapes')">X</span>
+</div>
+
 <div class="content">
 
-<h3>Tape Archive</h3>
+<h3>📼 Tape System</h3>
 
-<button onclick="openTape('https://youtube.com')">Tape 1</button>
-<button onclick="openTape('https://youtube.com')">Tape 2</button>
-<button onclick="openTape('https://youtube.com')">Tape 3</button>
+<h4>Tape 1</h4>
+<button onclick="openLink('tape1')">Play Tape 1</button>
 
-<p id="tapeOut"></p>
+<h4>Tape 2</h4>
+<button onclick="openLink('tape2')">Play Tape 2</button>
+
+<h4>Tape 3</h4>
+<button onclick="openLink('tape3')">Play Tape 3</button>
+
+<h4>Tape 4</h4>
+<button onclick="openLink('tape4')">Play Tape 4</button>
 
 </div>
 </div>
 
 <!-- CAMERAS -->
 <div id="cams" class="window">
-<div class="bar"><span class="back" onclick="closeW('cams')">←</span>Cameras<span class="close" onclick="closeW('cams')">X</span></div>
+<div class="bar">
+<span class="back" onclick="closeW('cams')">←</span>
+Camera Feed
+<span class="close" onclick="closeW('cams')">X</span>
+</div>
+
 <div class="content">
 
-<h3>Camera Feed System</h3>
+<h3>📹 Camera Footage</h3>
 
-<button onclick="openTape('https://youtube.com')">Cam 1</button>
-<button onclick="openTape('https://youtube.com')">Cam 2</button>
+<h4>Sector 1</h4>
+<button onclick="openLink('cam1')">View Feed</button>
 
-<p id="camOut"></p>
+<h4>Sector 2</h4>
+<button onclick="openLink('cam2')">View Feed</button>
 
 </div>
 </div>
 
 <!-- AOL -->
 <div id="aol" class="window">
-<div class="bar"><span class="back" onclick="closeAOL()">←</span>AOL<span class="close" onclick="closeAOL()">X</span></div>
+<div class="bar">
+<span class="back" onclick="closeW('aol')">←</span>
+America Online
+<span class="close" onclick="closeW('aol')">X</span>
+</div>
+
 <div class="content">
 
-<h2>🅰️ America Online</h2>
+<h2>🅰️ AOL SYSTEM</h2>
 <p><b>Luminar Will Always Be with you Throughout</b></p>
 
 <hr>
 
 <h3>📧 Emails</h3>
 <ul>
-<li>Trainer → Staff: “System logs stabilized.”</li>
-<li>Staff → Trainer: “No anomalies detected in sector grid.”</li>
-<li>Ops → Luminar: “Monitoring continues.”</li>
+<li>Trainer → Staff: “System stability confirmed.”</li>
+<li>Staff → Core: “No anomalies in Luminar grid.”</li>
+<li>Ops → Trainer: “Monitoring continues.”</li>
 </ul>
 
 <h3>📰 News</h3>
 <ul>
-<li>Luminar announces infrastructure expansion</li>
-<li>Network latency reduced across Zeta systems</li>
-<li>Internal communication systems upgraded</li>
+<li>Luminar expands distributed intelligence network.</li>
+<li>Internal systems achieve 99.2% uptime.</li>
+<li>Security nodes upgraded across all sectors.</li>
 </ul>
 
 </div>
@@ -232,10 +256,13 @@ button{font-family:"MS Sans Serif";}
 <!-- DIRECTOR -->
 <div id="director">
 
-<h2>Director Mode Locked</h2>
-<p>Solve to unlock:</p>
+<h2>DIRECTOR MODE</h2>
 
-<p><b>"I have keys but open no locks. I have space but no room. You can enter but cannot go outside. What am I?"</b></p>
+<p><b>
+Feed me and I live.  
+Give me a drink and I die.  
+What am I?
+</b></p>
 
 <input id="riddle">
 <button onclick="checkRiddle()">Submit</button>
@@ -246,14 +273,12 @@ button{font-family:"MS Sans Serif";}
 
 <script>
 
-/* BOOT SAFE */
+/* BOOT */
 window.addEventListener("load",()=>{
-
   setTimeout(()=>{
     boot.style.display="none";
     login.style.display="flex";
-  },2500);
-
+  },2200);
 });
 
 /* LOGIN */
@@ -270,34 +295,26 @@ function login(){
 function openW(id){document.getElementById(id).style.display="block";}
 function closeW(id){document.getElementById(id).style.display="none";}
 
-/* AOL */
-function openAOL(){
-  desktop.style.display="none";
-  aol.style.display="block";
+/* LINK REGISTRY SYSTEM */
+const links = {
+  tape1:"https://youtube.com",
+  tape2:"https://youtube.com",
+  tape3:"https://youtube.com",
+  tape4:"https://youtube.com",
+  cam1:"https://youtube.com",
+  cam2:"https://youtube.com"
+};
+
+function openLink(id){
+  window.open(links[id],"_blank");
 }
 
-function closeAOL(){
-  aol.style.display="none";
-  desktop.style.display="block";
-}
-
-/* YOUTUBE LINK SYSTEM (TAPES + CAMS) */
-function openTape(url){
-  window.open(url,"_blank");
-  tapeOut.innerText="Opening external tape link...";
-  camOut.innerText="Opening camera feed link...";
-}
-
-/* DIRECTOR MODE */
-function openDirector(){
-  director.style.display="flex";
-}
-
+/* DIRECTOR */
 function checkRiddle(){
-  let a=riddle.value.toLowerCase().trim();
+  let a = riddle.value.toLowerCase().trim();
 
-  if(a==="keyboard"){
-    director.innerHTML="<h2>ACCESS GRANTED</h2>";
+  if(a==="fire"){
+    director.innerHTML="<h2>ACCESS GRANTED</h2><p>DIRECTOR MODE ACTIVE</p>";
   } else {
     riddleErr.innerText="INCORRECT";
   }
