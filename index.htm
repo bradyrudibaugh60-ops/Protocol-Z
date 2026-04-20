@@ -1,92 +1,55 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>PROTOCOL Z // LUMINAR SYSTEM</title>
+<title>PROTOCOL Z // KERNEL v5</title>
 
 <style>
-body {
+body{
   margin:0;
   font-family:"MS Sans Serif", Tahoma;
   background:#007070;
   overflow:hidden;
-  color:black;
 }
 
-/* =========================
-   BOOT SYSTEM (UPGRADED)
-========================= */
-
-#boot1 {
+/* BOOT */
+#boot{
   position:fixed;
   width:100%;
   height:100%;
   background:black;
   color:lime;
   display:flex;
+  flex-direction:column;
   align-items:center;
   justify-content:center;
   font-family:monospace;
   z-index:9999;
-  flex-direction:column;
-}
-
-.bootText {
-  animation: blink 0.8s infinite;
-}
-
-@keyframes blink {
-  0% {opacity:1;}
-  50% {opacity:0.4;}
-  100% {opacity:1;}
 }
 
 /* LOGIN */
-#login {
+#login{
+  display:none;
   position:absolute;
   width:100%;
   height:100%;
   background:#007070;
-  display:none;
   align-items:center;
   justify-content:center;
 }
 
-.box {
+.box{
   width:320px;
   background:#c0c0c0;
   border:2px solid black;
 }
 
-.title {
-  background:#000080;
-  color:white;
-  padding:5px;
-}
+.title{background:#000080;color:white;padding:5px;}
+.body{padding:10px;}
 
-.body { padding:10px; }
-
-input {
-  width:95%;
-  margin:5px 0;
-  padding:5px;
-}
-
-/* BOOT 2 */
-#boot2 {
-  position:fixed;
-  width:100%;
-  height:100%;
-  background:black;
-  color:lime;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  font-family:monospace;
-  z-index:9999;
-}
+input{width:95%;margin:5px 0;padding:5px;}
 
 /* DESKTOP */
-#desktop {
+#desktop{
   display:none;
   width:100%;
   height:100%;
@@ -94,7 +57,7 @@ input {
 }
 
 /* ICONS */
-.icon {
+.icon{
   position:absolute;
   width:120px;
   text-align:center;
@@ -103,16 +66,15 @@ input {
   font-size:16px;
 }
 
-.tapes { top:80px; left:40px; }
-.files { top:160px; left:40px; }
-.notes { top:240px; left:40px; }
-.aol { top:320px; left:40px; }
-.cams { top:400px; left:40px; }
+.tapes{top:80px;left:40px;}
+.cams{top:160px;left:40px;}
+.aol{top:240px;left:40px;}
+.director{top:320px;left:40px;}
 
 /* WINDOWS */
-.window {
-  width:460px;
-  height:330px;
+.window{
+  width:500px;
+  height:350px;
   background:#bcbcbc;
   border:2px solid black;
   position:absolute;
@@ -123,69 +85,73 @@ input {
   overflow:auto;
 }
 
-.bar {
+.bar{
   background:#000080;
   color:white;
   padding:4px;
-  font-size:12px;
   cursor:move;
 }
 
-.close, .back {
+.close{
+  float:right;
+  background:red;
   padding:2px 6px;
   cursor:pointer;
-  margin-right:4px;
 }
 
-.close { float:right; background:red; }
-.back { float:left; background:green; }
+.back{
+  float:left;
+  background:green;
+  padding:2px 6px;
+  cursor:pointer;
+}
 
-.content {
+.content{
   padding:10px;
-  font-family:"MS Sans Serif";
   font-size:13px;
 }
 
 /* AOL */
-#aolApp {
+#aol{
   display:none;
+  position:absolute;
   width:100%;
   height:100%;
   background:#007070;
 }
 
-/* ZOMBIE */
-#zombie {
+/* DIRECTOR */
+#director{
+  display:none;
   position:fixed;
   width:100%;
   height:100%;
   background:black;
-  color:red;
-  display:none;
+  color:lime;
+  font-family:monospace;
+  z-index:9999;
   align-items:center;
   justify-content:center;
-  font-size:40px;
-  z-index:10000;
+  flex-direction:column;
 }
+
+button{font-family:"MS Sans Serif";}
 </style>
 </head>
 
 <body>
 
-<!-- =========================
-     BOOT SEQUENCE (UPGRADED)
-========================= -->
-
-<div id="boot1">
-  <div class="bootText">LUMINAR BIOS INITIALIZING...</div>
-  <div class="bootText">CHECKING MEMORY SECTOR Z-13...</div>
-  <div class="bootText">LOADING SYSTEM MODULES...</div>
+<!-- BOOT -->
+<div id="boot">
+<div>LOADING LUMINAR KERNEL v5...</div>
+<div>CHECKING SYSTEM INTEGRITY...</div>
+<div>INITIALIZING UI SHELL...</div>
 </div>
 
 <!-- LOGIN -->
 <div id="login">
   <div class="box">
-    <div class="title">Windows 95 Security Login</div>
+    <div class="title">Security Login</div>
     <div class="body">
       <input id="user" placeholder="Username">
       <input id="pass" type="password" placeholder="Password">
@@ -195,145 +161,146 @@ input {
   </div>
 </div>
 
-<!-- BOOT 2 -->
-<div id="boot2">VERIFYING Z-13 CORE... OK</div>
-
 <!-- DESKTOP -->
 <div id="desktop">
 
 <div class="icon tapes" onclick="openW('tapes')">📼<span>Tapes</span></div>
-<div class="icon files" onclick="openW('files')">📁<span>Files</span></div>
-<div class="icon notes" onclick="openW('notes')">📝<span>Notes</span></div>
-<div class="icon aol" onclick="openAOL()">🅰️<span>AOL</span></div>
 <div class="icon cams" onclick="openW('cams')">📹<span>Cameras</span></div>
+<div class="icon aol" onclick="openAOL()">🅰️<span>AOL</span></div>
+<div class="icon director" onclick="openDirector()">🧠<span>Director</span></div>
 
 </div>
 
-<!-- WINDOWS -->
+<!-- TAPES -->
 <div id="tapes" class="window">
 <div class="bar"><span class="back" onclick="closeW('tapes')">←</span>Tapes<span class="close" onclick="closeW('tapes')">X</span></div>
 <div class="content">
-Tape System<br>
-<button onclick="setTape('Z-13 ENTRY LOG')">Tape 1</button>
-<button onclick="setTape('TRAINER RECORD')">Tape 2</button>
-<div id="tapeOut"></div>
+
+<h3>Tape Archive</h3>
+
+<button onclick="openTape('https://youtube.com')">Tape 1</button>
+<button onclick="openTape('https://youtube.com')">Tape 2</button>
+<button onclick="openTape('https://youtube.com')">Tape 3</button>
+
+<p id="tapeOut"></p>
+
 </div>
 </div>
 
-<div id="files" class="window">
-<div class="bar"><span class="back" onclick="closeW('files')">←</span>Files<span class="close" onclick="closeW('files')">X</span></div>
-<div class="content">
-log.sys<br>z13.dat<br>luminar.bin
-</div>
-</div>
-
-<div id="notes" class="window">
-<div class="bar"><span class="back" onclick="closeW('notes')">←</span>Notes<span class="close" onclick="closeW('notes')">X</span></div>
-<div class="content">
-Z-13 unstable<br>
-Luminar learning<br>
-System evolving
-</div>
-</div>
-
+<!-- CAMERAS -->
 <div id="cams" class="window">
 <div class="bar"><span class="back" onclick="closeW('cams')">←</span>Cameras<span class="close" onclick="closeW('cams')">X</span></div>
 <div class="content">
-Internal Feed Active<br>
-(No external links)
+
+<h3>Camera Feed System</h3>
+
+<button onclick="openTape('https://youtube.com')">Cam 1</button>
+<button onclick="openTape('https://youtube.com')">Cam 2</button>
+
+<p id="camOut"></p>
+
 </div>
 </div>
 
 <!-- AOL -->
-<div id="aolApp">
-
-<div class="window" style="display:block;">
+<div id="aol" class="window">
 <div class="bar"><span class="back" onclick="closeAOL()">←</span>AOL<span class="close" onclick="closeAOL()">X</span></div>
 <div class="content">
-<b>Luminar Will Always Be with you Throughout</b><br><br>
-<button onclick="alert('Mail')">📧 Mail</button>
-<button onclick="alert('News')">📰 News</button>
+
+<h2>🅰️ America Online</h2>
+<p><b>Luminar Will Always Be with you Throughout</b></p>
+
+<hr>
+
+<h3>📧 Emails</h3>
+<ul>
+<li>Trainer → Staff: “System logs stabilized.”</li>
+<li>Staff → Trainer: “No anomalies detected in sector grid.”</li>
+<li>Ops → Luminar: “Monitoring continues.”</li>
+</ul>
+
+<h3>📰 News</h3>
+<ul>
+<li>Luminar announces infrastructure expansion</li>
+<li>Network latency reduced across Zeta systems</li>
+<li>Internal communication systems upgraded</li>
+</ul>
+
 </div>
 </div>
 
-</div>
+<!-- DIRECTOR -->
+<div id="director">
 
-<!-- ZOMBIE -->
-<div id="zombie">SYSTEM BREACH</div>
+<h2>Director Mode Locked</h2>
+<p>Solve to unlock:</p>
+
+<p><b>"I have keys but open no locks. I have space but no room. You can enter but cannot go outside. What am I?"</b></p>
+
+<input id="riddle">
+<button onclick="checkRiddle()">Submit</button>
+
+<p id="riddleErr"></p>
+
+</div>
 
 <script>
 
-/* =========================
-   SAFE BOOT FIX (INTEGRATED)
-========================= */
-
-function $(id){ return document.getElementById(id); }
-
-window.addEventListener("load", function () {
-
-  let boot = $("boot1");
-
-  if(!boot) return;
-
-  let forceExit = setTimeout(()=>{
-    boot.style.display = "none";
-    $("login").style.display = "flex";
-  }, 4000);
+/* BOOT SAFE */
+window.addEventListener("load",()=>{
 
   setTimeout(()=>{
-    clearTimeout(forceExit);
-    boot.style.display = "none";
-    $("login").style.display = "flex";
-  }, 2500);
+    boot.style.display="none";
+    login.style.display="flex";
+  },2500);
 
 });
 
 /* LOGIN */
-let logging=false;
-
 function login(){
-
-  if(logging) return;
-  logging=true;
-
-  let u=$("user").value;
-  let p=$("pass").value;
-
-  if(u==="LTrainer_87" && p==="Z13X17"){
-
-    $("login").style.display="none";
-    $("boot2").style.display="flex";
-
-    setTimeout(()=>{
-      $("boot2").style.display="none";
-      $("desktop").style.display="block";
-      logging=false;
-    },2000);
-
+  if(user.value==="LTrainer_87" && pass.value==="Z13X17"){
+    login.style.display="none";
+    desktop.style.display="block";
   } else {
-    $("err").innerText="ACCESS DENIED";
-    logging=false;
+    err.innerText="ACCESS DENIED";
   }
 }
 
 /* WINDOWS */
-function openW(id){ $(id).style.display="block"; }
-function closeW(id){ $(id).style.display="none"; }
+function openW(id){document.getElementById(id).style.display="block";}
+function closeW(id){document.getElementById(id).style.display="none";}
 
 /* AOL */
 function openAOL(){
-  $("desktop").style.display="none";
-  $("aolApp").style.display="block";
+  desktop.style.display="none";
+  aol.style.display="block";
 }
 
 function closeAOL(){
-  $("aolApp").style.display="none";
-  $("desktop").style.display="block";
+  aol.style.display="none";
+  desktop.style.display="block";
 }
 
-/* TAPES */
-function setTape(t){
-  $("tapeOut").innerText=t;
+/* YOUTUBE LINK SYSTEM (TAPES + CAMS) */
+function openTape(url){
+  window.open(url,"_blank");
+  tapeOut.innerText="Opening external tape link...";
+  camOut.innerText="Opening camera feed link...";
+}
+
+/* DIRECTOR MODE */
+function openDirector(){
+  director.style.display="flex";
+}
+
+function checkRiddle(){
+  let a=riddle.value.toLowerCase().trim();
+
+  if(a==="keyboard"){
+    director.innerHTML="<h2>ACCESS GRANTED</h2>";
+  } else {
+    riddleErr.innerText="INCORRECT";
+  }
 }
 
 </script>
