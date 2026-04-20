@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>PROTOCOL Z // LUMINAR SYSTEM v5.3</title>
+<title>PROTOCOL Z // LUMINAR SYSTEM v5.4</title>
 
 <style>
 body{
@@ -11,7 +11,9 @@ body{
   overflow:hidden;
 }
 
-/* BOOT */
+/* =========================
+   BOOT
+========================= */
 #boot{
   position:fixed;
   width:100%;
@@ -26,7 +28,9 @@ body{
   z-index:9999;
 }
 
-/* LOGIN */
+/* =========================
+   LOGIN
+========================= */
 #login{
   display:none;
   position:absolute;
@@ -43,7 +47,12 @@ body{
   border:2px solid black;
 }
 
-.title{background:#000080;color:white;padding:5px;}
+.title{
+  background:#000080;
+  color:white;
+  padding:5px;
+}
+
 .body{padding:10px;}
 
 input{
@@ -52,7 +61,9 @@ input{
   padding:5px;
 }
 
-/* DESKTOP GRID */
+/* =========================
+   DESKTOP
+========================= */
 #desktop{
   display:none;
   width:100%;
@@ -61,26 +72,24 @@ input{
   position:relative;
 }
 
-/* ICON GRID (FIRST ROW STYLE + MISC) */
+/* ICONS */
 .icon{
   position:absolute;
-  width:110px;
+  width:120px;
   text-align:center;
   color:#e0e0e0;
   cursor:pointer;
-  font-size:15px;
+  font-size:16px;
 }
-
-.icon span{display:block;font-size:12px;}
 
 .tapes{top:70px;left:40px;}
 .cams{top:70px;left:160px;}
 .aol{top:70px;left:280px;}
 .notes{top:70px;left:400px;}
-.misc1{top:180px;left:40px;}
-.misc2{top:180px;left:160px;}
 
-/* WINDOWS */
+/* =========================
+   WINDOWS
+========================= */
 .window{
   width:520px;
   height:360px;
@@ -119,7 +128,9 @@ input{
   font-size:13px;
 }
 
-/* DIRECTOR */
+/* =========================
+   DIRECTOR MODE
+========================= */
 #director{
   display:none;
   position:fixed;
@@ -128,52 +139,59 @@ input{
   background:black;
   color:lime;
   font-family:monospace;
-  z-index:9999;
+  z-index:99999;
   align-items:center;
   justify-content:center;
   flex-direction:column;
+}
+
+button{
+  font-family:"MS Sans Serif";
 }
 </style>
 </head>
 
 <body>
 
-<!-- BOOT -->
+<!-- =========================
+     BOOT
+========================= -->
 <div id="boot">
-  <div>LOADING LUMINAR KERNEL v5.3...</div>
-  <div>INITIALIZING DESKTOP GRID...</div>
-  <div>SYNCING LINK REGISTRY...</div>
+  <div>LOADING LUMINAR KERNEL v5.4...</div>
+  <div>CHECKING SYSTEM INTEGRITY...</div>
+  <div>INITIALIZING INTERFACE SHELL...</div>
 </div>
 
-<!-- LOGIN -->
+<!-- =========================
+     LOGIN
+========================= -->
 <div id="login">
   <div class="box">
     <div class="title">Secure Login</div>
     <div class="body">
-      <input id="user">
-      <input id="pass" type="password">
+      <input id="user" placeholder="Username">
+      <input id="pass" type="password" placeholder="Password">
       <button onclick="login()">ENTER</button>
       <p id="err"></p>
     </div>
   </div>
 </div>
 
-<!-- DESKTOP -->
+<!-- =========================
+     DESKTOP
+========================= -->
 <div id="desktop">
 
-<!-- PRIMARY ROW -->
 <div class="icon tapes" onclick="openW('tapes')">📼<span>Tapes</span></div>
 <div class="icon cams" onclick="openW('cams')">📹<span>Cameras</span></div>
 <div class="icon aol" onclick="openW('aol')">🅰️<span>AOL</span></div>
 <div class="icon notes" onclick="openW('notes')">📝<span>Notes</span></div>
 
-<!-- MISC APPS -->
-<div class="icon misc1" onclick="alert('System Tools')">🧰<span>Tools</span></div>
-<div class="icon misc2" onclick="alert('Logs Viewer')">📊<span>Logs</span></div>
-
 </div>
 
-<!-- TAPES -->
+<!-- =========================
+     TAPES
+========================= -->
 <div id="tapes" class="window">
 <div class="bar">
 <span class="back" onclick="closeW('tapes')">←</span>
@@ -182,25 +200,19 @@ Tape Archive
 </div>
 
 <div class="content">
+<h3>Tape System</h3>
 
-<h3>📼 Tape System</h3>
-
-<h4>Tape 1</h4>
-<button onclick="openLink('tape1')">Play Tape 1</button>
-
-<h4>Tape 2</h4>
-<button onclick="openLink('tape2')">Play Tape 2</button>
-
-<h4>Tape 3</h4>
-<button onclick="openLink('tape3')">Play Tape 3</button>
-
-<h4>Tape 4</h4>
-<button onclick="openLink('tape4')">Play Tape 4</button>
+<h4>Tape 1</h4><button onclick="openLink('tape1')">Play</button>
+<h4>Tape 2</h4><button onclick="openLink('tape2')">Play</button>
+<h4>Tape 3</h4><button onclick="openLink('tape3')">Play</button>
+<h4>Tape 4</h4><button onclick="openLink('tape4')">Play</button>
 
 </div>
 </div>
 
-<!-- CAMERAS -->
+<!-- =========================
+     CAMERAS
+========================= -->
 <div id="cams" class="window">
 <div class="bar">
 <span class="back" onclick="closeW('cams')">←</span>
@@ -209,19 +221,17 @@ Camera Feed
 </div>
 
 <div class="content">
+<h3>Camera Footage</h3>
 
-<h3>📹 Camera Footage</h3>
-
-<h4>Sector 1</h4>
-<button onclick="openLink('cam1')">View Feed</button>
-
-<h4>Sector 2</h4>
-<button onclick="openLink('cam2')">View Feed</button>
+<h4>Feed 1</h4><button onclick="openLink('cam1')">View</button>
+<h4>Feed 2</h4><button onclick="openLink('cam2')">View</button>
 
 </div>
 </div>
 
-<!-- AOL -->
+<!-- =========================
+     AOL
+========================= -->
 <div id="aol" class="window">
 <div class="bar">
 <span class="back" onclick="closeW('aol')">←</span>
@@ -238,31 +248,33 @@ America Online
 
 <h3>📧 Emails</h3>
 <ul>
-<li>Trainer → Staff: “System stability confirmed.”</li>
-<li>Staff → Core: “No anomalies in Luminar grid.”</li>
+<li>Trainer → Staff: “System stable across all nodes.”</li>
+<li>Staff → Core: “No anomalies detected.”</li>
 <li>Ops → Trainer: “Monitoring continues.”</li>
 </ul>
 
 <h3>📰 News</h3>
 <ul>
-<li>Luminar expands distributed intelligence network.</li>
-<li>Internal systems achieve 99.2% uptime.</li>
-<li>Security nodes upgraded across all sectors.</li>
+<li>Luminar infrastructure expansion confirmed.</li>
+<li>Neural systems operating within safe limits.</li>
+<li>Security protocols updated globally.</li>
 </ul>
 
 </div>
 </div>
 
-<!-- DIRECTOR -->
+<!-- =========================
+     DIRECTOR MODE
+========================= -->
 <div id="director">
 
 <h2>DIRECTOR MODE</h2>
 
-<p><b>
-Feed me and I live.  
-Give me a drink and I die.  
+<p>
+Feed me and I live.<br>
+Give me a drink and I die.<br>
 What am I?
-</b></p>
+</p>
 
 <input id="riddle">
 <button onclick="checkRiddle()">Submit</button>
@@ -273,29 +285,56 @@ What am I?
 
 <script>
 
-/* BOOT */
-window.addEventListener("load",()=>{
-  setTimeout(()=>{
-    boot.style.display="none";
-    login.style.display="flex";
-  },2200);
-});
-
-/* LOGIN */
-function login(){
-  if(user.value==="LTrainer_87" && pass.value==="Z13X17"){
-    login.style.display="none";
-    desktop.style.display="block";
-  } else {
-    err.innerText="ACCESS DENIED";
-  }
+/* =========================
+   SAFE CORE
+========================= */
+function el(id){
+  return document.getElementById(id);
 }
 
-/* WINDOWS */
-function openW(id){document.getElementById(id).style.display="block";}
-function closeW(id){document.getElementById(id).style.display="none";}
+/* =========================
+   BOOT FIX (NO FREEZE)
+========================= */
+window.addEventListener("load",()=>{
 
-/* LINK REGISTRY SYSTEM */
+  setTimeout(()=>{
+    el("boot").style.display="none";
+    el("login").style.display="flex";
+  },2200);
+
+});
+
+/* =========================
+   LOGIN (FULL FIXED)
+========================= */
+function login(){
+
+  const u = el("user").value.trim();
+  const p = el("pass").value.trim();
+
+  if(u==="LTrainer_87" && p==="Z13X17"){
+    el("login").style.display="none";
+    el("desktop").style.display="block";
+  } else {
+    el("err").innerText="ACCESS DENIED";
+  }
+
+}
+
+/* =========================
+   WINDOWS
+========================= */
+function openW(id){
+  el(id).style.display="block";
+}
+
+function closeW(id){
+  el(id).style.display="none";
+}
+
+/* =========================
+   LINK REGISTRY
+========================= */
 const links = {
   tape1:"https://youtube.com",
   tape2:"https://youtube.com",
@@ -309,15 +348,19 @@ function openLink(id){
   window.open(links[id],"_blank");
 }
 
-/* DIRECTOR */
+/* =========================
+   DIRECTOR MODE
+========================= */
 function checkRiddle(){
-  let a = riddle.value.toLowerCase().trim();
+
+  const a = el("riddle").value.toLowerCase().trim();
 
   if(a==="fire"){
     director.innerHTML="<h2>ACCESS GRANTED</h2><p>DIRECTOR MODE ACTIVE</p>";
   } else {
-    riddleErr.innerText="INCORRECT";
+    el("riddleErr").innerText="INCORRECT";
   }
+
 }
 
 </script>
