@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Luminar Terminal</title>
+<title>Luminar Terminal - Dr. Trainer</title>
 
 <style>
 body {
   margin:0;
   font-family:Tahoma;
-  background:black;
+  background:teal;
   overflow:hidden;
 }
 
@@ -16,8 +16,8 @@ body {
   position:fixed;
   width:100%;
   height:100%;
-  background:black;
-  color:lime;
+  background:teal;
+  color:black;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -26,30 +26,48 @@ body {
   transition:opacity 1.5s;
 }
 
-/* LOGIN SCREEN */
+/* WINDOWS 95 LOGIN SCREEN */
 #login {
   position:absolute;
   width:100%;
   height:100%;
-  background:black;
-  color:lime;
+  background:teal;
   display:flex;
-  flex-direction:column;
   align-items:center;
   justify-content:center;
 }
 
-input {
-  margin:5px;
+.login-box {
+  width:300px;
+  background:#c0c0c0;
+  border:2px solid black;
+  padding:20px;
+}
+
+.login-title {
+  background:navy;
+  color:white;
   padding:5px;
+  font-size:14px;
+}
+
+input {
+  width:95%;
+  margin-top:10px;
+  padding:5px;
+}
+
+button {
+  margin-top:10px;
+  width:100%;
 }
 
 /* DESKTOP */
 #desktop {
   display:none;
-  background:teal;
   width:100%;
   height:100%;
+  background:teal;
 }
 
 /* ICONS */
@@ -58,6 +76,7 @@ input {
   color:white;
   text-align:center;
   cursor:pointer;
+  width:90px;
 }
 
 .icon span {
@@ -68,6 +87,7 @@ input {
 .tape { top:100px; left:40px; }
 .files { top:180px; left:40px; }
 .locked { top:260px; left:40px; }
+.aol { top:340px; left:40px; }
 
 /* WINDOWS */
 .window {
@@ -89,9 +109,9 @@ input {
 
 .close-btn {
   float:right;
-  cursor:pointer;
   background:red;
   padding:2px 6px;
+  cursor:pointer;
 }
 
 .window-content {
@@ -113,7 +133,26 @@ input {
 
 .clock {
   margin-right:10px;
-  font-size:12px;
+}
+
+/* AOL SCREEN */
+#aolHome, #aolChat {
+  display:none;
+  width:100%;
+  height:100%;
+  background:teal;
+  position:absolute;
+  top:0;
+  left:0;
+  color:black;
+  padding:20px;
+}
+
+.aol-box {
+  width:300px;
+  background:#c0c0c0;
+  border:2px solid black;
+  padding:10px;
 }
 </style>
 </head>
@@ -121,33 +160,37 @@ input {
 <body>
 
 <!-- LOADING -->
-<div id="loading">Booting Luminar OS...</div>
+<div id="loading">Booting Luminar System...</div>
 
-<!-- LOGIN -->
+<!-- WINDOWS 95 LOGIN -->
 <div id="login">
-<h2>ACCESS TERMINAL</h2>
-<input id="user" placeholder="Username">
-<input id="pass" placeholder="Password" type="password">
-<button onclick="login()">ENTER</button>
-<p id="error"></p>
+  <div class="login-box">
+    <div class="login-title">Windows 95 Login</div>
+    <input id="user" placeholder="Username">
+    <input id="pass" type="password" placeholder="Password">
+    <button onclick="login()">OK</button>
+    <p id="error"></p>
+  </div>
 </div>
 
 <!-- DESKTOP -->
 <div id="desktop">
 
+<!-- ICONS -->
 <div class="icon tape" onclick="openWin('tapes')">
-📼
-<span>Tapes</span>
+📼<span>Tapes</span>
 </div>
 
 <div class="icon files" onclick="openWin('files')">
-📁
-<span>Files</span>
+📁<span>Files</span>
 </div>
 
 <div class="icon locked" onclick="openWin('locked')">
-🔒
-<span>Locked</span>
+🔒<span>Locked</span>
+</div>
+
+<div class="icon aol" onclick="openAOLHome()">
+💬<span>AOL Chat</span>
 </div>
 
 <!-- TAPE WINDOW -->
@@ -155,15 +198,10 @@ input {
 <div class="title-bar">Tape Archive
 <span class="close-btn" onclick="closeWin('tapes')">X</span>
 </div>
-
 <div class="window-content">
-
-<button onclick="playTape('tape1.mp3')">Play Tape 1</button><br>
-<button onclick="playTape('tape2.mp3')">Play Tape 2</button><br>
-
-<br>
-<audio id="player" controls style="width:100%;"></audio>
-
+<button onclick="alert('Tape 1 loaded (add file later)')">Tape 1</button><br>
+<button onclick="alert('Tape 2 loaded (add file later)')">Tape 2</button><br>
+<button onclick="alert('Tape 3 corrupted')">Tape 3</button>
 </div>
 </div>
 
@@ -172,22 +210,46 @@ input {
 <div class="title-bar">Files
 <span class="close-btn" onclick="closeWin('files')">X</span>
 </div>
-
 <div class="window-content">
-📄 log1.txt<br>
-📄 report_z13.txt<br>
+📄 log_z13.txt<br>
+📄 trainer_notes.txt<br>
+📄 mimic_report.txt
 </div>
 </div>
 
-<!-- LOCKED SECTION -->
+<!-- LOCKED -->
 <div id="locked" class="window">
-<div class="title-bar">RESTRICTED
+<div class="title-bar">Restricted Files
 <span class="close-btn" onclick="closeWin('locked')">X</span>
 </div>
-
 <div class="window-content">
 ACCESS DENIED<br>
-[LOCKED CONTENT READY]
+[TO BE EXPANDED]
+</div>
+</div>
+
+</div>
+
+<!-- AOL HOME SCREEN -->
+<div id="aolHome">
+<div class="aol-box">
+<h3>AOL - Welcome</h3>
+<button onclick="openAOLChat()">Enter Chatroom</button>
+</div>
+</div>
+
+<!-- AOL CHAT -->
+<div id="aolChat">
+<div class="aol-box">
+<h3>Chatroom: Trainer / Kane / Octogal</h3>
+
+<p><b>Trainer:</b> Something is wrong.</p>
+<p><b>Kane:</b> Define "wrong".</p>
+<p><b>Octogal:</b> It learned the login system.</p>
+<p><b>Trainer:</b> That wasn’t supposed to happen.</p>
+
+<br>
+<button onclick="backToAOL()">Exit Chat</button>
 </div>
 </div>
 
@@ -196,13 +258,11 @@ ACCESS DENIED<br>
 <div class="clock" id="clock"></div>
 </div>
 
-</div>
-
 <script>
+
 /* LOADING */
 setTimeout(()=>{
-  document.getElementById("loading").style.opacity=0;
-  setTimeout(()=>document.getElementById("loading").style.display="none",1500);
+  document.getElementById("loading").style.display="none";
 },2000);
 
 /* LOGIN */
@@ -222,22 +282,28 @@ function login(){
 function openWin(id){
   document.getElementById(id).style.display="block";
 }
-
 function closeWin(id){
   document.getElementById(id).style.display="none";
 }
 
-/* AUDIO */
-function playTape(src){
-  let player=document.getElementById("player");
-  player.src=src;
-  player.play();
+/* AOL FLOW */
+function openAOLHome(){
+  document.getElementById("aolHome").style.display="block";
+}
+function openAOLChat(){
+  document.getElementById("aolHome").style.display="none";
+  document.getElementById("aolChat").style.display="block";
+}
+function backToAOL(){
+  document.getElementById("aolChat").style.display="none";
+  document.getElementById("aolHome").style.display="block";
 }
 
 /* CLOCK */
 setInterval(()=>{
   document.getElementById("clock").innerText=new Date().toLocaleTimeString();
 },1000);
+
 </script>
 
 </body>
