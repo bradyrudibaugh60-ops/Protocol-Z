@@ -1,192 +1,248 @@
-<!-- Protocol Z v3.2 FULL BUILD (Single File) -->
+<!-- Protocol Z v3.3 FULL WINDOWS 95 OVERHAUL -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Protocol Z v3.2</title>
+<title>Protocol Z v3.3</title>
 <style>
-body {
+body{
   margin:0;
-  background:#000;
-  color:#33ff33;
-  font-family: monospace;
+  font-family:Tahoma, sans-serif;
+  background:#008080;
   overflow:hidden;
 }
-.screen {
-  display:none;
+
+/* DESKTOP */
+#desktop{
   width:100vw;
   height:100vh;
-  padding:20px;
-  box-sizing:border-box;
+  position:relative;
+  background:#008080;
 }
-.active { display:block; }
-.center { text-align:center; }
-button {
-  background:#111;
-  color:#33ff33;
-  border:1px solid #33ff33;
+
+/* APP GRID (1x6) */
+#appGrid{
+  display:grid;
+  grid-template-columns: repeat(6, 120px);
+  gap:15px;
+  padding:20px;
+}
+.app{
+  width:100px;
+  height:100px;
+  background:#c0c0c0;
+  border:2px outset #fff;
+  text-align:center;
   padding:10px;
-  margin:5px;
   cursor:pointer;
 }
-button:hover { background:#222; }
-.row {
+.app:active{
+  border:2px inset #000;
+}
+
+/* WINDOW STYLE */
+.window{
+  position:absolute;
+  top:50px;
+  left:50px;
+  width:500px;
+  height:400px;
+  background:#c0c0c0;
+  border:2px outset #fff;
+  display:none;
+  flex-direction:column;
+}
+.titlebar{
+  background:navy;
+  color:white;
+  padding:5px;
   display:flex;
-  gap:10px;
+  justify-content:space-between;
 }
-.panel {
-  border:1px solid #33ff33;
+.content{
   padding:10px;
+  overflow:auto;
   flex:1;
-  height:200px;
-  overflow:auto;
 }
-.blink { animation: blink 1s infinite; }
-@keyframes blink { 50% { opacity:0; } }
-.terminal {
+
+/* TASKBAR */
+#taskbar{
+  position:absolute;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:40px;
+  background:#c0c0c0;
+  border-top:2px solid #fff;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 10px;
+}
+
+button{
+  background:#c0c0c0;
+  border:2px outset #fff;
+  cursor:pointer;
+}
+button:active{ border:2px inset #000; }
+
+/* LOGIN */
+#login{
+  position:absolute;
+  width:100vw;
+  height:100vh;
   background:#000;
-  border:1px solid #33ff33;
-  padding:10px;
-  height:300px;
-  overflow:auto;
+  color:#0f0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
 }
 </style>
 </head>
 <body>
 
-<!-- SOUND SYSTEM (PLACEHOLDER SECTION) -->
-<audio id="bootSound" src="audio/boot.mp3"></audio>
-<audio id="clickSound" src="audio/click.mp3"></audio>
-<audio id="glitchSound" src="audio/glitch.mp3"></audio>
-
-<!-- LOADING SCREEN 1 -->
-<div id="load1" class="screen active center">
-  <h1>PROTOCOL Z</h1>
-  <p class="blink">BOOTING CORE SYSTEM...</p>
-</div>
-
-<!-- LOADING SCREEN 2 -->
-<div id="load2" class="screen center">
-  <h2>ESTABLISHING SECURE LINK</h2>
-  <p>CONNECTING TO LUMINAR SYSTEM...</p>
-</div>
-
 <!-- LOGIN -->
-<div id="login" class="screen center">
-  <h2>LOGIN TERMINAL</h2>
-  <input id="user" placeholder="USERNAME"><br><br>
-  <input id="pass" type="password" placeholder="PASSWORD"><br><br>
+<div id="login">
+  <h2>LUMINAR ACCESS TERMINAL</h2>
+  <input id="user" placeholder="User"><br><br>
+  <input id="pass" type="password" placeholder="Pass"><br><br>
   <button onclick="login()">ENTER</button>
 </div>
 
-<!-- HOME LAB (STAFF DIRECTORY HUB) -->
-<div id="home" class="screen">
-  <h2>HOME LAB // STAFF DIRECTORY</h2>
-  <div class="row">
-    <div class="panel">
-      <h3>DIRECTORY</h3>
-      <button onclick="openPanel('aim')">AIM CHAT</button>
-      <button onclick="openPanel('tapes')">TAPES</button>
-      <button onclick="openPanel('news')">NEWS</button>
-      <button onclick="openPanel('security')">SECURITY FEED</button>
-    </div>
-    <div class="panel" id="panel">
-      <p>Select an option...</p>
+<!-- DESKTOP -->
+<div id="desktop" style="display:none">
+
+  <!-- APP GRID -->
+  <div id="appGrid">
+    <div class="app" onclick="openWin('tapesWin')">Tapes</div>
+    <div class="app" onclick="openWin('newsWin')">News</div>
+    <div class="app" onclick="openWin('securityWin')">Security</div>
+    <div class="app" onclick="openWin('staffWin')">Staff Directory</div>
+  </div>
+
+  <!-- TAPES WINDOW -->
+  <div class="window" id="tapesWin">
+    <div class="titlebar">Tapes <button onclick="closeWin('tapesWin')">X</button></div>
+    <div class="content">
+      <button onclick="playTape(1)">Tape 1</button>
+      <button onclick="playTape(4)">Tape 4</button>
+      <div id="tapeOut"></div>
     </div>
   </div>
-</div>
 
-<!-- AIM CHAT -->
-<div id="aim" class="screen">
-  <h2>AOL INSTANT MESSENGER // AIM NODE</h2>
-  <div class="terminal" id="chatBox"></div>
-  <input id="chatInput" placeholder="message...">
-  <button onclick="sendChat()">SEND</button>
-  <button onclick="backHome()">EXIT</button>
-</div>
+  <!-- NEWS WINDOW -->
+  <div class="window" id="newsWin">
+    <div class="titlebar">Luminar News <button onclick="closeWin('newsWin')">X</button></div>
+    <div class="content" id="newsContent"></div>
+  </div>
 
-<!-- TAPES -->
-<div id="tapes" class="screen">
-  <h2>TAPE ARCHIVE</h2>
-  <button onclick="playTape(1)">Tape 1 - INIT</button>
-  <button onclick="playTape(4)">Tape 4 - AOL</button>
-  <button onclick="backHome()">EXIT</button>
-  <div class="terminal" id="tapeOut"></div>
-</div>
+  <!-- SECURITY WINDOW -->
+  <div class="window" id="securityWin">
+    <div class="titlebar">Security Footage <button onclick="closeWin('securityWin')">X</button></div>
+    <div class="content">
+      <button onclick="feed(1)">Feed 1 Exterior</button>
+      <button onclick="feed(2)">Feed 2 Hallway</button>
+      <button onclick="feed(3)">Feed 3 Daniel Reyes</button>
+      <button onclick="feed(4)">Feed 4 Sublevel 4</button>
+      <div id="feedOut"></div>
+    </div>
+  </div>
 
-<!-- NEWS -->
-<div id="news" class="screen">
-  <h2>NEWS FEED</h2>
-  <p>[CLASSIFIED] System anomalies detected in Z-13 Compound</p>
-  <p>[ALERT] Director Mode override available in hidden article node</p>
-  <button onclick="unlockDirector()">ACCESS DIRECTOR MODE</button>
-  <button onclick="backHome()">EXIT</button>
-</div>
+  <!-- STAFF DIRECTORY -->
+  <div class="window" id="staffWin">
+    <div class="titlebar">Staff Directory <button onclick="closeWin('staffWin')">X</button></div>
+    <div class="content">
+      <input id="staffUser" placeholder="User"><br>
+      <input id="staffPass" type="password" placeholder="Pass"><br>
+      <button onclick="staffLogin()">Login</button>
+      <div id="staffHub"></div>
+    </div>
+  </div>
 
-<!-- SECURITY -->
-<div id="security" class="screen">
-  <h2>SECURITY FEED</h2>
-  <p>Camera 1: ACTIVE</p>
-  <p>Camera 2: SIGNAL LOST</p>
-  <p>Camera 3: GLITCHING...</p>
-  <button onclick="backHome()">EXIT</button>
+  <!-- TASKBAR -->
+  <div id="taskbar">
+    <button onclick="startMenu()">Start</button>
+    <div>
+      Volume | Brightness | Settings | Weather: OK | Clock: <span id="clock"></span>
+    </div>
+  </div>
+
 </div>
 
 <script>
-let state = 0;
-
-function switchScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-
-// BOOT SEQUENCE
-setTimeout(()=>switchScreen('load2'), 2500);
-setTimeout(()=>switchScreen('login'), 5000);
-
 function login(){
-  document.getElementById('clickSound').play();
-  switchScreen('home');
+  if(document.getElementById('user').value && document.getElementById('pass').value){
+    document.getElementById('login').style.display='none';
+    document.getElementById('desktop').style.display='block';
+    loadNews();
+    setInterval(clock,1000);
+  }
 }
 
-function backHome(){
-  switchScreen('home');
+function openWin(id){
+  document.getElementById(id).style.display='flex';
+}
+function closeWin(id){
+  document.getElementById(id).style.display='none';
 }
 
-function openPanel(type){
-  let panel = document.getElementById('panel');
-  if(type==='aim') panel.innerHTML = '<p>AIM NODE READY</p>';
-  if(type==='tapes') panel.innerHTML = '<p>TAPE ARCHIVE LINKED</p>';
-  if(type==='news') panel.innerHTML = '<p>NEWS FEED ACTIVE</p>';
-  if(type==='security') panel.innerHTML = '<p>SECURITY SYSTEMS ONLINE</p>';
-}
-
-// AIM CHAT
-function sendChat(){
-  let input = document.getElementById('chatInput');
-  let box = document.getElementById('chatBox');
-  box.innerHTML += "YOU: " + input.value + "<br>";
-  box.innerHTML += "TRAINER: SIGNAL RECEIVED...<br>";
-  input.value="";
-  box.scrollTop = box.scrollHeight;
-}
-
-// TAPES
+// TAPES (INTERNAL YOUTUBE-LIKE SYSTEM)
 function playTape(n){
-  let out = document.getElementById('tapeOut');
+  let out=document.getElementById('tapeOut');
   if(n===1){
-    out.innerHTML = "[TAPE 1 INIT]\nSystem boot sequence recorded...";
+    out.innerHTML="[Tape 1]\nSystem initialization of Luminar begins...";
   }
   if(n===4){
-    out.innerHTML = "[TAPE 4 - AOL CHAT]\nDr. Lee Trainer: 'We are not alone in the network...'<br>Kane Park: 'Signal corrupted but stable.'<br>Octogal: 'I see movement in the data stream.'";
+    out.innerHTML="[Tape 4 - AOL NODE]\nTrainer: 'We are inside the network.'<br>Kane: 'Signal locked.'<br>Octogal: 'Entity presence detected.'";
   }
 }
 
-// DIRECTOR MODE
-function unlockDirector(){
-  document.body.style.background="#220000";
-  alert("DIRECTOR MODE UNLOCKED");
+// NEWS ABOUT LUMINAR
+function loadNews(){
+  document.getElementById('newsContent').innerHTML=`
+  <h3>Luminar System Bulletin</h3>
+  <p>- Z-13 Compound instability increasing</p>
+  <p>- Director override protocols tested successfully</p>
+  <p>- Unknown entity detected in Sublevel 4 corridor</p>
+  `;
 }
+
+// SECURITY FEEDS (INTERNAL LINK SYSTEM)
+function feed(n){
+  let out=document.getElementById('feedOut');
+  let feeds={
+    1:'Exterior Feed: Clear skies, perimeter stable',
+    2:'Main Hallway: flickering lights detected',
+    3:'Daniel Reyes Room: static interference present',
+    4:'SUBLEVEL 4: motion detected near corridor end'
+  };
+  out.innerHTML=feeds[n];
+}
+
+// STAFF LOGIN
+function staffLogin(){
+  let u=document.getElementById('staffUser').value;
+  let p=document.getElementById('staffPass').value;
+  if(u==='LeeTrainer' && p==='Z13X17'){
+    document.getElementById('staffHub').innerHTML=`
+    <h3>Luminar Staff Hub</h3>
+    <p>Access Granted: Director Channel Open</p>
+    <button onclick="alert('Director Logs Unlocked')">Director Logs</button>
+    `;
+  } else {
+    document.getElementById('staffHub').innerHTML="ACCESS DENIED";
+  }
+}
+
+// CLOCK
+function clock(){
+  let d=new Date();
+  document.getElementById('clock').innerText=d.toLocaleTimeString();
+}
+
+function startMenu(){ alert('Start Menu Placeholder'); }
 </script>
 
 </body>
