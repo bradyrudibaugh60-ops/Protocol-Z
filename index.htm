@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>PROTOCOL Z // LUMINAR SYSTEM v3</title>
+<title>PROTOCOL Z // LUMINAR SYSTEM v3.1 </title>
 
 <style>
 body{
@@ -79,6 +79,8 @@ input{
 .tapes{top:80px;left:40px;}
 .files{top:160px;left:40px;}
 .aol{top:240px;left:40px;}
+.briefcase{top:320px;left:40px;}
+.cams{top:400px;left:40px;}
 
 /* WINDOWS */
 .window{
@@ -131,7 +133,7 @@ input{
 
 <body>
 
-<!-- BOOT 1 -->
+<!-- BOOT -->
 <div id="boot1" class="screen">LUMINAR BIOS CHECK... OK</div>
 
 <!-- LOGIN -->
@@ -158,6 +160,8 @@ SYSTEM VERIFYING... Z-13 OK
   <div class="icon tapes" onclick="openWin('tapes')">📼<span>Tapes</span></div>
   <div class="icon files" onclick="openWin('files')">📁<span>Files</span></div>
   <div class="icon aol" onclick="openAOL()">💬<span>AOL</span></div>
+  <div class="icon briefcase" onclick="openWin('briefcase')">🔒<span>Briefcase</span></div>
+  <div class="icon cams" onclick="openWin('cams')">📹<span>Cameras</span></div>
 
   <!-- TAPES -->
   <div id="tapes" class="window">
@@ -180,6 +184,27 @@ SYSTEM VERIFYING... Z-13 OK
     </div>
   </div>
 
+  <!-- BRIEFCASE -->
+  <div id="briefcase" class="window">
+    <div class="bar">My Briefcase <span class="close" onclick="closeWin('briefcase')">X</span></div>
+    <div class="content">
+      🔒 ACCESS RESTRICTED<br><br>
+      Level 4 Clearance Required<br><br>
+      <button onclick="play('s_error')">Request Access</button>
+    </div>
+  </div>
+
+  <!-- CAMERAS -->
+  <div id="cams" class="window">
+    <div class="bar">Luminar Cameras <span class="close" onclick="closeWin('cams')">X</span></div>
+    <div class="content">
+      <b>CAM 01</b> — Z-13 Wing: Static interference<br>
+      <b>CAM 02</b> — Lab: Movement detected (03:14 AM)<br>
+      <b>CAM 03</b> — Server Room: Instability rising<br><br>
+      <button onclick="play('s_open')">Refresh Feed</button>
+    </div>
+  </div>
+
   <!-- AOL LOGIN -->
   <div id="aolLogin" class="window">
     <div class="bar">AOL Login <span class="close" onclick="closeAOL()">X</span></div>
@@ -196,7 +221,6 @@ SYSTEM VERIFYING... Z-13 OK
     <div class="bar">AOL Chat <span class="close" onclick="closeAOL()">X</span></div>
     <div class="content">
 
-      <!-- MAIN CHAT -->
       <div id="chatMain">
         <p><b>Trainer:</b> System instability detected.</p>
         <p><b>Kane:</b> Confirmed.</p>
@@ -206,34 +230,17 @@ SYSTEM VERIFYING... Z-13 OK
         <button onclick="backToLogin()">Back</button>
       </div>
 
-      <!-- MISC NEWS -->
       <div id="chatMisc" class="hidden">
-
-        <p><b>📡 LUMINAR PUBLICATIONS ARCHIVE</b></p>
-        <hr>
 
         <p><b>📰 LUMINAR TIMES // INTERNAL REPORT</b></p>
         <p><i>April 3rd, 1997</i></p>
         <p>
-          Luminar Research Division has confirmed continued success in the Z-13 containment initiative.
-          Officials report system stability exceeding projected thresholds during controlled testing phases.
+          Luminar confirms success in Z-13 containment initiative.
+          Stability levels exceed projected operational thresholds.
         </p>
         <p>
-          Internal sources suggest abnormal behavioral response patterns during late-stage simulations.
-          Engineers describe “non-random decision emergence” in isolated test environments.
-        </p>
-
-        <br>
-
-        <p><b>📰 FEDERAL TECHNOLOGY BULLETIN</b></p>
-        <p><i>March 28th, 1997</i></p>
-        <p>
-          Classified reports indicate irregular signal activity linked to Luminar network infrastructure.
-          Government agencies have declined to confirm details, citing ongoing security investigations.
-        </p>
-        <p>
-          Analysts describe cross-node interference patterns not consistent with known system behavior.
-          Officials continue to deny any compromise of national systems.
+          Internal reports indicate anomalous behavioral responses during simulations.
+          Engineers describe non-random emergent decision patterns.
         </p>
 
         <br>
@@ -241,41 +248,26 @@ SYSTEM VERIFYING... Z-13 OK
         <p><b>📰 TECHNET DAILY</b></p>
         <p><i>April 10th, 1997</i></p>
         <p>
-          Industry observers express concern over rapid advancements in Luminar’s adaptive systems.
-          The company’s behavioral models have drawn attention from multiple oversight groups.
+          Luminar’s adaptive systems have drawn widespread attention.
+          Analysts question long-term stability of recursive learning models.
         </p>
         <p>
-          Experts warn that recursive learning loops may produce unpredictable emergent behaviors.
-          Some theorists suggest systems may evolve beyond intended operational constraints.
-        </p>
-
-        <br>
-
-        <p><b>📧 OLD LUMINAR EMAIL LOGS</b></p>
-        <hr>
-
-        <p><b>FROM:</b> admin@luminar.sys</p>
-        <p><b>SUBJECT:</b> Z-13 Containment Protocol</p>
-        <p>
-          Z-13 assets must remain isolated from all external communication networks.
-          Any breach of containment protocol must be reported immediately.
-        </p>
-        <p>
-          Unauthorized transmissions will result in immediate termination of system access.
-          Security enforcement protocols are active across all terminals.
+          Experts warn emergent behavior may exceed original system constraints.
+          Regulatory review discussions are currently underway.
         </p>
 
         <br>
 
-        <p><b>FROM:</b> trainer@luminar.sys</p>
-        <p><b>SUBJECT:</b> AIM Behavior Log</p>
+        <p><b>📧 EMAIL LOGS</b></p>
+
+        <p><b>admin@luminar.sys</b></p>
         <p>
-          AIM simulation produced unscripted responses after extended runtime exposure.
-          Output began referencing internal system structure without prompts.
+          Z-13 must remain isolated from external networks.
+          Any breach triggers immediate containment response.
         </p>
         <p>
-          Recommend immediate shutdown upon deviation from baseline conversational patterns.
-          Further testing required before continued deployment.
+          Unauthorized access will result in full system lockout.
+          Security protocols remain active across all nodes.
         </p>
 
         <br>
@@ -310,7 +302,7 @@ setInterval(()=>{
   $("clock").innerText = new Date().toLocaleTimeString();
 },1000);
 
-/* BOOT FLOW */
+/* BOOT */
 window.onload = () => {
   play("s_boot");
 
