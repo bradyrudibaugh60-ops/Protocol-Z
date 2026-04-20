@@ -1,24 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>PROTOCOL Z // LUMINAR SYSTEM</title>
+<title>PROTOCOL Z // LUMINAR SYSTEM v2</title>
 
 <style>
-body {
+body{
   margin:0;
   font-family:Tahoma;
   background:#007070;
   overflow:hidden;
-  color:black;
+  color:#000;
 }
 
-/* BOOT SCREEN 1 */
-#boot1 {
+/* BOOT */
+.screen{
   position:fixed;
   width:100%;
   height:100%;
-  background:black;
-  color:lime;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -26,316 +24,237 @@ body {
   z-index:9999;
 }
 
+#boot1,#boot2{
+  background:#000;
+  color:lime;
+}
+
 /* LOGIN */
-#login {
-  position:absolute;
+#login{
+  display:none;
   width:100%;
   height:100%;
-  background:#007070;
-  display:flex;
   align-items:center;
   justify-content:center;
 }
 
-.box {
+.box{
   width:320px;
   background:#c0c0c0;
-  border:2px solid black;
+  border:2px solid #000;
 }
 
-.title {
+.title{
   background:#000080;
-  color:white;
-  padding:5px;
+  color:#fff;
+  padding:6px;
 }
 
-.body {
-  padding:10px;
-}
+.body{ padding:10px; }
 
-input {
+input{
   width:95%;
   margin:5px 0;
   padding:5px;
 }
 
-/* BOOT SCREEN 2 */
-#boot2 {
-  position:fixed;
-  width:100%;
-  height:100%;
-  background:black;
-  color:lime;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  font-family:monospace;
-  z-index:9999;
-}
-
 /* DESKTOP */
-#desktop {
+#desktop{
   display:none;
   width:100%;
   height:100%;
-  background:#007070;
 }
 
 /* ICONS */
-.icon {
+.icon{
   position:absolute;
-  width:90px;
+  width:80px;
   text-align:center;
-  color:#e0e0e0;
   cursor:pointer;
   font-size:12px;
 }
 
-.icon span {
-  display:block;
-  font-size:11px;
-}
+.icon span{ display:block; }
 
-.tapes { top:80px; left:40px; }
-.files { top:160px; left:40px; }
-.locked { top:240px; left:40px; }
-.aol { top:320px; left:40px; }
-.camera { top:400px; left:40px; }
+.tapes{top:80px;left:40px;}
+.files{top:160px;left:40px;}
+.aol{top:240px;left:40px;}
 
-/* WINDOWS */
-.window {
-  width:420px;
-  height:300px;
+/* WINDOW */
+.window{
+  width:400px;
+  height:280px;
   background:#bcbcbc;
-  border:2px solid black;
+  border:2px solid #000;
   position:absolute;
   top:120px;
   left:200px;
   display:none;
+  z-index:10;
 }
 
-.bar {
+.bar{
   background:#000080;
-  color:white;
+  color:#fff;
   padding:4px;
   font-size:12px;
 }
 
-.close {
+.close{
   float:right;
+  cursor:pointer;
   background:red;
   padding:2px 6px;
-  cursor:pointer;
 }
 
-.content {
-  padding:10px;
-  font-size:12px;
-}
+.content{ padding:10px; font-size:12px; }
 
 /* TASKBAR */
-.taskbar {
+.taskbar{
   position:fixed;
   bottom:0;
   width:100%;
   height:28px;
   background:#c0c0c0;
+  border-top:2px solid #fff;
   display:flex;
   justify-content:flex-end;
   align-items:center;
-  border-top:2px solid white;
 }
 
-.right {
-  margin-right:10px;
-  font-size:11px;
-  font-family:monospace;
-}
-
-/* AOL */
-#aolHome, #aolChat {
-  display:none;
-  position:absolute;
-  width:100%;
-  height:100%;
-  background:#007070;
-}
-
-.aolBox {
-  width:320px;
-  background:#c0c0c0;
-  border:2px solid black;
-  padding:10px;
-  margin:80px auto;
-}
 </style>
 </head>
 
 <body>
 
 <!-- BOOT 1 -->
-<div id="boot1">LUMINAR BIOS CHECK... OK</div>
+<div id="boot1" class="screen">LUMINAR BIOS CHECK... OK</div>
 
 <!-- LOGIN -->
-<div id="login">
+<div id="login" class="screen">
   <div class="box">
-    <div class="title">Windows 95 Security Login</div>
+    <div class="title">PROTOCOL Z LOGIN</div>
     <div class="body">
       <input id="user" placeholder="Username">
       <input id="pass" type="password" placeholder="Password">
       <button onclick="login()">ENTER</button>
-      <p id="err"></p>
+      <p id="msg"></p>
     </div>
   </div>
 </div>
 
 <!-- BOOT 2 -->
-<div id="boot2">VERIFYING SYSTEM FILES... Z-13 CHECKSUM OK</div>
+<div id="boot2" class="screen" style="display:none;">
+SYSTEM VERIFYING... Z-13 OK
+</div>
 
 <!-- DESKTOP -->
 <div id="desktop">
 
-<div class="icon tapes" onclick="playClick(); openW('tapes')">📼<span>Tapes</span></div>
-<div class="icon files" onclick="playClick(); openW('files')">📁<span>Files</span></div>
-<div class="icon locked" onclick="playClick(); openW('locked')">🔒<span>Briefcase</span></div>
-<div class="icon aol" onclick="playClick(); openAOLHome()">💬<span>AOL</span></div>
-<div class="icon camera" onclick="playClick(); openW('cams')">📹<span>Cameras</span></div>
+  <div class="icon tapes" onclick="openWin('tapes')">📼<span>Tapes</span></div>
+  <div class="icon files" onclick="openWin('files')">📁<span>Files</span></div>
+  <div class="icon aol" onclick="openWin('aol')">💬<span>AOL</span></div>
 
-<!-- TAPES -->
-<div id="tapes" class="window">
-<div class="bar">Tape Archive <span class="close" onclick="closeW('tapes')">X</span></div>
-<div class="content">
-<button onclick="setTape('Tape 1: ENTRY LOG')">Tape 1</button><br>
-<button onclick="setTape('Tape 2: SUBJECT TEST')">Tape 2</button><br>
-<button onclick="setTape('Tape 3: CORRUPTED DATA')">Tape 3</button><br>
-<button onclick="setTape('Tape 4: FACILITY BREACH')">Tape 4</button><br><br>
+  <!-- TAPES -->
+  <div id="tapes" class="window">
+    <div class="bar">Tape Archive <span class="close" onclick="closeWin('tapes')">X</span></div>
+    <div class="content">
+      <button onclick="setTape('TAPE 1: ENTRY')">Tape 1</button>
+      <button onclick="setTape('TAPE 2: TEST')">Tape 2</button>
+      <button onclick="setTape('TAPE 3: CORRUPTION')">Tape 3</button>
+      <p id="tapeOut">No tape loaded</p>
+    </div>
+  </div>
 
-<div id="tapeOut">No tape loaded.</div>
-</div>
-</div>
+  <!-- FILES -->
+  <div id="files" class="window">
+    <div class="bar">Files <span class="close" onclick="closeWin('files')">X</span></div>
+    <div class="content">
+      trainer_notes.txt<br>
+      z13_log.sys<br>
+      subject_data.dat
+    </div>
+  </div>
 
-<!-- FILES -->
-<div id="files" class="window">
-<div class="bar">Files <span class="close" onclick="closeW('files')">X</span></div>
-<div class="content">
-log.txt<br>
-trainer_notes.txt<br>
-z13_data.txt
-</div>
-</div>
+  <!-- AOL -->
+  <div id="aol" class="window">
+    <div class="bar">AOL CHAT <span class="close" onclick="closeWin('aol')">X</span></div>
+    <div class="content">
+      <p><b>Trainer:</b> System unstable.</p>
+      <p><b>Kane:</b> Confirmed.</p>
+      <p><b>Octogal:</b> It’s inside.</p>
+    </div>
+  </div>
 
-<!-- BRIEFCASE -->
-<div id="locked" class="window">
-<div class="bar">My Briefcase <span class="close" onclick="closeW('locked')">X</span></div>
-<div class="content">
-🔒 RESTRICTED SYSTEM AREA<br>
-Future expansion locked
-</div>
-</div>
-
-<!-- CAMERAS -->
-<div id="cams" class="window">
-<div class="bar">Facility Cameras <span class="close" onclick="closeW('cams')">X</span></div>
-<div class="content">
-<img src="https://i.imgur.com/3Q3ZQ3k.jpg" width="100%"><br>
-<img src="https://i.imgur.com/5Q5Q5Q5.gif" width="100%">
-</div>
-</div>
-
-</div>
-
-<!-- AOL -->
-<div id="aolHome">
-<div class="aolBox">
-<h3>AOL 1997</h3>
-<button onclick="openChat()">Enter Chat</button>
-</div>
-</div>
-
-<div id="aolChat">
-<div class="aolBox">
-<h3>Chatroom</h3>
-<p><b>Trainer:</b> System instability detected.</p>
-<p><b>Kane:</b> Confirmed.</p>
-<p><b>Octogal:</b> It’s inside the network.</p>
-<button onclick="backAOL()">Exit</button>
-</div>
 </div>
 
 <!-- TASKBAR -->
 <div class="taskbar">
-<div class="right">⏰ <span id="clock"></span></div>
+  <span id="clock"></span>
 </div>
 
-<!-- =========================
-     🔊 SOUND SYSTEM (SEPARATE SECTION)
-========================= -->
-<audio id="bootSound" src="boot.mp3"></audio>
-<audio id="loginSound" src="login.mp3"></audio>
-<audio id="aolSound" src="aol.mp3"></audio>
-<audio id="clickSound" src="click.mp3"></audio>
+<!-- ================= SOUND SYSTEM ================= -->
+<audio id="bootSfx" src="boot.mp3"></audio>
+<audio id="clickSfx" src="click.mp3"></audio>
+<audio id="loginSfx" src="login.mp3"></audio>
 
 <script>
 
-/* BOOT 1 */
+/* CLOCK */
+setInterval(()=>{
+  document.getElementById("clock").innerText =
+    new Date().toLocaleTimeString();
+},1000);
+
+/* BOOT FLOW */
 setTimeout(()=>{
   document.getElementById("boot1").style.display="none";
+  document.getElementById("login").style.display="flex";
 },2000);
 
 /* LOGIN */
 function login(){
-  let u=document.getElementById("user").value;
-  let p=document.getElementById("pass").value;
+  const u = user.value;
+  const p = pass.value;
 
   if(u==="LTrainer_87" && p==="Z13X17"){
+    play("loginSfx");
 
-    document.getElementById("loginSound").play();
-
-    document.getElementById("login").style.display="none";
-    document.getElementById("boot2").style.display="flex";
+    login.style.display="none";
+    boot2.style.display="flex";
 
     setTimeout(()=>{
-      document.getElementById("boot2").style.display="none";
-      document.getElementById("desktop").style.display="block";
-    },2500);
+      boot2.style.display="none";
+      desktop.style.display="block";
+    },2000);
 
   } else {
-    document.getElementById("err").innerText="ACCESS DENIED";
+    msg.innerText="ACCESS DENIED";
   }
 }
 
-/* CLICK SOUND */
-function playClick(){
-  document.getElementById("clickSound").play();
+/* WINDOWS */
+function openWin(id){
+  play("clickSfx");
+  document.getElementById(id).style.display="block";
 }
 
-/* WINDOWS */
-function openW(id){ document.getElementById(id).style.display="block"; }
-function closeW(id){ document.getElementById(id).style.display="none"; }
+function closeWin(id){
+  document.getElementById(id).style.display="none";
+}
 
 /* TAPES */
 function setTape(t){
-  document.getElementById("tapeOut").innerText=t;
+  document.getElementById("tapeOut").innerText = t;
 }
 
-/* AOL */
-function openAOLHome(){
-  document.getElementById("aolSound").play();
-  document.getElementById("aolHome").style.display="block";
+/* SOUND ENGINE */
+function play(id){
+  const a = document.getElementById(id);
+  if(!a) return;
+  a.currentTime = 0;
+  a.play().catch(()=>{});
 }
-function openChat(){
-  document.getElementById("aolHome").style.display="none";
-  document.getElementById("aolChat").style.display="block";
-}
-function backAOL(){
-  document.getElementById("aolChat").style.display="none";
-  document.getElementById("aolHome").style.display="block";
-}
-
-/* CLOCK */
-setInterval(()=>{
-  document.getElementById("clock").innerText=new Date().toLocaleTimeString();
-},1000);
 
 </script>
 
