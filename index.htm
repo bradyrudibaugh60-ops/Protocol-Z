@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>PROTOCOL Z // LUMINAR SYSTEM v2</title>
+<title>PROTOCOL Z // LUMINAR SYSTEM v3</title>
 
 <style>
 body{
@@ -9,7 +9,6 @@ body{
   font-family:Tahoma;
   background:#007070;
   overflow:hidden;
-  color:#000;
 }
 
 /* BOOT */
@@ -82,8 +81,8 @@ input{
 
 /* WINDOW */
 .window{
-  width:400px;
-  height:280px;
+  width:420px;
+  height:300px;
   background:#bcbcbc;
   border:2px solid #000;
   position:absolute;
@@ -122,12 +121,18 @@ input{
   align-items:center;
 }
 
+/* AOL INTERNAL PANELS */
+.hidden{ display:none; }
+
+button{
+  margin:3px 0;
+}
 </style>
 </head>
 
 <body>
 
-<!-- BOOT 1 -->
+<!-- BOOT -->
 <div id="boot1" class="screen">LUMINAR BIOS CHECK... OK</div>
 
 <!-- LOGIN -->
@@ -144,7 +149,7 @@ input{
 </div>
 
 <!-- BOOT 2 -->
-<div id="boot2" class="screen" style="display:none;">
+<div id="boot2" class="screen hidden">
 SYSTEM VERIFYING... Z-13 OK
 </div>
 
@@ -153,7 +158,7 @@ SYSTEM VERIFYING... Z-13 OK
 
   <div class="icon tapes" onclick="openWin('tapes')">📼<span>Tapes</span></div>
   <div class="icon files" onclick="openWin('files')">📁<span>Files</span></div>
-  <div class="icon aol" onclick="openWin('aol')">💬<span>AOL</span></div>
+  <div class="icon aol" onclick="openAOL()">💬<span>AOL</span></div>
 
   <!-- TAPES -->
   <div id="tapes" class="window">
@@ -176,13 +181,41 @@ SYSTEM VERIFYING... Z-13 OK
     </div>
   </div>
 
-  <!-- AOL -->
-  <div id="aol" class="window">
-    <div class="bar">AOL CHAT <span class="close" onclick="closeWin('aol')">X</span></div>
+  <!-- AOL LOGIN -->
+  <div id="aolLogin" class="window">
+    <div class="bar">AOL Login <span class="close" onclick="closeAOL()">X</span></div>
     <div class="content">
-      <p><b>Trainer:</b> System unstable.</p>
-      <p><b>Kane:</b> Confirmed.</p>
-      <p><b>Octogal:</b> It’s inside.</p>
+      <input id="aolUser" placeholder="Screen Name">
+      <input id="aolPass" type="password" placeholder="Password">
+      <button onclick="aolLogin()">Connect</button>
+      <p id="aolMsg"></p>
+    </div>
+  </div>
+
+  <!-- AOL CHAT -->
+  <div id="aolChat" class="window">
+    <div class="bar">AOL Chat <span class="close" onclick="closeAOL()">X</span></div>
+    <div class="content">
+
+      <!-- MAIN -->
+      <div id="chatMain">
+        <p><b>Trainer:</b> System instability detected.</p>
+        <p><b>Kane:</b> Confirmed.</p>
+        <p><b>Octogal:</b> It’s inside the network.</p>
+
+        <button onclick="showMisc()">Misc Info</button>
+        <button onclick="backToLogin()">Back</button>
+      </div>
+
+      <!-- MISC -->
+      <div id="chatMisc" class="hidden">
+        <p>📡 Z-13 NODE ACTIVE</p>
+        <p>⚠ FIREWALL BREACH DETECTED</p>
+        <p>🧠 UNKNOWN ENTITY SIGNATURE</p>
+
+        <button onclick="backToChat()">Return</button>
+      </div>
+
     </div>
   </div>
 
@@ -193,35 +226,35 @@ SYSTEM VERIFYING... Z-13 OK
   <span id="clock"></span>
 </div>
 
-<!-- ================= SOUND SYSTEM ================= -->
-<audio id="bootSfx" src="boot.mp3"></audio>
-<audio id="clickSfx" src="click.mp3"></audio>
-<audio id="loginSfx" src="login.mp3"></audio>
+<!-- ================= SOUND SYSTEM V3 ================= -->
+<audio id="s_boot" src="sounds/boot.mp3"></audio>
+<audio id="s_click" src="sounds/click.mp3"></audio>
+<audio id="s_login" src="sounds/login.mp3"></audio>
+<audio id="s_open" src="sounds/window_open.mp3"></audio>
+<audio id="s_error" src="sounds/error.mp3"></audio>
+<audio id="s_aol" src="sounds/aol.mp3"></audio>
 
 <script>
 
 /* CLOCK */
 setInterval(()=>{
-  document.getElementById("clock").innerText =
-    new Date().toLocaleTimeString();
+  clock.innerText = new Date().toLocaleTimeString();
 },1000);
 
 /* BOOT FLOW */
 setTimeout(()=>{
-  document.getElementById("boot1").style.display="none";
-  document.getElementById("login").style.display="flex";
+  boot1.style.display="none";
+  login.style.display="flex";
+  play("s_boot");
 },2000);
 
 /* LOGIN */
 function login(){
-  const u = user.value;
-  const p = pass.value;
-
-  if(u==="LTrainer_87" && p==="Z13X17"){
-    play("loginSfx");
+  if(user.value==="LTrainer_87" && pass.value==="Z13X17"){
+    play("s_login");
 
     login.style.display="none";
-    boot2.style.display="flex";
+    boot2.classList.remove("hidden");
 
     setTimeout(()=>{
       boot2.style.display="none";
@@ -230,12 +263,13 @@ function login(){
 
   } else {
     msg.innerText="ACCESS DENIED";
+    play("s_error");
   }
 }
 
 /* WINDOWS */
 function openWin(id){
-  play("clickSfx");
+  play("s_open");
   document.getElementById(id).style.display="block";
 }
 
@@ -245,14 +279,60 @@ function closeWin(id){
 
 /* TAPES */
 function setTape(t){
-  document.getElementById("tapeOut").innerText = t;
+  tapeOut.innerText = t;
+}
+
+/* ================= AOL SYSTEM ================= */
+
+function openAOL(){
+  play("s_aol");
+  aolLogin.style.display="block";
+}
+
+/* AOL LOGIN */
+function aolLogin(){
+  if(aolUser.value==="LTrainer_87" && aolPass.value==="Octogal"){
+    play("s_login");
+
+    aolLogin.style.display="none";
+    aolChat.style.display="block";
+
+  } else {
+    aolMsg.innerText="ACCESS DENIED";
+    play("s_error");
+  }
+}
+
+/* CLOSE AOL */
+function closeAOL(){
+  aolLogin.style.display="none";
+  aolChat.style.display="none";
+}
+
+/* NAVIGATION FIX */
+function backToLogin(){
+  aolChat.style.display="none";
+  aolLogin.style.display="block";
+  play("s_click");
+}
+
+function showMisc(){
+  chatMain.classList.add("hidden");
+  chatMisc.classList.remove("hidden");
+  play("s_open");
+}
+
+function backToChat(){
+  chatMisc.classList.add("hidden");
+  chatMain.classList.remove("hidden");
+  play("s_click");
 }
 
 /* SOUND ENGINE */
 function play(id){
   const a = document.getElementById(id);
   if(!a) return;
-  a.currentTime = 0;
+  a.currentTime=0;
   a.play().catch(()=>{});
 }
 
