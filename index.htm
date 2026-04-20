@@ -1,277 +1,263 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>PROTOCOL Z v3.3</title>
+<meta charset="UTF-8">
+<title>PROTOCOL Z v3.3 // LUMINAR SYSTEM</title>
 
 <style>
-body{
-  margin:0;
-  overflow:hidden;
-  background:#007070;
-  font-family:"MS Sans Serif", Tahoma, sans-serif;
+body {
+    margin:0;
+    background:black;
+    color:#33ff99;
+    font-family:"Courier New", monospace;
+    overflow:hidden;
 }
 
-/* BOOT / LOGIN LAYERS */
-.screen{
-  position:fixed;
-  width:100%;
-  height:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+/* CRT */
+body::before {
+    content:"";
+    position:absolute;
+    width:100%;
+    height:100%;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(255,255,255,0.04),
+        rgba(255,255,255,0.04) 1px,
+        transparent 1px,
+        transparent 3px
+    );
+    pointer-events:none;
 }
 
-#boot1,#boot2{
-  background:black;
-  color:lime;
-  z-index:9999;
-  font-family:monospace;
+/* SCREENS */
+.screen {
+    position:absolute;
+    width:100%;
+    height:100%;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
 }
 
-#login{
-  display:none;
-  background:#007070;
-  z-index:5000;
-}
-
-/* LOGIN BOX */
-.box{
-  width:320px;
-  background:#c0c0c0;
-  border:2px solid black;
-}
-
-.title{
-  background:#000080;
-  color:white;
-  padding:6px;
-}
-
-.body{ padding:10px; }
-
-input{
-  width:95%;
-  margin:5px 0;
-  padding:5px;
-}
-
-/* DESKTOP */
-#desktop{
-  display:none;
-  width:100%;
-  height:100%;
-  background:#007070;
-}
-
-/* ICONS */
-.icon{
-  position:absolute;
-  width:110px;
-  text-align:center;
-  cursor:pointer;
-  font-size:12px;
-}
-
-.icon .emoji{ font-size:28px; }
-.icon span{ display:block; }
-
-.tapes{top:80px;left:40px;}
-.files{top:170px;left:40px;}
-.aol{top:260px;left:40px;}
-.staff{top:350px;left:40px;}
-.notes{top:440px;left:40px;}
-.cams{top:530px;left:40px;}
-.brief{top:620px;left:40px;}
+.active { display:flex; }
 
 /* WINDOWS */
-.window{
-  width:420px;
-  height:300px;
-  background:#bcbcbc;
-  border:2px solid black;
-  position:absolute;
-  display:none;
+.window {
+    position:absolute;
+    border:1px solid #33ff99;
+    background:rgba(0,0,0,0.92);
+    padding:10px;
 }
 
-.bar{
-  background:#000080;
-  color:white;
-  padding:4px;
-  cursor:move;
-  font-size:12px;
+/* BUTTONS */
+button {
+    background:black;
+    color:#33ff99;
+    border:1px solid #33ff99;
+    padding:6px;
+    cursor:pointer;
+}
+button:hover {
+    background:#33ff99;
+    color:black;
 }
 
-.close{
-  float:right;
-  background:red;
-  padding:2px 6px;
-  cursor:pointer;
+input {
+    background:black;
+    border:1px solid #33ff99;
+    color:#33ff99;
+    padding:6px;
 }
 
-.content{ padding:10px; font-size:12px; }
+/* HIDDEN */
+.hidden { display:none; }
 
-/* TASKBAR */
-.taskbar{
-  position:fixed;
-  bottom:0;
-  width:100%;
-  height:28px;
-  background:#c0c0c0;
-  border-top:2px solid white;
-}
 </style>
 </head>
 
 <body>
 
-<!-- BOOT 1 (FORCED SAFE START) -->
-<div id="boot1" class="screen">LUMINAR BIOS CHECK... OK</div>
+<!-- BOOT -->
+<div id="boot" class="screen active">
+<pre id="bootText"></pre>
+</div>
 
 <!-- LOGIN -->
 <div id="login" class="screen">
-  <div class="box">
-    <div class="title">PROTOCOL Z LOGIN</div>
-    <div class="body">
-      <input id="user" placeholder="Username">
-      <input id="pass" type="password" placeholder="Password">
-      <button onclick="login()">ENTER</button>
-      <p id="msg"></p>
-    </div>
-  </div>
+<h2>LUMINAR ACCESS NODE</h2>
+<input id="user" placeholder="USER"><br>
+<input id="pass" type="password" placeholder="PASS"><br>
+<button onclick="login()">CONNECT</button>
 </div>
 
-<!-- BOOT 2 -->
-<div id="boot2" class="screen" style="display:none;">
-SYSTEM VERIFYING...
+<!-- LOADING 2 -->
+<div id="load2" class="screen">
+<h2>SYNCING WITH LUMINAR NETWORK...</h2>
 </div>
+
+<!-- OS -->
+<div id="os" class="screen">
 
 <!-- DESKTOP -->
-<div id="desktop">
+<div class="window" id="desktop">
+<h3>PROTOCOL Z DESKTOP</h3>
 
-  <div class="icon tapes" onclick="openW('tapes')"><div class="emoji">📼</div><span>Tapes</span></div>
-  <div class="icon files" onclick="openW('files')"><div class="emoji">📁</div><span>Files</span></div>
-  <div class="icon aol" onclick="openW('aol')"><div class="emoji">💬</div><span>AOL</span></div>
-  <div class="icon staff" onclick="openW('staff')"><div class="emoji">🧪</div><span>Staff</span></div>
-  <div class="icon notes" onclick="openW('notes')"><div class="emoji">📝</div><span>Notes</span></div>
-  <div class="icon cams" onclick="openW('cams')"><div class="emoji">📹</div><span>Cams</span></div>
-  <div class="icon brief" onclick="openW('brief')"><div class="emoji">🔒</div><span>Brief</span></div>
+<button onclick="openApp('staff')">STAFF DIRECTORY</button>
+<button onclick="openApp('lab')">HOME LAB</button>
+<button onclick="openApp('aim')">AIM CHAT</button>
 
-  <!-- WINDOWS -->
-  <div id="tapes" class="window"><div class="bar">Tapes <span class="close" onclick="closeW('tapes')">X</span></div><div class="content">Tape System</div></div>
+</div>
 
-  <div id="files" class="window"><div class="bar">Files <span class="close" onclick="closeW('files')">X</span></div><div class="content">Files</div></div>
+<!-- STAFF -->
+<div class="window hidden" id="staff">
+<h3>STAFF DIRECTORY</h3>
+<ul>
+<li>Dr. Lee Trainer</li>
+<li>Kane Park</li>
+<li>Octogal</li>
+</ul>
+<button onclick="openApp('lab')">ENTER LAB</button>
+</div>
 
-  <div id="notes" class="window"><div class="bar">Notes <span class="close" onclick="closeW('notes')">X</span></div><div class="content">Trainer notes: Z-13 unstable</div></div>
+<!-- LAB -->
+<div class="window hidden" id="lab">
+<h3>HOME LAB</h3>
+<p>Secure Z-13 environment active.</p>
+<button onclick="openApp('aim')">OPEN AIM LINK</button>
+<button onclick="closeAll()">CLOSE</button>
+</div>
 
-  <div id="cams" class="window"><div class="bar">Cameras <span class="close" onclick="closeW('cams')">X</span></div><div class="content">Feeds unstable</div></div>
-
-  <div id="brief" class="window"><div class="bar">Brief <span class="close" onclick="closeW('brief')">X</span></div><div class="content">LOCKED</div></div>
-
-  <!-- AOL -->
-  <div id="aol" class="window"><div class="bar">AOL <span class="close" onclick="closeW('aol')">X</span></div><div class="content">Mail / News / Ads system</div></div>
-
-  <!-- STAFF SYSTEM -->
-  <div id="staff" class="window">
-
-    <div class="bar">Staff <span class="close" onclick="closeW('staff')">X</span></div>
-
-    <div class="content">
-
-      <div id="staffLoginBox">
-        <input id="suser" placeholder="User">
-        <input id="spass" type="password" placeholder="Pass">
-        <button onclick="staffLogin()">Login</button>
-        <p id="smsg"></p>
-      </div>
-
-      <div id="labHome" style="display:none;">
-        <b>LAB HOME</b><br><br>
-        <button onclick="alert('LOCKED')">Z-13 Wing</button><br><br>
-        <button onclick="alert('LOCKED')">Simulation</button><br><br>
-        <button onclick="logoutStaff()">Logout</button>
-      </div>
-
-    </div>
-
-  </div>
+<!-- AIM -->
+<div class="window hidden" id="aim">
+<h3>AOL INSTANT MESSENGER // 1997</h3>
+<p>Kane: you there?</p>
+<p>Trainer: ...</p>
+<button onclick="closeAll()">EXIT</button>
+</div>
 
 </div>
 
 <script>
 
 /* =========================
-   🔥 SAFE BOOT SYSTEM (NO FREEZE EVER)
+   SOUND SYSTEM
 ========================= */
 
-(function bootFix(){
+const SFX = {
+    boot: new Audio("boot.mp3"),
+    enter: new Audio("enter.mp3"),
+    beep: new Audio("beep.mp3"),
+    error: new Audio("error.mp3")
+};
 
-  // FORCE RESET EVERYTHING FIRST
-  document.getElementById("boot1").style.display="flex";
-  document.getElementById("login").style.display="none";
-  document.getElementById("desktop").style.display="none";
-  document.getElementById("boot2").style.display="none";
+function play(s){
+    if(SFX[s]){
+        SFX[s].currentTime = 0;
+        SFX[s].play().catch(()=>{});
+    }
+}
 
-  // STEP 1 -> BOOT SCREEN
-  setTimeout(function(){
-    document.getElementById("boot1").style.display="none";
-    document.getElementById("login").style.display="flex";
-  },1400);
+/* =========================
+   STATE ENGINE (FIXED CORE)
+========================= */
 
-})();
+let state = "boot";
 
-/* LOGIN */
+/* =========================
+   BOOT SEQUENCE
+========================= */
+
+const bootLines = [
+"[BOOT] PROTOCOL Z v3.3",
+"[OK] MEMORY OK",
+"[OK] LUMINAR LINK STABLE",
+"[OK] AIM SUBSYSTEM READY",
+"[BOOT COMPLETE]"
+];
+
+function boot(){
+    play("boot");
+    let i = 0;
+    let t = document.getElementById("bootText");
+
+    let loop = setInterval(()=>{
+        if(i < bootLines.length){
+            t.innerText += bootLines[i] + "\n";
+            i++;
+        } else {
+            clearInterval(loop);
+            setTimeout(()=>switchScreen("login"), 800);
+        }
+    }, 500);
+}
+
+/* =========================
+   SCREEN SWITCH
+========================= */
+
+function switchScreen(id){
+    document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+}
+
+/* =========================
+   LOGIN
+========================= */
+
 function login(){
+    let u = user.value;
+    let p = pass.value;
 
-  var u=document.getElementById("user").value;
-  var p=document.getElementById("pass").value;
+    if(u === "trainer" && p === "1997"){
+        play("enter");
+        switchScreen("load2");
 
-  if(u==="LTrainer_87" && p==="Z13X17"){
-
-    document.getElementById("login").style.display="none";
-    document.getElementById("boot2").style.display="flex";
-
-    setTimeout(function(){
-      document.getElementById("boot2").style.display="none";
-      document.getElementById("desktop").style.display="block";
-    },1400);
-
-  } else {
-    document.getElementById("msg").innerText="DENIED";
-  }
+        setTimeout(()=>{
+            switchScreen("os");
+        }, 2000);
+    } else {
+        play("error");
+        alert("ACCESS DENIED");
+    }
 }
 
-/* WINDOWS */
-function openW(id){
-  document.getElementById(id).style.display="block";
+/* =========================
+   APP SYSTEM (REAL CORE)
+========================= */
+
+const Apps = {
+    staff: () => toggle("staff"),
+    lab: () => toggle("lab"),
+    aim: () => toggle("aim")
+};
+
+function openApp(name){
+    if(Apps[name]) Apps[name]();
+    else play("error");
 }
 
-function closeW(id){
-  document.getElementById(id).style.display="none";
+function toggle(id){
+    let el = document.getElementById(id);
+    el.classList.toggle("hidden");
+    play("beep");
 }
 
-/* STAFF SYSTEM */
-function staffLogin(){
+/* =========================
+   GLOBAL CLOSE
+========================= */
 
-  var u=document.getElementById("suser").value;
-  var p=document.getElementById("spass").value;
-
-  if(u==="LeeTrainer" && p==="Z13X17"){
-    document.getElementById("smsg").innerText="ACCESS GRANTED";
-
-    setTimeout(function(){
-      document.getElementById("staffLoginBox").style.display="none";
-      document.getElementById("labHome").style.display="block";
-    },300);
-
-  } else {
-    document.getElementById("smsg").innerText="DENIED";
-  }
+function closeAll(){
+    ["staff","lab","aim"].forEach(id=>{
+        document.getElementById(id).classList.add("hidden");
+    });
 }
 
-function logoutStaff(){
-  document.getElementById("labHome").style.display="none";
-  document.getElementById("staffLoginBox").style.display="block";
-}
+/* =========================
+   START
+========================= */
+
+window.onload = boot;
 
 </script>
 
