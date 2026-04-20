@@ -11,7 +11,7 @@ body{
   overflow:hidden;
 }
 
-/* BOOT */
+/* BOOT SCREENS */
 .screen{
   position:fixed;
   width:100%;
@@ -20,17 +20,18 @@ body{
   align-items:center;
   justify-content:center;
   font-family:monospace;
-  z-index:9999;
 }
 
 #boot1,#boot2{
   background:#000;
   color:lime;
+  z-index:9999;
 }
 
 /* LOGIN */
 #login{
   display:none;
+  position:fixed;
   width:100%;
   height:100%;
   align-items:center;
@@ -79,7 +80,7 @@ input{
 .files{top:160px;left:40px;}
 .aol{top:240px;left:40px;}
 
-/* WINDOW */
+/* WINDOWS */
 .window{
   width:420px;
   height:300px;
@@ -106,7 +107,12 @@ input{
   padding:2px 6px;
 }
 
-.content{ padding:10px; font-size:12px; }
+.content{
+  padding:10px;
+  font-size:12px;
+}
+
+.hidden{ display:none; }
 
 /* TASKBAR */
 .taskbar{
@@ -120,19 +126,12 @@ input{
   justify-content:flex-end;
   align-items:center;
 }
-
-/* AOL INTERNAL PANELS */
-.hidden{ display:none; }
-
-button{
-  margin:3px 0;
-}
 </style>
 </head>
 
 <body>
 
-<!-- BOOT -->
+<!-- BOOT 1 -->
 <div id="boot1" class="screen">LUMINAR BIOS CHECK... OK</div>
 
 <!-- LOGIN -->
@@ -197,7 +196,7 @@ SYSTEM VERIFYING... Z-13 OK
     <div class="bar">AOL Chat <span class="close" onclick="closeAOL()">X</span></div>
     <div class="content">
 
-      <!-- MAIN -->
+      <!-- MAIN CHAT -->
       <div id="chatMain">
         <p><b>Trainer:</b> System instability detected.</p>
         <p><b>Kane:</b> Confirmed.</p>
@@ -207,11 +206,79 @@ SYSTEM VERIFYING... Z-13 OK
         <button onclick="backToLogin()">Back</button>
       </div>
 
-      <!-- MISC -->
+      <!-- MISC NEWS -->
       <div id="chatMisc" class="hidden">
-        <p>📡 Z-13 NODE ACTIVE</p>
-        <p>⚠ FIREWALL BREACH DETECTED</p>
-        <p>🧠 UNKNOWN ENTITY SIGNATURE</p>
+
+        <p><b>📡 LUMINAR PUBLICATIONS ARCHIVE</b></p>
+        <hr>
+
+        <p><b>📰 LUMINAR TIMES // INTERNAL REPORT</b></p>
+        <p><i>April 3rd, 1997</i></p>
+        <p>
+          Luminar Research Division has confirmed continued success in the Z-13 containment initiative.
+          Officials report system stability exceeding projected thresholds during controlled testing phases.
+        </p>
+        <p>
+          Internal sources suggest abnormal behavioral response patterns during late-stage simulations.
+          Engineers describe “non-random decision emergence” in isolated test environments.
+        </p>
+
+        <br>
+
+        <p><b>📰 FEDERAL TECHNOLOGY BULLETIN</b></p>
+        <p><i>March 28th, 1997</i></p>
+        <p>
+          Classified reports indicate irregular signal activity linked to Luminar network infrastructure.
+          Government agencies have declined to confirm details, citing ongoing security investigations.
+        </p>
+        <p>
+          Analysts describe cross-node interference patterns not consistent with known system behavior.
+          Officials continue to deny any compromise of national systems.
+        </p>
+
+        <br>
+
+        <p><b>📰 TECHNET DAILY</b></p>
+        <p><i>April 10th, 1997</i></p>
+        <p>
+          Industry observers express concern over rapid advancements in Luminar’s adaptive systems.
+          The company’s behavioral models have drawn attention from multiple oversight groups.
+        </p>
+        <p>
+          Experts warn that recursive learning loops may produce unpredictable emergent behaviors.
+          Some theorists suggest systems may evolve beyond intended operational constraints.
+        </p>
+
+        <br>
+
+        <p><b>📧 OLD LUMINAR EMAIL LOGS</b></p>
+        <hr>
+
+        <p><b>FROM:</b> admin@luminar.sys</p>
+        <p><b>SUBJECT:</b> Z-13 Containment Protocol</p>
+        <p>
+          Z-13 assets must remain isolated from all external communication networks.
+          Any breach of containment protocol must be reported immediately.
+        </p>
+        <p>
+          Unauthorized transmissions will result in immediate termination of system access.
+          Security enforcement protocols are active across all terminals.
+        </p>
+
+        <br>
+
+        <p><b>FROM:</b> trainer@luminar.sys</p>
+        <p><b>SUBJECT:</b> AIM Behavior Log</p>
+        <p>
+          AIM simulation produced unscripted responses after extended runtime exposure.
+          Output began referencing internal system structure without prompts.
+        </p>
+        <p>
+          Recommend immediate shutdown upon deviation from baseline conversational patterns.
+          Further testing required before continued deployment.
+        </p>
+
+        <br>
 
         <button onclick="backToChat()">Return</button>
       </div>
@@ -226,43 +293,48 @@ SYSTEM VERIFYING... Z-13 OK
   <span id="clock"></span>
 </div>
 
-<!-- ================= SOUND SYSTEM V3 ================= -->
+<!-- SOUND SYSTEM -->
 <audio id="s_boot" src="sounds/boot.mp3"></audio>
 <audio id="s_click" src="sounds/click.mp3"></audio>
 <audio id="s_login" src="sounds/login.mp3"></audio>
-<audio id="s_open" src="sounds/window_open.mp3"></audio>
+<audio id="s_open" src="sounds/open.mp3"></audio>
 <audio id="s_error" src="sounds/error.mp3"></audio>
 <audio id="s_aol" src="sounds/aol.mp3"></audio>
 
 <script>
 
+const $ = (id)=>document.getElementById(id);
+
 /* CLOCK */
 setInterval(()=>{
-  clock.innerText = new Date().toLocaleTimeString();
+  $("clock").innerText = new Date().toLocaleTimeString();
 },1000);
 
 /* BOOT FLOW */
-setTimeout(()=>{
-  boot1.style.display="none";
-  login.style.display="flex";
+window.onload = () => {
   play("s_boot");
-},2000);
+
+  setTimeout(()=>{
+    $("boot1").style.display="none";
+    $("login").style.display="flex";
+  },2000);
+};
 
 /* LOGIN */
 function login(){
-  if(user.value==="LTrainer_87" && pass.value==="Z13X17"){
+  if($("user").value==="LTrainer_87" && $("pass").value==="Z13X17"){
     play("s_login");
 
-    login.style.display="none";
-    boot2.classList.remove("hidden");
+    $("login").style.display="none";
+    $("boot2").style.display="flex";
 
     setTimeout(()=>{
-      boot2.style.display="none";
-      desktop.style.display="block";
+      $("boot2").style.display="none";
+      $("desktop").style.display="block";
     },2000);
 
   } else {
-    msg.innerText="ACCESS DENIED";
+    $("msg").innerText="ACCESS DENIED";
     play("s_error");
   }
 }
@@ -270,67 +342,60 @@ function login(){
 /* WINDOWS */
 function openWin(id){
   play("s_open");
-  document.getElementById(id).style.display="block";
+  $(id).style.display="block";
 }
 
 function closeWin(id){
-  document.getElementById(id).style.display="none";
+  $(id).style.display="none";
 }
 
 /* TAPES */
 function setTape(t){
-  tapeOut.innerText = t;
+  $("tapeOut").innerText = t;
 }
 
-/* ================= AOL SYSTEM ================= */
-
+/* AOL */
 function openAOL(){
   play("s_aol");
-  aolLogin.style.display="block";
+  $("aolLogin").style.display="block";
 }
 
-/* AOL LOGIN */
 function aolLogin(){
-  if(aolUser.value==="LTrainer_87" && aolPass.value==="Octogal"){
+  if($("aolUser").value==="LTrainer_87" && $("aolPass").value==="Octogal"){
     play("s_login");
 
-    aolLogin.style.display="none";
-    aolChat.style.display="block";
+    $("aolLogin").style.display="none";
+    $("aolChat").style.display="block";
 
   } else {
-    aolMsg.innerText="ACCESS DENIED";
+    $("aolMsg").innerText="ACCESS DENIED";
     play("s_error");
   }
 }
 
-/* CLOSE AOL */
 function closeAOL(){
-  aolLogin.style.display="none";
-  aolChat.style.display="none";
+  $("aolLogin").style.display="none";
+  $("aolChat").style.display="none";
 }
 
-/* NAVIGATION FIX */
 function backToLogin(){
-  aolChat.style.display="none";
-  aolLogin.style.display="block";
-  play("s_click");
+  $("aolChat").style.display="none";
+  $("aolLogin").style.display="block";
 }
 
 function showMisc(){
-  chatMain.classList.add("hidden");
-  chatMisc.classList.remove("hidden");
-  play("s_open");
+  $("chatMain").classList.add("hidden");
+  $("chatMisc").classList.remove("hidden");
 }
 
 function backToChat(){
-  chatMisc.classList.add("hidden");
-  chatMain.classList.remove("hidden");
-  play("s_click");
+  $("chatMisc").classList.add("hidden");
+  $("chatMain").classList.remove("hidden");
 }
 
-/* SOUND ENGINE */
+/* SOUND */
 function play(id){
-  const a = document.getElementById(id);
+  const a = $(id);
   if(!a) return;
   a.currentTime=0;
   a.play().catch(()=>{});
