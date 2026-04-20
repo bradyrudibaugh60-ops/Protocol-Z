@@ -12,7 +12,7 @@ body {
   color:black;
 }
 
-/* BOOT */
+/* BOOT 1 */
 #boot1 {
   position:fixed;
   width:100%;
@@ -100,8 +100,8 @@ input {
 
 /* WINDOWS */
 .window {
-  width:450px;
-  height:320px;
+  width:460px;
+  height:330px;
   background:#bcbcbc;
   border:2px solid black;
   position:absolute;
@@ -140,7 +140,7 @@ input {
 }
 
 .aolBox {
-  width:340px;
+  width:350px;
   background:#c0c0c0;
   border:2px solid black;
   padding:10px;
@@ -166,9 +166,34 @@ input {
   display:none;
 }
 
+/* TASKBAR */
+.taskbar {
+  position:fixed;
+  bottom:0;
+  width:100%;
+  height:28px;
+  background:#c0c0c0;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-top:2px solid white;
+}
+
+.right {
+  margin-right:10px;
+  font-size:11px;
+  font-family:monospace;
+}
+
+#adBar {
+  margin-left:10px;
+  font-size:11px;
+}
+
 button {
   font-family:"MS Sans Serif";
 }
+
 </style>
 </head>
 
@@ -196,9 +221,9 @@ button {
 <!-- DESKTOP -->
 <div id="desktop">
 
-<div class="icon tapes" onclick="clickSound(); openW('tapes')">📼<span>Tapes</span></div>
-<div class="icon files" onclick="clickSound(); openW('files')">📁<span>Files</span></div>
-<div class="icon notes" onclick="clickSound(); openW('notes')">📝<span>Notes</span></div>
+<div class="icon tapes" onclick="clickS(); openW('tapes')">📼<span>Tapes</span></div>
+<div class="icon files" onclick="clickS(); openW('files')">📁<span>Files</span></div>
+<div class="icon notes" onclick="clickS(); openW('notes')">📝<span>Notes</span></div>
 <div class="icon mail" onclick="openAOL()">📧<span>You’ve Got Mail</span></div>
 <div class="icon news" onclick="openNews()">📰<span>You’ve Got News</span></div>
 <div class="icon staff" onclick="openStaffLogin()">👤<span>Luminar Staff</span></div>
@@ -229,16 +254,16 @@ luminar_core.sys
 <div id="notes" class="window">
 <div class="bar">Z-13 NOTES <span class="close" onclick="closeW('notes')">X</span></div>
 <div class="content">
-• Z-13 neural instability detected<br>
-• Luminar network shows awareness spikes<br>
-• Trainer access authorized<br>
-• Kane field operative active<br>
-• Octogal anomaly persistent<br>
-• AIM system still online<br>
-• Cameras looping feed<br>
-• Memory corruption in sector 4<br>
-• Staff ignoring containment protocols<br>
-• System adapting language patterns
+• Z-13 instability detected<br>
+• Luminar network adaptive<br>
+• Trainer access active<br>
+• Kane field operative<br>
+• Octogal anomaly persists<br>
+• AIM still online<br>
+• Cameras looping<br>
+• Memory drift sector 4<br>
+• Staff protocol failures<br>
+• System learning behavior
 </div>
 </div>
 
@@ -247,8 +272,8 @@ luminar_core.sys
 <div class="bar">Luminar News <span class="close" onclick="closeW('news')">X</span></div>
 <div class="content">
 <b>UPDATE:</b> Luminar expands monitoring grid<br><br>
-<b>BREAKING:</b> Z-13 resonance increases<br><br>
-<b>REPORT:</b> Internal AI learning acceleration<br><br>
+<b>BREAKING:</b> Z-13 resonance increasing<br><br>
+<b>REPORT:</b> AI behavioral growth detected<br><br>
 <b>NOTICE:</b> Staff compliance under review
 </div>
 </div>
@@ -308,50 +333,60 @@ luminar_core.sys
 <div id="zombie">SYSTEM BREACH DETECTED</div>
 
 <!-- SOUND -->
-<audio id="bootS" src="boot.mp3"></audio>
 <audio id="loginS" src="login.mp3"></audio>
 <audio id="clickS" src="click.mp3"></audio>
 <audio id="aolS" src="aol.mp3"></audio>
 
 <script>
 
-/* BOOT */
-setTimeout(()=>{boot1.style.display="none";},2000);
+/* SAFE GET */
+function el(id){ return document.getElementById(id); }
 
-/* LOGIN FIXED (NO FREEZE) */
+/* BOOT */
+setTimeout(()=>{ el("boot1").style.display="none"; },2000);
+
+/* LOGIN FIXED (NO FREEZE EVER) */
+let logging=false;
+
 function login(){
-  let u = user.value;
-  let p = pass.value;
+  if(logging) return;
+  logging=true;
+
+  let u = el("user").value;
+  let p = el("pass").value;
 
   if(u==="LTrainer_87" && p==="Z13X17"){
-    loginS.play();
-    login.style.display="none";
-    boot2.style.display="flex";
+
+    el("loginS").play().catch(()=>{});
+
+    el("login").style.display="none";
+    el("boot2").style.display="flex";
 
     setTimeout(()=>{
-      boot2.style.display="none";
-      desktop.style.display="block";
+      el("boot2").style.display="none";
+      el("desktop").style.display="block";
+      logging=false;
     },2200);
+
   } else {
-    err.innerText="ACCESS DENIED";
+    el("err").innerText="ACCESS DENIED";
+    logging=false;
   }
 }
 
-/* CLICK SOUND FIX */
-function clickSound(){
-  document.getElementById("clickS").play();
-}
+/* CLICK */
+function clickS(){ el("clickS").play().catch(()=>{}); }
 
 /* WINDOWS */
-function openW(id){document.getElementById(id).style.display="block";}
-function closeW(id){document.getElementById(id).style.display="none";}
+function openW(id){ el(id).style.display="block"; }
+function closeW(id){ el(id).style.display="none"; }
 
 /* TAPES */
 function loadTape(url){
-  tapeOut.innerHTML = `<a href="${url}" target="_blank">Open Tape Source</a>`;
+  el("tapeOut").innerHTML=`<a target="_blank" href="${url}">Open Tape</a>`;
 }
 
-/* AOL */
+/* AOL ADS */
 let ads=[
 "Luminar stabilizes neural drift",
 "Z-13 containment reinforced",
@@ -360,45 +395,51 @@ let ads=[
 ];
 
 let i=0;
+let adsStarted=false;
 
 function openAOL(){
-  aolS.play();
-  aolHome.style.display="block";
-  startAds();
-}
+  el("aolS").play().catch(()=>{});
+  el("aolHome").style.display="block";
 
-function startAds(){
-  setInterval(()=>{
-    aolAds.innerText = ads[i];
-    i = (i+1)%ads.length;
-  },30000);
+  if(!adsStarted){
+    adsStarted=true;
+    setInterval(()=>{
+      el("aolAds").innerText=ads[i];
+      i=(i+1)%ads.length;
+    },30000);
+  }
 }
 
 function openChat(){
-  aolHome.style.display="none";
-  aolChat.style.display="block";
+  el("aolHome").style.display="none";
+  el("aolChat").style.display="block";
 }
 
 function backAOL(){
-  aolChat.style.display="none";
-  aolHome.style.display="block";
+  el("aolChat").style.display="none";
+  el("aolHome").style.display="block";
 }
 
 /* STAFF */
-function openStaffLogin(){staffLogin.style.display="block";}
+function openStaffLogin(){
+  el("staffLogin").style.display="block";
+}
 
 function staffLogin(){
-  if(suser.value==="admin" && spass.value==="Z13"){
-    staffLogin.style.display="none";
-    staffHome.style.display="block";
+  if(el("suser").value==="admin" && el("spass").value==="Z13"){
+    el("staffLogin").style.display="none";
+    el("staffHome").style.display="block";
 
-    zombie.style.display="flex";
-    setTimeout(()=>zombie.style.display="none",1200);
+    el("zombie").style.display="flex";
+    setTimeout(()=>el("zombie").style.display="none",1200);
   }
 }
 
 /* CLOCK */
-setInterval(()=>clock.innerText=new Date().toLocaleTimeString(),1000);
+setInterval(()=>{
+  let c=el("clock");
+  if(c) c.innerText=new Date().toLocaleTimeString();
+},1000);
 
 </script>
 
