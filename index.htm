@@ -1,368 +1,192 @@
+<!-- Protocol Z v3.2 FULL BUILD (Single File) -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>PROTOCOL Z // LUMINAR SYSTEM v5.4</title>
-
+<meta charset="UTF-8">
+<title>Protocol Z v3.2</title>
 <style>
-body{
+body {
   margin:0;
-  font-family:"MS Sans Serif", Tahoma;
-  background:#007070;
+  background:#000;
+  color:#33ff33;
+  font-family: monospace;
   overflow:hidden;
 }
-
-/* =========================
-   BOOT
-========================= */
-#boot{
-  position:fixed;
-  width:100%;
-  height:100%;
-  background:black;
-  color:lime;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  font-family:monospace;
-  z-index:9999;
-}
-
-/* =========================
-   LOGIN
-========================= */
-#login{
+.screen {
   display:none;
-  position:absolute;
-  width:100%;
-  height:100%;
-  background:#007070;
-  align-items:center;
-  justify-content:center;
+  width:100vw;
+  height:100vh;
+  padding:20px;
+  box-sizing:border-box;
 }
-
-.box{
-  width:320px;
-  background:#c0c0c0;
-  border:2px solid black;
-}
-
-.title{
-  background:#000080;
-  color:white;
-  padding:5px;
-}
-
-.body{padding:10px;}
-
-input{
-  width:95%;
-  margin:5px 0;
-  padding:5px;
-}
-
-/* =========================
-   DESKTOP
-========================= */
-#desktop{
-  display:none;
-  width:100%;
-  height:100%;
-  background:#007070;
-  position:relative;
-}
-
-/* ICONS */
-.icon{
-  position:absolute;
-  width:120px;
-  text-align:center;
-  color:#e0e0e0;
+.active { display:block; }
+.center { text-align:center; }
+button {
+  background:#111;
+  color:#33ff33;
+  border:1px solid #33ff33;
+  padding:10px;
+  margin:5px;
   cursor:pointer;
-  font-size:16px;
 }
-
-.tapes{top:70px;left:40px;}
-.cams{top:70px;left:160px;}
-.aol{top:70px;left:280px;}
-.notes{top:70px;left:400px;}
-
-/* =========================
-   WINDOWS
-========================= */
-.window{
-  width:520px;
-  height:360px;
-  background:#bcbcbc;
-  border:2px solid black;
-  position:absolute;
-  top:120px;
-  left:220px;
-  display:none;
-  resize:both;
+button:hover { background:#222; }
+.row {
+  display:flex;
+  gap:10px;
+}
+.panel {
+  border:1px solid #33ff33;
+  padding:10px;
+  flex:1;
+  height:200px;
   overflow:auto;
 }
-
-.bar{
-  background:#000080;
-  color:white;
-  padding:4px;
-}
-
-.close{
-  float:right;
-  background:red;
-  padding:2px 6px;
-  cursor:pointer;
-}
-
-.back{
-  float:left;
-  background:green;
-  padding:2px 6px;
-  cursor:pointer;
-}
-
-.content{
+.blink { animation: blink 1s infinite; }
+@keyframes blink { 50% { opacity:0; } }
+.terminal {
+  background:#000;
+  border:1px solid #33ff33;
   padding:10px;
-  font-size:13px;
-}
-
-/* =========================
-   DIRECTOR MODE
-========================= */
-#director{
-  display:none;
-  position:fixed;
-  width:100%;
-  height:100%;
-  background:black;
-  color:lime;
-  font-family:monospace;
-  z-index:99999;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-}
-
-button{
-  font-family:"MS Sans Serif";
+  height:300px;
+  overflow:auto;
 }
 </style>
 </head>
-
 <body>
 
-<!-- =========================
-     BOOT
-========================= -->
-<div id="boot">
-  <div>LOADING LUMINAR KERNEL v5.4...</div>
-  <div>CHECKING SYSTEM INTEGRITY...</div>
-  <div>INITIALIZING INTERFACE SHELL...</div>
+<!-- SOUND SYSTEM (PLACEHOLDER SECTION) -->
+<audio id="bootSound" src="audio/boot.mp3"></audio>
+<audio id="clickSound" src="audio/click.mp3"></audio>
+<audio id="glitchSound" src="audio/glitch.mp3"></audio>
+
+<!-- LOADING SCREEN 1 -->
+<div id="load1" class="screen active center">
+  <h1>PROTOCOL Z</h1>
+  <p class="blink">BOOTING CORE SYSTEM...</p>
 </div>
 
-<!-- =========================
-     LOGIN
-========================= -->
-<div id="login">
-  <div class="box">
-    <div class="title">Secure Login</div>
-    <div class="body">
-      <input id="user" placeholder="Username">
-      <input id="pass" type="password" placeholder="Password">
-      <button onclick="login()">ENTER</button>
-      <p id="err"></p>
+<!-- LOADING SCREEN 2 -->
+<div id="load2" class="screen center">
+  <h2>ESTABLISHING SECURE LINK</h2>
+  <p>CONNECTING TO LUMINAR SYSTEM...</p>
+</div>
+
+<!-- LOGIN -->
+<div id="login" class="screen center">
+  <h2>LOGIN TERMINAL</h2>
+  <input id="user" placeholder="USERNAME"><br><br>
+  <input id="pass" type="password" placeholder="PASSWORD"><br><br>
+  <button onclick="login()">ENTER</button>
+</div>
+
+<!-- HOME LAB (STAFF DIRECTORY HUB) -->
+<div id="home" class="screen">
+  <h2>HOME LAB // STAFF DIRECTORY</h2>
+  <div class="row">
+    <div class="panel">
+      <h3>DIRECTORY</h3>
+      <button onclick="openPanel('aim')">AIM CHAT</button>
+      <button onclick="openPanel('tapes')">TAPES</button>
+      <button onclick="openPanel('news')">NEWS</button>
+      <button onclick="openPanel('security')">SECURITY FEED</button>
+    </div>
+    <div class="panel" id="panel">
+      <p>Select an option...</p>
     </div>
   </div>
 </div>
 
-<!-- =========================
-     DESKTOP
-========================= -->
-<div id="desktop">
-
-<div class="icon tapes" onclick="openW('tapes')">📼<span>Tapes</span></div>
-<div class="icon cams" onclick="openW('cams')">📹<span>Cameras</span></div>
-<div class="icon aol" onclick="openW('aol')">🅰️<span>AOL</span></div>
-<div class="icon notes" onclick="openW('notes')">📝<span>Notes</span></div>
-
+<!-- AIM CHAT -->
+<div id="aim" class="screen">
+  <h2>AOL INSTANT MESSENGER // AIM NODE</h2>
+  <div class="terminal" id="chatBox"></div>
+  <input id="chatInput" placeholder="message...">
+  <button onclick="sendChat()">SEND</button>
+  <button onclick="backHome()">EXIT</button>
 </div>
 
-<!-- =========================
-     TAPES
-========================= -->
-<div id="tapes" class="window">
-<div class="bar">
-<span class="back" onclick="closeW('tapes')">←</span>
-Tape Archive
-<span class="close" onclick="closeW('tapes')">X</span>
+<!-- TAPES -->
+<div id="tapes" class="screen">
+  <h2>TAPE ARCHIVE</h2>
+  <button onclick="playTape(1)">Tape 1 - INIT</button>
+  <button onclick="playTape(4)">Tape 4 - AOL</button>
+  <button onclick="backHome()">EXIT</button>
+  <div class="terminal" id="tapeOut"></div>
 </div>
 
-<div class="content">
-<h3>Tape System</h3>
-
-<h4>Tape 1</h4><button onclick="openLink('tape1')">Play</button>
-<h4>Tape 2</h4><button onclick="openLink('tape2')">Play</button>
-<h4>Tape 3</h4><button onclick="openLink('tape3')">Play</button>
-<h4>Tape 4</h4><button onclick="openLink('tape4')">Play</button>
-
-</div>
+<!-- NEWS -->
+<div id="news" class="screen">
+  <h2>NEWS FEED</h2>
+  <p>[CLASSIFIED] System anomalies detected in Z-13 Compound</p>
+  <p>[ALERT] Director Mode override available in hidden article node</p>
+  <button onclick="unlockDirector()">ACCESS DIRECTOR MODE</button>
+  <button onclick="backHome()">EXIT</button>
 </div>
 
-<!-- =========================
-     CAMERAS
-========================= -->
-<div id="cams" class="window">
-<div class="bar">
-<span class="back" onclick="closeW('cams')">←</span>
-Camera Feed
-<span class="close" onclick="closeW('cams')">X</span>
-</div>
-
-<div class="content">
-<h3>Camera Footage</h3>
-
-<h4>Feed 1</h4><button onclick="openLink('cam1')">View</button>
-<h4>Feed 2</h4><button onclick="openLink('cam2')">View</button>
-
-</div>
-</div>
-
-<!-- =========================
-     AOL
-========================= -->
-<div id="aol" class="window">
-<div class="bar">
-<span class="back" onclick="closeW('aol')">←</span>
-America Online
-<span class="close" onclick="closeW('aol')">X</span>
-</div>
-
-<div class="content">
-
-<h2>🅰️ AOL SYSTEM</h2>
-<p><b>Luminar Will Always Be with you Throughout</b></p>
-
-<hr>
-
-<h3>📧 Emails</h3>
-<ul>
-<li>Trainer → Staff: “System stable across all nodes.”</li>
-<li>Staff → Core: “No anomalies detected.”</li>
-<li>Ops → Trainer: “Monitoring continues.”</li>
-</ul>
-
-<h3>📰 News</h3>
-<ul>
-<li>Luminar infrastructure expansion confirmed.</li>
-<li>Neural systems operating within safe limits.</li>
-<li>Security protocols updated globally.</li>
-</ul>
-
-</div>
-</div>
-
-<!-- =========================
-     DIRECTOR MODE
-========================= -->
-<div id="director">
-
-<h2>DIRECTOR MODE</h2>
-
-<p>
-Feed me and I live.<br>
-Give me a drink and I die.<br>
-What am I?
-</p>
-
-<input id="riddle">
-<button onclick="checkRiddle()">Submit</button>
-
-<p id="riddleErr"></p>
-
+<!-- SECURITY -->
+<div id="security" class="screen">
+  <h2>SECURITY FEED</h2>
+  <p>Camera 1: ACTIVE</p>
+  <p>Camera 2: SIGNAL LOST</p>
+  <p>Camera 3: GLITCHING...</p>
+  <button onclick="backHome()">EXIT</button>
 </div>
 
 <script>
+let state = 0;
 
-/* =========================
-   SAFE CORE
-========================= */
-function el(id){
-  return document.getElementById(id);
+function switchScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
 }
 
-/* =========================
-   BOOT FIX (NO FREEZE)
-========================= */
-window.addEventListener("load",()=>{
+// BOOT SEQUENCE
+setTimeout(()=>switchScreen('load2'), 2500);
+setTimeout(()=>switchScreen('login'), 5000);
 
-  setTimeout(()=>{
-    el("boot").style.display="none";
-    el("login").style.display="flex";
-  },2200);
-
-});
-
-/* =========================
-   LOGIN (FULL FIXED)
-========================= */
 function login(){
+  document.getElementById('clickSound').play();
+  switchScreen('home');
+}
 
-  const u = el("user").value.trim();
-  const p = el("pass").value.trim();
+function backHome(){
+  switchScreen('home');
+}
 
-  if(u==="LTrainer_87" && p==="Z13X17"){
-    el("login").style.display="none";
-    el("desktop").style.display="block";
-  } else {
-    el("err").innerText="ACCESS DENIED";
+function openPanel(type){
+  let panel = document.getElementById('panel');
+  if(type==='aim') panel.innerHTML = '<p>AIM NODE READY</p>';
+  if(type==='tapes') panel.innerHTML = '<p>TAPE ARCHIVE LINKED</p>';
+  if(type==='news') panel.innerHTML = '<p>NEWS FEED ACTIVE</p>';
+  if(type==='security') panel.innerHTML = '<p>SECURITY SYSTEMS ONLINE</p>';
+}
+
+// AIM CHAT
+function sendChat(){
+  let input = document.getElementById('chatInput');
+  let box = document.getElementById('chatBox');
+  box.innerHTML += "YOU: " + input.value + "<br>";
+  box.innerHTML += "TRAINER: SIGNAL RECEIVED...<br>";
+  input.value="";
+  box.scrollTop = box.scrollHeight;
+}
+
+// TAPES
+function playTape(n){
+  let out = document.getElementById('tapeOut');
+  if(n===1){
+    out.innerHTML = "[TAPE 1 INIT]\nSystem boot sequence recorded...";
   }
-
-}
-
-/* =========================
-   WINDOWS
-========================= */
-function openW(id){
-  el(id).style.display="block";
-}
-
-function closeW(id){
-  el(id).style.display="none";
-}
-
-/* =========================
-   LINK REGISTRY
-========================= */
-const links = {
-  tape1:"https://youtube.com",
-  tape2:"https://youtube.com",
-  tape3:"https://youtube.com",
-  tape4:"https://youtube.com",
-  cam1:"https://youtube.com",
-  cam2:"https://youtube.com"
-};
-
-function openLink(id){
-  window.open(links[id],"_blank");
-}
-
-/* =========================
-   DIRECTOR MODE
-========================= */
-function checkRiddle(){
-
-  const a = el("riddle").value.toLowerCase().trim();
-
-  if(a==="fire"){
-    director.innerHTML="<h2>ACCESS GRANTED</h2><p>DIRECTOR MODE ACTIVE</p>";
-  } else {
-    el("riddleErr").innerText="INCORRECT";
+  if(n===4){
+    out.innerHTML = "[TAPE 4 - AOL CHAT]\nDr. Lee Trainer: 'We are not alone in the network...'<br>Kane Park: 'Signal corrupted but stable.'<br>Octogal: 'I see movement in the data stream.'";
   }
-
 }
 
+// DIRECTOR MODE
+function unlockDirector(){
+  document.body.style.background="#220000";
+  alert("DIRECTOR MODE UNLOCKED");
+}
 </script>
 
 </body>
