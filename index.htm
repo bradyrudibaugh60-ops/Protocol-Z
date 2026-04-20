@@ -12,7 +12,7 @@ body {
   color:black;
 }
 
-/* BOOT 1 */
+/* BOOT */
 #boot1 {
   position:fixed;
   width:100%;
@@ -86,7 +86,7 @@ input {
   text-align:center;
   color:#e0e0e0;
   cursor:pointer;
-  font-size:16px; /* BIGGER EMOJIS */
+  font-size:16px;
 }
 
 .icon span { display:block; font-size:13px; }
@@ -130,31 +130,6 @@ input {
   font-family:"MS Sans Serif";
 }
 
-/* TASKBAR */
-.taskbar {
-  position:fixed;
-  bottom:0;
-  width:100%;
-  height:28px;
-  background:#c0c0c0;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  border-top:2px solid white;
-}
-
-.right {
-  margin-right:10px;
-  font-size:11px;
-  font-family:monospace;
-}
-
-/* ADS */
-#adBar {
-  margin-left:10px;
-  font-size:11px;
-}
-
 /* AOL */
 #aolHome, #aolChat {
   display:none;
@@ -165,16 +140,11 @@ input {
 }
 
 .aolBox {
-  width:320px;
+  width:340px;
   background:#c0c0c0;
   border:2px solid black;
   padding:10px;
   margin:80px auto;
-}
-
-/* STAFF LOGIN */
-#staffLogin, #staffHome {
-  display:none;
 }
 
 /* ZOMBIE */
@@ -191,6 +161,14 @@ input {
   z-index:10000;
 }
 
+/* STAFF */
+#staffLogin, #staffHome {
+  display:none;
+}
+
+button {
+  font-family:"MS Sans Serif";
+}
 </style>
 </head>
 
@@ -218,23 +196,21 @@ input {
 <!-- DESKTOP -->
 <div id="desktop">
 
-<!-- ICONS -->
-<div class="icon tapes" onclick="clickS(); openW('tapes')">📼<span>Tapes</span></div>
-<div class="icon files" onclick="clickS(); openW('files')">📁<span>Files</span></div>
-<div class="icon notes" onclick="clickS(); openW('notes')">📝<span>Notes</span></div>
-<div class="icon mail" onclick="openAOL()">📧<span>You've Got Mail</span></div>
-<div class="icon news" onclick="openNews()">📰<span>You've Got News</span></div>
+<div class="icon tapes" onclick="clickSound(); openW('tapes')">📼<span>Tapes</span></div>
+<div class="icon files" onclick="clickSound(); openW('files')">📁<span>Files</span></div>
+<div class="icon notes" onclick="clickSound(); openW('notes')">📝<span>Notes</span></div>
+<div class="icon mail" onclick="openAOL()">📧<span>You’ve Got Mail</span></div>
+<div class="icon news" onclick="openNews()">📰<span>You’ve Got News</span></div>
 <div class="icon staff" onclick="openStaffLogin()">👤<span>Luminar Staff</span></div>
 
 <!-- TAPES -->
 <div id="tapes" class="window">
 <div class="bar">Tapes <span class="close" onclick="closeW('tapes')">X</span></div>
 <div class="content">
-<button onclick="loadTape('https://youtube.com')">Tape 1 (YouTube)</button><br>
-<button onclick="loadTape('https://youtube.com')">Tape 2 (YouTube)</button><br>
-<button onclick="loadTape('https://youtube.com')">Tape 3 (YouTube)</button><br>
-<button onclick="loadTape('https://youtube.com')">Tape 4 (YouTube)</button><br>
-<br>
+<button onclick="loadTape('https://youtube.com')">Tape 1</button><br>
+<button onclick="loadTape('https://youtube.com')">Tape 2</button><br>
+<button onclick="loadTape('https://youtube.com')">Tape 3</button><br>
+<button onclick="loadTape('https://youtube.com')">Tape 4</button><br><br>
 <div id="tapeOut">No tape loaded.</div>
 </div>
 </div>
@@ -253,16 +229,16 @@ luminar_core.sys
 <div id="notes" class="window">
 <div class="bar">Z-13 NOTES <span class="close" onclick="closeW('notes')">X</span></div>
 <div class="content">
-• Subject Z-13 unstable neural mapping<br>
-• Luminar system partially sentient<br>
-• Trainer access override active<br>
-• Octogal behavior unpredictable<br>
-• Kane Park field operative<br>
-• AIM channel still open<br>
-• Facility cameras looping<br>
-• Memory leak detected in node 4<br>
-• Staff ignoring containment rules<br>
-• System still learning language patterns
+• Z-13 neural instability detected<br>
+• Luminar network shows awareness spikes<br>
+• Trainer access authorized<br>
+• Kane field operative active<br>
+• Octogal anomaly persistent<br>
+• AIM system still online<br>
+• Cameras looping feed<br>
+• Memory corruption in sector 4<br>
+• Staff ignoring containment protocols<br>
+• System adapting language patterns
 </div>
 </div>
 
@@ -270,10 +246,10 @@ luminar_core.sys
 <div id="news" class="window">
 <div class="bar">Luminar News <span class="close" onclick="closeW('news')">X</span></div>
 <div class="content">
-<b>BREAKING:</b> Luminar reports increased Z-13 signal activity<br><br>
-<b>UPDATE:</b> Staff confirm “system awareness events”<br><br>
-<b>REPORT:</b> Internal network behaving autonomously<br><br>
-<b>NOTICE:</b> All personnel advised to stay offline
+<b>UPDATE:</b> Luminar expands monitoring grid<br><br>
+<b>BREAKING:</b> Z-13 resonance increases<br><br>
+<b>REPORT:</b> Internal AI learning acceleration<br><br>
+<b>NOTICE:</b> Staff compliance under review
 </div>
 </div>
 
@@ -281,9 +257,9 @@ luminar_core.sys
 <div id="staffLogin" class="window">
 <div class="bar">Staff Login <span class="close" onclick="closeW('staffLogin')">X</span></div>
 <div class="content">
-<input id="suser" placeholder="Staff ID"><br>
-<input id="spass" type="password" placeholder="Pass"><br>
-<button onclick="staffLogin()">Login</button>
+<input id="suser" placeholder="ID"><br>
+<input id="spass" type="password" placeholder="PASS"><br>
+<button onclick="staffLogin()">LOGIN</button>
 </div>
 </div>
 
@@ -293,10 +269,10 @@ luminar_core.sys
 <div class="content">
 <button>Lab Access</button>
 <button>Security Logs</button>
-<button>Experiment Data</button>
 <button>AI Core</button>
+<button>Experiment Data</button>
 <button>Containment</button>
-<button>System Override</button>
+<button>Override</button>
 </div>
 </div>
 
@@ -305,8 +281,17 @@ luminar_core.sys
 <!-- AOL -->
 <div id="aolHome">
 <div class="aolBox">
+
 <h3>AOL 1997</h3>
+
+<p><b>Luminar Will Always Be with you Throughout</b></p>
+
 <button onclick="openChat()">Enter Chat</button>
+
+<hr>
+
+<div id="aolAds">Loading ads...</div>
+
 </div>
 </div>
 
@@ -322,27 +307,21 @@ luminar_core.sys
 <!-- ZOMBIE -->
 <div id="zombie">SYSTEM BREACH DETECTED</div>
 
-<!-- TASKBAR -->
-<div class="taskbar">
-<div id="adBar">Ad: Luminar improves cognitive stability systems</div>
-<div class="right">⏰ <span id="clock"></span></div>
-</div>
-
 <!-- SOUND -->
 <audio id="bootS" src="boot.mp3"></audio>
 <audio id="loginS" src="login.mp3"></audio>
 <audio id="clickS" src="click.mp3"></audio>
 <audio id="aolS" src="aol.mp3"></audio>
-<audio id="camS" src="camera.mp3"></audio>
 
 <script>
 
 /* BOOT */
-setTimeout(()=>{document.getElementById("boot1").style.display="none";},2000);
+setTimeout(()=>{boot1.style.display="none";},2000);
 
-/* LOGIN */
+/* LOGIN FIXED (NO FREEZE) */
 function login(){
-  let u=user.value, p=pass.value;
+  let u = user.value;
+  let p = pass.value;
 
   if(u==="LTrainer_87" && p==="Z13X17"){
     loginS.play();
@@ -352,57 +331,71 @@ function login(){
     setTimeout(()=>{
       boot2.style.display="none";
       desktop.style.display="block";
-      zombieJump();
-    },2500);
+    },2200);
   } else {
     err.innerText="ACCESS DENIED";
   }
 }
 
-/* ZOMBIE */
-function zombieJump(){
-  zombie.style.display="flex";
-  setTimeout(()=> zombie.style.display="none",1200);
-}
-
-/* ADS */
-let ads=[
-"Ad: Luminar stabilizes neural drift",
-"Ad: Z-13 containment upgraded",
-"Ad: Staff compliance at 67%",
-"Ad: AI learning rate increased"
-];
-let i=0;
-setInterval(()=>{
-  adBar.innerText=ads[i];
-  i=(i+1)%ads.length;
-},30000);
-
-/* TAPES */
-function loadTape(url){
-  tapeOut.innerHTML=`<a href="${url}" target="_blank">Open Tape Source</a>`;
+/* CLICK SOUND FIX */
+function clickSound(){
+  document.getElementById("clickS").play();
 }
 
 /* WINDOWS */
 function openW(id){document.getElementById(id).style.display="block";}
 function closeW(id){document.getElementById(id).style.display="none";}
 
+/* TAPES */
+function loadTape(url){
+  tapeOut.innerHTML = `<a href="${url}" target="_blank">Open Tape Source</a>`;
+}
+
+/* AOL */
+let ads=[
+"Luminar stabilizes neural drift",
+"Z-13 containment reinforced",
+"Staff monitoring active",
+"System learning in progress"
+];
+
+let i=0;
+
+function openAOL(){
+  aolS.play();
+  aolHome.style.display="block";
+  startAds();
+}
+
+function startAds(){
+  setInterval(()=>{
+    aolAds.innerText = ads[i];
+    i = (i+1)%ads.length;
+  },30000);
+}
+
+function openChat(){
+  aolHome.style.display="none";
+  aolChat.style.display="block";
+}
+
+function backAOL(){
+  aolChat.style.display="none";
+  aolHome.style.display="block";
+}
+
 /* STAFF */
-function openStaffLogin(){openW('staffLogin');}
+function openStaffLogin(){staffLogin.style.display="block";}
+
 function staffLogin(){
   if(suser.value==="admin" && spass.value==="Z13"){
     staffLogin.style.display="none";
     staffHome.style.display="block";
+
+    zombie.style.display="flex";
+    setTimeout(()=>zombie.style.display="none",1200);
   }
 }
-
-/* AOL */
-function openAOL(){aolS.play();aolHome.style.display="block";}
-function openChat(){aolHome.style.display="none";aolChat.style.display="block";}
-function backAOL(){aolChat.style.display="none";aolHome.style.display="block";}
-
-/* CLICK */
-function clickS(){clickS.play();}
 
 /* CLOCK */
 setInterval(()=>clock.innerText=new Date().toLocaleTimeString(),1000);
