@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>PROTOCOL Z v3.5 BETA</title>
+<title>PROTOCOL Z v3.5.1 BETA</title>
 
 <style>
 body{margin:0;background:#007070;font-family:"MS Sans Serif";overflow:hidden;}
@@ -149,17 +149,52 @@ body{margin:0;background:#007070;font-family:"MS Sans Serif";overflow:hidden;}
 
 <script>
 
-/* BOOT */
-window.onload=function(){
-setTimeout(()=>{boot1.style.display="none";login.style.display="flex";},1500);
+/* =========================
+   🔥 FIXED BOOT SYSTEM
+========================= */
+window.onload = function(){
+
+  const boot1El = document.getElementById("boot1");
+  const loginEl = document.getElementById("login");
+  const boot2El = document.getElementById("boot2");
+  const desktopEl = document.getElementById("desktop");
+
+  boot1El.style.display = "flex";
+  loginEl.style.display = "none";
+  boot2El.style.display = "none";
+  desktopEl.style.display = "none";
+
+  setTimeout(function(){
+    boot1El.style.display = "none";
+    loginEl.style.display = "flex";
+  },1500);
+
 };
 
-/* LOGIN */
+/* LOGIN (FIXED) */
 function login(){
-if(user.value==="LTrainer_87" && pass.value==="Z13X17"){
-login.style.display="none";boot2.style.display="flex";
-setTimeout(()=>{boot2.style.display="none";desktop.style.display="block";},1500);
-}else msg.innerText="DENIED";
+
+  const loginEl = document.getElementById("login");
+  const boot2El = document.getElementById("boot2");
+  const desktopEl = document.getElementById("desktop");
+  const msgEl = document.getElementById("msg");
+
+  const u = document.getElementById("user").value;
+  const p = document.getElementById("pass").value;
+
+  if(u === "LTrainer_87" && p === "Z13X17"){
+
+    loginEl.style.display = "none";
+    boot2El.style.display = "flex";
+
+    setTimeout(function(){
+      boot2El.style.display = "none";
+      desktopEl.style.display = "block";
+    },1500);
+
+  } else {
+    msgEl.innerText = "DENIED";
+  }
 }
 
 /* WINDOWS */
@@ -178,7 +213,7 @@ chat.style.display="none";mail.style.display="none";news.style.display="none";
 document.getElementById(t).style.display="block";
 }
 
-/* AI CHAT (UNLOCK SYSTEM) */
+/* AI CHAT */
 function sendChat(){
 let i=chatInput.value.toLowerCase();
 chatlog.innerHTML+="<div>You: "+i+"</div>";
