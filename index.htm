@@ -1,44 +1,84 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>PROTOCOL Z v3.6 ALPHA</title>
+<title>TRAINER PERSONAL SYSTEM // PROTOCOL Z</title>
 
 <style>
-body{margin:0;background:#007070;font-family:"MS Sans Serif";overflow:hidden;}
-.screen{position:fixed;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:monospace;}
-#boot1,#boot2{background:black;color:lime;z-index:9999;}
-#login{display:none;background:#007070;}
-#desktop{display:none;width:100%;height:100%;}
-
-/* ICONS */
-.icon{position:absolute;width:110px;text-align:center;cursor:pointer;}
-.icon .emoji{font-size:30px;}
-.icon span{display:block;font-size:12px;}
-
-.tapes{top:80px;left:40px;}
-.cams{top:160px;left:40px;}
-.aol{top:240px;left:40px;}
-.files{top:320px;left:40px;}
-.notes{top:400px;left:40px;}
-.staff{top:480px;left:40px;}
-.brief{top:560px;left:40px;}
-.director{top:640px;left:40px;}
-
-/* WINDOWS */
-.window{width:460px;height:340px;background:#c0c0c0;border:2px solid black;position:absolute;display:none;}
-.bar{background:#000080;color:white;padding:4px;}
-.close{float:right;background:red;padding:2px 6px;cursor:pointer;}
-.content{padding:10px;font-size:12px;overflow:auto;height:280px;}
-
-/* TASKBAR */
-.taskbar{
-position:absolute;bottom:0;width:100%;height:28px;
-background:#c0c0c0;display:flex;
-justify-content:space-between;align-items:center;
-padding:0 10px;border-top:2px solid white;
+body{
+margin:0;
+background:#008080;
+font-family:"MS Sans Serif";
+overflow:hidden;
 }
 
-/* LOGIN STYLE */
+/* =========================
+   BOOT SCREENS (WIN95 STYLE)
+========================= */
+
+.screen{
+position:fixed;
+width:100%;
+height:100%;
+display:none;
+align-items:center;
+justify-content:center;
+}
+
+#bios{
+background:black;
+color:lime;
+font-family:monospace;
+font-size:14px;
+display:flex;
+flex-direction:column;
+}
+
+#winboot{
+background:#000080;
+color:white;
+font-family:"MS Sans Serif";
+flex-direction:column;
+text-align:center;
+}
+
+#loading{
+background:#c0c0c0;
+flex-direction:column;
+}
+
+.bar{
+width:300px;
+height:18px;
+border:2px inset #fff;
+background:#999;
+margin-top:10px;
+position:relative;
+overflow:hidden;
+}
+
+.fill{
+height:100%;
+width:0%;
+background:#000080;
+animation:load 2.5s linear forwards;
+}
+
+@keyframes load{
+0%{width:0%;}
+100%{width:100%;}
+}
+
+/* =========================
+   LOGIN (WIN95 STYLE)
+========================= */
+
+#login{
+display:none;
+background:#008080;
+align-items:center;
+justify-content:center;
+}
+
 .loginBox{
 width:340px;
 background:#c0c0c0;
@@ -46,14 +86,14 @@ border:2px solid black;
 box-shadow:4px 4px black;
 }
 
-.loginTitle{
+.title{
 background:#000080;
 color:white;
 padding:6px;
 font-size:13px;
 }
 
-.loginBody{
+.body{
 padding:15px;
 text-align:center;
 }
@@ -75,30 +115,60 @@ background:#c0c0c0;
 cursor:pointer;
 }
 
-#statusText{
-font-size:11px;
-margin-bottom:10px;
-font-family:monospace;
+/* DESKTOP */
+#desktop{
+display:none;
+width:100%;
+height:100%;
+background:#008080;
 }
 </style>
 </head>
 
 <body>
 
-<!-- BOOT -->
-<div id="boot1" class="screen">LUMINAR BIOS CHECK... OK</div>
+<!-- =========================
+     BIOS SCREEN
+========================= -->
+<div id="bios" class="screen">
+<pre>
+TRAINER PERSONAL BIOS v3.7
+--------------------------
+Checking RAM........ OK
+Checking CPU........ OK
+Loading Kernel...... OK
+Starting SYSTEM.....
+</pre>
+</div>
 
-<!-- LOGIN -->
+<!-- =========================
+     WINDOWS 95 SPLASH
+========================= -->
+<div id="winboot" class="screen">
+<h2>Microsoft Windows 95</h2>
+<p>Starting system...</p>
+</div>
+
+<!-- =========================
+     LOADING SCREEN
+========================= -->
+<div id="loading" class="screen">
+<h3>Loading Trainer Personal Environment</h3>
+<div class="bar"><div class="fill"></div></div>
+</div>
+
+<!-- =========================
+     LOGIN SCREEN
+========================= -->
 <div id="login" class="screen">
 
-<div class="loginBox" id="loginBox">
-<div class="loginTitle">Windows 95 Network Logon</div>
+<div class="loginBox">
 
-<div class="loginBody">
+<div class="title">Windows 95 - Personal Logon</div>
+
+<div class="body">
 
 <div style="font-size:40px;">🪟</div>
-
-<div id="statusText">Connecting to LUMINAR network...</div>
 
 <input id="user" placeholder="Username" disabled><br>
 <input id="pass" type="password" placeholder="Password" disabled><br>
@@ -112,267 +182,97 @@ font-family:monospace;
 
 </div>
 
-<!-- BOOT 2 -->
-<div id="boot2" class="screen" style="display:none;">VERIFYING SYSTEM...</div>
-
-<!-- DESKTOP -->
+<!-- =========================
+     DESKTOP (PLACEHOLDER)
+========================= -->
 <div id="desktop">
 
-<div class="icon tapes" onclick="openW('tapes')"><div class="emoji">📼</div><span>Tapes</span></div>
-<div class="icon cams" onclick="openW('cams')"><div class="emoji">📹</div><span>Cameras</span></div>
-<div class="icon aol" onclick="openW('aol')"><div class="emoji">💬</div><span>AOL</span></div>
-<div class="icon files" onclick="openW('files')"><div class="emoji">📁</div><span>Files</span></div>
-<div class="icon notes" onclick="openW('notes')"><div class="emoji">📝</div><span>Notes</span></div>
-<div class="icon staff" onclick="openW('staff')"><div class="emoji">🧪</div><span>Staff</span></div>
-<div class="icon brief" onclick="openW('brief')"><div class="emoji">🔒</div><span>Briefcase</span></div>
-<div class="icon director" onclick="openW('director')"><div class="emoji">🧬</div><span>Director</span></div>
-
-<!-- TAPES -->
-<div id="tapes" class="window">
-<div class="bar">Tapes <span class="close" onclick="closeW('tapes')">X</span></div>
-<div class="content">
-<button onclick="playTape(1)">Tape 1</button><br><br>
-<button onclick="unlockTape(2)">Tape 2 (LOCKED)</button><br><br>
-<button onclick="unlockTape(3)">Tape 3 (LOCKED)</button><br><br>
-<button onclick="unlockTape(4)">Tape 4 (LOCKED)</button><br><br>
-<div id="tapePlayer">No tape loaded</div>
-</div>
-</div>
-
-<!-- CAMS -->
-<div id="cams" class="window">
-<div class="bar">Cameras <span class="close" onclick="closeW('cams')">X</span></div>
-<div class="content">
-<button onclick="playCam('https://www.youtube.com/embed/21X5lGlDOfg')">Cam 1</button><br><br>
-<button onclick="playCam('https://www.youtube.com/embed/hHW1oY26kxQ')">Cam 2</button><br><br>
-<div id="camPlayer"></div>
-</div>
-</div>
-
-<!-- AOL -->
-<div id="aol" class="window">
-<div class="bar">AOL 1997 <span class="close" onclick="closeW('aol')">X</span></div>
-<div class="content">
-
-<button onclick="aolTab('chat')">Chat</button>
-<button onclick="aolTab('mail')">Mail</button>
-<button onclick="aolTab('news')">News</button>
-
-<div id="chat">
-<div id="chatlog" style="height:100px;overflow:auto;border:1px solid black;"></div>
-<input id="chatInput">
-<button onclick="sendChat()">Send</button>
-</div>
-
-<div id="mail" style="display:none;">You've Got Mail: 1</div>
-<div id="news" style="display:none;">Luminar instability rising...</div>
-
-</div>
-</div>
-
-<!-- FILES -->
-<div id="files" class="window"><div class="bar">Files <span class="close" onclick="closeW('files')">X</span></div><div class="content" id="filesContent">log.txt</div></div>
-
-<!-- NOTES -->
-<div id="notes" class="window"><div class="bar">Notes <span class="close" onclick="closeW('notes')">X</span></div><div class="content" id="notesContent">- Z13 unstable</div></div>
-
-<!-- STAFF -->
-<div id="staff" class="window">
-<div class="bar">Staff <span class="close" onclick="closeW('staff')">X</span></div>
-<div class="content">
-<input id="suser"><input id="spass">
-<button onclick="staffLogin()">Login</button>
-<div id="labHome" style="display:none;">Lab Access Granted</div>
-</div>
-</div>
-
-<!-- DIRECTOR -->
-<div id="director" class="window">
-<div class="bar">Director Mode <span class="close" onclick="closeW('director')">X</span></div>
-<div class="content">
-<input id="code">
-<button onclick="unlockDirector()">Enter</button>
-<div id="dirContent"></div>
-</div>
-</div>
-
-<!-- TASKBAR -->
-<div class="taskbar">
-<div>
-<button onclick="runSystemScan()">🧪 Scan</button>
-<button onclick="openDebug()">🧠 Logs</button>
-</div>
-<div><span>🌤 72°F</span> | <span id="clock"></span></div>
-</div>
+<h3 style="color:white;padding:20px;">TRAINER PERSONAL DESKTOP LOADED</h3>
 
 </div>
 
 <script>
 
 /* =========================
-   🧪 DEBUG SYSTEM
+   SAFE INIT PIPELINE
 ========================= */
 
-let DEBUG=[];
-let progress={tape:1};
+window.addEventListener("load", () => {
 
-function logBug(t,m){
-DEBUG.push("["+t+"] "+m);
-console.warn(t,m);
-}
+  const bios = document.getElementById("bios");
+  const winboot = document.getElementById("winboot");
+  const loading = document.getElementById("loading");
+  const login = document.getElementById("login");
+  const desktop = document.getElementById("desktop");
 
-window.onerror=function(m,s,l){
-logBug("RUNTIME",m+" @"+l);
-return false;
-};
+  // RESET ALL STATES
+  bios.style.display = "flex";
+  winboot.style.display = "none";
+  loading.style.display = "none";
+  login.style.display = "none";
+  desktop.style.display = "none";
+
+  /* =========================
+     BOOT SEQUENCE FLOW
+  ========================= */
+
+  setTimeout(() => {
+    bios.style.display = "none";
+    winboot.style.display = "flex";
+  }, 2000);
+
+  setTimeout(() => {
+    winboot.style.display = "none";
+    loading.style.display = "flex";
+  }, 4200);
+
+  setTimeout(() => {
+    loading.style.display = "none";
+    login.style.display = "flex";
+
+    enableLogin();
+
+  }, 7000);
+
+});
 
 /* =========================
-   BOOT + LOGIN SYSTEM
+   ENABLE LOGIN INPUTS
 ========================= */
 
-window.onload=function(){
+function enableLogin(){
 
-setTimeout(()=>{
-boot1.style.display="none";
-login.style.display="flex";
+  const user = document.getElementById("user");
+  const pass = document.getElementById("pass");
+  const btn = document.getElementById("loginBtn");
 
-startLogin();
-},1500);
-
-};
-
-function startLogin(){
-
-let status=document.getElementById("statusText");
-let user=document.getElementById("user");
-let pass=document.getElementById("pass");
-let btn=document.getElementById("loginBtn");
-
-let steps=[
-"Connecting to LUMINAR network...",
-"Handshake complete.",
-"Security layer verified.",
-"Authentication ready."
-];
-
-let i=0;
-
-let interval=setInterval(()=>{
-
-status.innerText=steps[i];
-i++;
-
-if(i===steps.length){
-clearInterval(interval);
-status.innerText="ACCESS REQUIRED";
-user.disabled=false;
-pass.disabled=false;
-btn.disabled=false;
+  user.disabled = false;
+  pass.disabled = false;
+  btn.disabled = false;
 }
 
-},900);
-}
+/* =========================
+   LOGIN SYSTEM
+========================= */
 
-/* LOGIN */
 function login(){
 
-if(user.value==="LTrainer_87" && pass.value==="Z13X17"){
+  const user = document.getElementById("user").value;
+  const pass = document.getElementById("pass").value;
 
-login.style.display="none";
-boot2.style.display="flex";
+  const login = document.getElementById("login");
+  const desktop = document.getElementById("desktop");
+  const msg = document.getElementById("msg");
 
-setTimeout(()=>{
-boot2.style.display="none";
-desktop.style.display="block";
-},1500);
+  if(user === "LTrainer_87" && pass === "Z13X17"){
 
-}else{
-msg.innerText="DENIED";
+    login.style.display = "none";
+    desktop.style.display = "block";
+
+  } else {
+    msg.innerText = "ACCESS DENIED";
+  }
 }
-}
-
-/* WINDOWS */
-function openW(i){document.getElementById(i).style.display="block";}
-function closeW(i){document.getElementById(i).style.display="none";}
-
-/* TAPES */
-function unlockTape(t){
-if(progress.tape>=t){
-playTape(t);
-}else alert("LOCKED");
-}
-
-function playTape(t){
-let links=[
-"",
-"https://www.youtube.com/embed/ysz5S6PUM-U",
-"https://www.youtube.com/embed/CW7RUt_lpBs",
-"https://www.youtube.com/embed/JsDZQFBxBkA",
-"https://www.youtube.com/embed/jIgBe5GCs1M"
-];
-
-tapePlayer.innerHTML='<iframe width="100%" height="220" src="'+links[t]+'"></iframe>';
-
-if(progress.tape===t && progress.tape<4){
-progress.tape++;
-notesContent.innerHTML+="<br>Tape unlocked: "+progress.tape;
-}
-}
-
-/* CAMS */
-function playCam(u){
-camPlayer.innerHTML='<iframe width="100%" height="220" src="'+u+'"></iframe>';
-}
-
-/* AOL */
-function aolTab(t){
-chat.style.display="none";
-mail.style.display="none";
-news.style.display="none";
-document.getElementById(t).style.display="block";
-}
-
-/* AOL CHAT */
-function sendChat(){
-let i=chatInput.value.toLowerCase();
-chatlog.innerHTML+="<div>You: "+i+"</div>";
-
-let r="...";
-
-if(i==="hello"){
-r="Kane: Do you trust Luminar? (yes/no)";
-}
-else if(i==="yes"){
-r="Octogal: Good.";
-filesContent.innerHTML+="<br>trust.log";
-}
-else if(i==="no"){
-r="Kane: Noted.";
-}
-else{
-r="...";
-}
-
-chatlog.innerHTML+="<div>"+r+"</div>";
-chatInput.value="";
-}
-
-/* STAFF */
-function staffLogin(){
-if(suser.value==="LeeTrainer" && spass.value==="Z13X17"){
-labHome.style.display="block";
-}
-}
-
-/* DIRECTOR */
-function unlockDirector(){
-if(code.value==="VOSSE13"){
-dirContent.innerText="SERUM ACTIVE";
-}else dirContent.innerText="DENIED";
-}
-
-/* CLOCK */
-setInterval(()=>{clock.innerText=new Date().toLocaleTimeString();},1000);
 
 </script>
 
