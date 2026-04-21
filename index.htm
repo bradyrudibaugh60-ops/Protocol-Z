@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>PROTOCOL Z v3.4</title>
+<title>PROTOCOL Z v3.4.1</title>
 
 <style>
 body{
   margin:0;
-  overflow:hidden;
   background:#007070;
   font-family:"MS Sans Serif", Tahoma;
+  overflow:hidden;
 }
 
 /* SCREENS */
@@ -25,12 +25,21 @@ body{
 #boot1,#boot2{
   background:black;
   color:lime;
+  z-index:9999;
 }
 
-#login{ display:none; background:#007070; }
+#login{
+  display:none;
+  background:#007070;
+  z-index:9000;
+}
 
 /* DESKTOP */
-#desktop{ display:none; width:100%; height:100%; }
+#desktop{
+  display:none;
+  width:100%;
+  height:100%;
+}
 
 /* ICONS */
 .icon{
@@ -39,23 +48,21 @@ body{
   text-align:center;
   cursor:pointer;
 }
+.icon .emoji{font-size:30px;}
+.icon span{display:block;font-size:12px;}
 
-.icon .emoji{ font-size:30px; }
-.icon span{ display:block; font-size:12px; }
-
-.tapes{top:80px;left:40px;}
-.files{top:160px;left:40px;}
+.youtube{top:80px;left:40px;}
+.cams{top:160px;left:40px;}
 .aol{top:240px;left:40px;}
 .staff{top:320px;left:40px;}
 .notes{top:400px;left:40px;}
-.cams{top:480px;left:40px;}
-.brief{top:560px;left:40px;}
-.youtube{top:640px;left:40px;}
+.files{top:480px;left:40px;}
+.tapes{top:560px;left:40px;}
 
 /* WINDOWS */
 .window{
-  width:450px;
-  height:320px;
+  width:460px;
+  height:330px;
   background:#c0c0c0;
   border:2px solid black;
   position:absolute;
@@ -75,11 +82,11 @@ body{
   cursor:pointer;
 }
 
-.content{ padding:10px; font-size:12px; }
+.content{padding:10px;font-size:12px;}
 
-/* TASKBAR */
+/* TASKBAR (INSIDE DESKTOP ONLY) */
 .taskbar{
-  position:fixed;
+  position:absolute;
   bottom:0;
   width:100%;
   height:28px;
@@ -90,15 +97,15 @@ body{
   padding:0 10px;
   border-top:2px solid white;
 }
-
 </style>
 </head>
 
 <body>
 
-<!-- BOOT -->
+<!-- BOOT 1 -->
 <div id="boot1" class="screen">LUMINAR BIOS CHECK... OK</div>
 
+<!-- LOGIN -->
 <div id="login" class="screen">
 <div>
 <input id="user" placeholder="User"><br>
@@ -108,29 +115,33 @@ body{
 </div>
 </div>
 
+<!-- BOOT 2 -->
 <div id="boot2" class="screen" style="display:none;">VERIFYING SYSTEM...</div>
 
 <!-- DESKTOP -->
 <div id="desktop">
 
+<!-- ICONS -->
 <div class="icon youtube" onclick="openW('yt')"><div class="emoji">▶</div><span>YouTube</span></div>
 <div class="icon cams" onclick="openW('cams')"><div class="emoji">📹</div><span>Cameras</span></div>
 <div class="icon aol" onclick="openW('aol')"><div class="emoji">💬</div><span>AOL</span></div>
 <div class="icon staff" onclick="openW('staff')"><div class="emoji">🧪</div><span>Staff</span></div>
+<div class="icon notes" onclick="openW('notes')"><div class="emoji">📝</div><span>Notes</span></div>
+<div class="icon files" onclick="openW('files')"><div class="emoji">📁</div><span>Files</span></div>
+<div class="icon tapes" onclick="openW('tapes')"><div class="emoji">📼</div><span>Tapes</span></div>
 
-<!-- YOUTUBE -->
+<!-- WINDOWS -->
 <div id="yt" class="window">
-<div class="bar">YouTube Loader <span class="close" onclick="closeW('yt')">X</span></div>
+<div class="bar">YouTube <span class="close" onclick="closeW('yt')">X</span></div>
 <div class="content">
-<input id="yturl" placeholder="Paste YouTube URL">
+<input id="yturl" placeholder="YouTube URL">
 <button onclick="loadYT()">Load</button>
 <div id="ytframe"></div>
 </div>
 </div>
 
-<!-- CAMERAS -->
 <div id="cams" class="window">
-<div class="bar">Camera Feed <span class="close" onclick="closeW('cams')">X</span></div>
+<div class="bar">Cameras <span class="close" onclick="closeW('cams')">X</span></div>
 <div class="content">
 <input id="camurl" placeholder="Feed URL">
 <button onclick="loadCam()">Connect</button>
@@ -138,151 +149,147 @@ body{
 </div>
 </div>
 
-<!-- AOL -->
 <div id="aol" class="window">
 <div class="bar">AOL 1997 <span class="close" onclick="closeW('aol')">X</span></div>
 <div class="content">
-
-<button onclick="setTab('chat')">Chat</button>
-<button onclick="setTab('mail')">Mail</button>
-<button onclick="setTab('news')">News</button>
+<button onclick="switchTab('chat')">Chat</button>
+<button onclick="switchTab('mail')">Mail</button>
+<button onclick="switchTab('news')">News</button>
 
 <div id="chat">
 <div id="chatlog" style="height:120px;overflow:auto;border:1px solid black;"></div>
-<input id="chatInput"><button onclick="sendChat()">Send</button>
+<input id="chatInput">
+<button onclick="sendChat()">Send</button>
 </div>
 
 <div id="mail" style="display:none;">You’ve Got Mail: 0</div>
 <div id="news" style="display:none;">Luminar instability rising...</div>
-
 </div>
 </div>
 
-<!-- STAFF -->
+<div id="notes" class="window">
+<div class="bar">Notes <span class="close" onclick="closeW('notes')">X</span></div>
+<div class="content" id="notesContent">- Z-13 unstable</div>
+</div>
+
+<div id="files" class="window">
+<div class="bar">Files <span class="close" onclick="closeW('files')">X</span></div>
+<div class="content" id="filesContent">log.txt</div>
+</div>
+
+<div id="tapes" class="window">
+<div class="bar">Tapes <span class="close" onclick="closeW('tapes')">X</span></div>
+<div class="content" id="tapesContent">Tape 1 Available</div>
+</div>
+
 <div id="staff" class="window">
 <div class="bar">Staff <span class="close" onclick="closeW('staff')">X</span></div>
 <div class="content">
-
-<div id="staffLogin">
 <input id="suser" placeholder="User">
 <input id="spass" placeholder="Pass">
 <button onclick="staffLogin()">Login</button>
-</div>
-
-<div id="labHome" style="display:none;">
-<button onclick="deny()">Z-13 Wing</button><br>
-<button onclick="openDirector()">Director Terminal</button>
-</div>
-
+<p id="smsg"></p>
 </div>
 </div>
 
-<!-- DIRECTOR TERMINAL -->
-<div id="director" class="window">
-<div class="bar">Director Mode <span class="close" onclick="closeW('director')">X</span></div>
-<div class="content">
-<input id="code" placeholder="Enter Keycode">
-<button onclick="unlockDirector()">Unlock</button>
-<div id="dirContent"></div>
-</div>
-</div>
-
-</div>
-
-<!-- TASKBAR -->
+<!-- TASKBAR (FIXED LOCATION) -->
 <div class="taskbar">
 <div>
-<button onclick="openW('director')">Director</button>
 <button onclick="alert('Settings')">⚙</button>
 <button onclick="alert('Volume')">🔊</button>
 </div>
 <div>
-<span id="weather">🌤 72°F</span> |
+<span>🌤 72°F</span> |
 <span id="clock"></span>
 </div>
 </div>
 
+</div>
+
 <script>
 
-/* BOOT */
-setTimeout(()=>{
-boot1.style.display="none";
-login.style.display="flex";
+/* HARD RESET BOOT SYSTEM */
+window.onload=function(){
+
+document.getElementById("boot1").style.display="flex";
+document.getElementById("login").style.display="none";
+document.getElementById("boot2").style.display="none";
+document.getElementById("desktop").style.display="none";
+
+setTimeout(function(){
+document.getElementById("boot1").style.display="none";
+document.getElementById("login").style.display="flex";
 },1500);
+
+};
 
 /* LOGIN */
 function login(){
-if(user.value==="LTrainer_87" && pass.value==="Z13X17"){
-login.style.display="none";
-boot2.style.display="flex";
-setTimeout(()=>{
-boot2.style.display="none";
-desktop.style.display="block";
+
+let u=document.getElementById("user").value;
+let p=document.getElementById("pass").value;
+
+if(u==="LTrainer_87" && p==="Z13X17"){
+
+document.getElementById("login").style.display="none";
+document.getElementById("boot2").style.display="flex";
+
+setTimeout(function(){
+document.getElementById("boot2").style.display="none";
+document.getElementById("desktop").style.display="block";
 },1500);
-}else msg.innerText="DENIED";
+
+}else{
+document.getElementById("msg").innerText="DENIED";
+}
 }
 
 /* WINDOWS */
-function openW(id){ document.getElementById(id).style.display="block"; }
-function closeW(id){ document.getElementById(id).style.display="none"; }
+function openW(id){document.getElementById(id).style.display="block";}
+function closeW(id){document.getElementById(id).style.display="none";}
 
 /* YOUTUBE */
 function loadYT(){
 let url=document.getElementById("yturl").value;
-ytframe.innerHTML='<iframe width="400" height="200" src="'+url.replace("watch?v=","embed/")+'"></iframe>';
+document.getElementById("ytframe").innerHTML =
+'<iframe width="400" height="200" src="'+url.replace("watch?v=","embed/")+'"></iframe>';
 }
 
 /* CAMERA */
 function loadCam(){
 let url=document.getElementById("camurl").value;
-camview.innerHTML='<iframe width="400" height="200" src="'+url+'"></iframe>';
+document.getElementById("camview").innerHTML =
+'<iframe width="400" height="200" src="'+url+'"></iframe>';
 }
 
 /* AOL */
-function setTab(t){
-chat.style.display="none";
-mail.style.display="none";
-news.style.display="none";
+function switchTab(t){
+document.getElementById("chat").style.display="none";
+document.getElementById("mail").style.display="none";
+document.getElementById("news").style.display="none";
 document.getElementById(t).style.display="block";
 }
 
-/* AI CHAT */
+/* CHAT */
 function sendChat(){
-let input=chatInput.value.toLowerCase();
-chatlog.innerHTML+="<div>You: "+input+"</div>";
+let input=document.getElementById("chatInput").value.toLowerCase();
+let log=document.getElementById("chatlog");
 
-let response="...";
+log.innerHTML+="<div>You: "+input+"</div>";
 
-if(input.includes("z13")) response="Kane: It's unstable.";
-if(input.includes("octogal")) response="Octogal: I see everything.";
-if(input.includes("lab")) response="Kane: Access is restricted.";
+let r="...";
 
-chatlog.innerHTML+="<div>"+response+"</div>";
-chatInput.value="";
+if(input.includes("z13")) r="Kane: It's unstable.";
+if(input.includes("octogal")) r="Octogal: I see you.";
+if(input.includes("tape")) r="Kane: Check archive.";
+
+log.innerHTML+="<div>"+r+"</div>";
+document.getElementById("chatInput").value="";
 }
-
-/* STAFF */
-function staffLogin(){
-if(suser.value==="LeeTrainer" && spass.value==="Z13X17"){
-staffLogin.style.display="none";
-labHome.style.display="block";
-}
-}
-
-/* DIRECTOR */
-function openDirector(){ openW("director"); }
-
-function unlockDirector(){
-if(code.value==="VOSSE13"){
-dirContent.innerHTML="Dr. Vosse Serum: Subject mutation successful.";
-}else dirContent.innerHTML="ACCESS DENIED";
-}
-
-function deny(){ alert("ACCESS DENIED"); }
 
 /* CLOCK */
-setInterval(()=>{
-clock.innerText=new Date().toLocaleTimeString();
+setInterval(function(){
+document.getElementById("clock").innerText=new Date().toLocaleTimeString();
 },1000);
 
 </script>
