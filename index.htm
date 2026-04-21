@@ -8,15 +8,12 @@ body{
 margin:0;
 font-family:"MS Sans Serif";
 overflow:hidden;
-
-/* Windows 95 nostalgic desktop */
 background:#008080;
 background-image:url("https://i.imgur.com/7vQZ0ZL.png");
 background-size:cover;
 background-position:center;
 }
 
-/* CRT overlay */
 body::before{
 content:"";
 position:fixed;
@@ -26,8 +23,7 @@ background:rgba(0,0,0,0.05);
 pointer-events:none;
 }
 
-/* ================= BOOT ================= */
-
+/* BOOT */
 .screen{
 position:fixed;
 width:100%;
@@ -38,25 +34,11 @@ justify-content:center;
 font-family:monospace;
 }
 
-#bios{
-background:black;
-color:lime;
-flex-direction:column;
-display:flex;
-}
+#bios{background:black;color:lime;display:flex;flex-direction:column;}
+#winboot{background:#000080;color:white;flex-direction:column;}
+#loading{background:#c0c0c0;flex-direction:column;}
 
-#winboot{
-background:#000080;
-color:white;
-flex-direction:column;
-}
-
-#loading{
-background:#c0c0c0;
-flex-direction:column;
-}
-
-/* loading bar */
+/* BAR */
 .bar{
 width:300px;
 height:18px;
@@ -73,13 +55,9 @@ background:#000080;
 animation:load 2.5s linear forwards;
 }
 
-@keyframes load{
-from{width:0%;}
-to{width:100%;}
-}
+@keyframes load{from{width:0;}to{width:100%;}}
 
-/* ================= LOGIN ================= */
-
+/* LOGIN */
 #login{
 display:none;
 align-items:center;
@@ -122,108 +100,41 @@ background:#c0c0c0;
 cursor:pointer;
 }
 
-/* ================= DESKTOP ================= */
-
+/* DESKTOP */
 #desktop{
 display:none;
 width:100%;
 height:100%;
-}
-
-/* icons */
-.icon{
-position:absolute;
-width:110px;
-text-align:center;
-cursor:pointer;
-color:white;
-}
-
-.icon span{font-size:12px;display:block;}
-.icon .emoji{font-size:30px;}
-
-.tapes{top:80px;left:40px;}
-.cams{top:160px;left:40px;}
-.aol{top:240px;left:40px;}
-.files{top:320px;left:40px;}
-.notes{top:400px;left:40px;}
-.staff{top:480px;left:40px;}
-.brief{top:560px;left:40px;}
-.director{top:640px;left:40px;}
-
-/* windows */
-.window{
-position:absolute;
-width:460px;
-height:340px;
-background:#c0c0c0;
-border:2px solid black;
-display:none;
-}
-
-.bar{
-background:#000080;
-color:white;
-padding:4px;
-}
-
-.close{
-float:right;
-background:red;
-padding:2px 6px;
-cursor:pointer;
-}
-
-.content{
-padding:10px;
-height:280px;
-overflow:auto;
-font-size:12px;
-}
-
-/* taskbar */
-.taskbar{
-position:absolute;
-bottom:0;
-width:100%;
-height:28px;
-background:#c0c0c0;
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:0 10px;
-border-top:2px solid white;
 }
 </style>
 </head>
 
 <body>
 
-<!-- ================= BIOS ================= -->
+<!-- BIOS -->
 <div id="bios" class="screen">
 <pre>
 TRAINER PERSONAL BIOS v3.7
---------------------------
-CPU CHECK......... OK
-MEMORY CHECK...... OK
-Z13 CORE.......... OK
-BOOT SEQUENCE..... INIT
+CPU OK
+RAM OK
+Z13 CORE OK
+BOOT INIT
 </pre>
 </div>
 
-<!-- ================= WINDOWS 95 BOOT ================= -->
+<!-- WIN BOOT -->
 <div id="winboot" class="screen">
 <h2>Microsoft Windows 95</h2>
 <p>Starting system...</p>
 </div>
 
-<!-- ================= LOADING ================= -->
+<!-- LOADING -->
 <div id="loading" class="screen">
-<h3>Loading Trainer Personal System</h3>
+<h3>Loading Trainer System</h3>
 <div class="bar"><div class="fill"></div></div>
 </div>
 
-<!-- ================= LOGIN ================= -->
+<!-- LOGIN -->
 <div id="login" class="screen">
 
 <div class="loginBox">
@@ -245,191 +156,96 @@ BOOT SEQUENCE..... INIT
 
 </div>
 
-<!-- ================= DESKTOP ================= -->
+<!-- DESKTOP -->
 <div id="desktop">
-
-<!-- ICONS -->
-<div class="icon tapes" onclick="openW('tapes')"><div class="emoji">📼</div><span>Tapes</span></div>
-<div class="icon cams" onclick="openW('cams')"><div class="emoji">📹</div><span>Cameras</span></div>
-<div class="icon aol" onclick="openW('aol')"><div class="emoji">💬</div><span>AOL</span></div>
-<div class="icon files" onclick="openW('files')"><div class="emoji">📁</div><span>Files</span></div>
-<div class="icon notes" onclick="openW('notes')"><div class="emoji">📝</div><span>Notes</span></div>
-<div class="icon staff" onclick="openW('staff')"><div class="emoji">🧪</div><span>Staff</span></div>
-<div class="icon brief" onclick="openW('brief')"><div class="emoji">🔒</div><span>Briefcase</span></div>
-<div class="icon director" onclick="openW('director')"><div class="emoji">🧬</div><span>Director</span></div>
-
-<!-- TAPES -->
-<div id="tapes" class="window">
-<div class="bar">Tapes <span class="close" onclick="closeW('tapes')">X</span></div>
-<div class="content">
-<button onclick="playTape(1)">Tape 1</button><br><br>
-<button onclick="playTape(2)">Tape 2 (LOCKED)</button><br><br>
-<button onclick="playTape(3)">Tape 3 (LOCKED)</button><br><br>
-<button onclick="playTape(4)">Tape 4 (LOCKED)</button><br><br>
-
-<div id="tapePlayer">No tape loaded</div>
-</div>
-</div>
-
-<!-- CAMS -->
-<div id="cams" class="window">
-<div class="bar">Cameras <span class="close" onclick="closeW('cams')">X</span></div>
-<div class="content">
-<button onclick="loadVideo('camPlayer','https://www.youtube.com/watch?v=21X5lGlDOfg')">Cam 1</button><br><br>
-<button onclick="loadVideo('camPlayer','https://www.youtube.com/watch?v=hHW1oY26kxQ')">Cam 2</button><br><br>
-<div id="camPlayer"></div>
-</div>
-</div>
-
-<!-- STAFF -->
-<div id="staff" class="window">
-<div class="bar">Staff Directory <span class="close" onclick="closeW('staff')">X</span></div>
-
-<div class="content">
-
-<button onclick="staffPage('rules')">Staff Rules</button>
-<button onclick="staffPage('tape5')">Tape 5</button>
-<button onclick="staffPage('pass')">Password Management</button>
-<button onclick="staffPage('news')">Microsoft News</button>
-
-<hr>
-<div id="staffView">Select a section.</div>
-
-</div>
-</div>
-
-<!-- DIRECTOR -->
-<div id="director" class="window">
-<div class="bar">Director Mode <span class="close" onclick="closeW('director')">X</span></div>
-
-<div class="content">
-<input id="code">
-<button onclick="unlockDirector()">Enter</button>
-<div id="dirContent"></div>
-</div>
-
-</div>
-
-<!-- TASKBAR -->
-<div class="taskbar">
-<div>
-<button onclick="runDeepScan()">🧪 Scan</button>
-<button onclick="openBugConsole()">🧠 Logs</button>
-</div>
-<div><span>🌤 72°F</span> | <span id="clock"></span></div>
-</div>
-
+<h3 style="color:white;padding:20px;">DESKTOP LOADED</h3>
 </div>
 
 <script>
 
-/* ================= BOOT ================= */
+/* ================= SAFE BOOT ================= */
 
 window.addEventListener("load", () => {
 
-  const bios=document.getElementById("bios");
-  const win=document.getElementById("winboot");
-  const load=document.getElementById("loading");
-  const login=document.getElementById("login");
-  const desk=document.getElementById("desktop");
+  const bios = document.getElementById("bios");
+  const win = document.getElementById("winboot");
+  const load = document.getElementById("loading");
+  const login = document.getElementById("login");
 
-  bios.style.display="flex";
+  bios.style.display = "flex";
 
-  setTimeout(()=>{
-    bios.style.display="none";
-    win.style.display="flex";
-  },2000);
+  setTimeout(() => {
+    bios.style.display = "none";
+    win.style.display = "flex";
+  }, 2000);
 
-  setTimeout(()=>{
-    win.style.display="none";
-    load.style.display="flex";
-  },4000);
+  setTimeout(() => {
+    win.style.display = "none";
+    load.style.display = "flex";
+  }, 4000);
 
-  setTimeout(()=>{
-    load.style.display="none";
-    login.style.display="flex";
-    enableLogin();
-  },6500);
+  setTimeout(() => {
+    load.style.display = "none";
+    login.style.display = "flex";
+
+    enableLogin(); // SAFE CALL
+
+  }, 6500);
 
 });
 
-/* ================= LOGIN ================= */
+/* ================= FIXED LOGIN ENABLE ================= */
 
 function enableLogin(){
-user.disabled=false;
-pass.disabled=false;
-loginBtn.disabled=false;
+
+  const user = document.getElementById("user");
+  const pass = document.getElementById("pass");
+  const btn = document.getElementById("loginBtn");
+
+  if(!user || !pass || !btn){
+    console.error("LOGIN ELEMENTS MISSING");
+    return;
+  }
+
+  user.disabled = false;
+  pass.disabled = false;
+  btn.disabled = false;
 }
+
+/* ================= FIXED LOGIN (NO FREEZE) ================= */
 
 function login(){
-if(user.value==="LTrainer_87" && pass.value==="Z13X17"){
-login.style.display="none";
-desktop.style.display="block";
-}else msg.innerText="ACCESS DENIED";
+
+  const userEl = document.getElementById("user");
+  const passEl = document.getElementById("pass");
+  const msg = document.getElementById("msg");
+
+  const loginScreen = document.getElementById("login");
+  const desktop = document.getElementById("desktop");
+
+  if(!userEl || !passEl){
+    console.error("LOGIN INPUTS NOT FOUND");
+    return;
+  }
+
+  const u = userEl.value.trim();
+  const p = passEl.value.trim();
+
+  if(u === "LTrainer_87" && p === "Z13X17"){
+
+    msg.innerText = "";
+
+    loginScreen.style.display = "none";
+    desktop.style.display = "block";
+
+  } else {
+
+    msg.innerText = "ACCESS DENIED";
+
+    passEl.value = "";
+    passEl.focus();
+  }
 }
-
-/* ================= WINDOWS ================= */
-
-function openW(id){document.getElementById(id).style.display="block";}
-function closeW(id){document.getElementById(id).style.display="none";}
-
-/* ================= VIDEO ================= */
-
-function loadVideo(frame,url){
-function c(u){
-return u.includes("watch?v=")?u.replace("watch?v=","embed/"):u;
-}
-document.getElementById(frame).innerHTML=
-'<iframe width="100%" height="220" src="'+c(url)+'"></iframe>';
-}
-
-/* ================= STAFF ================= */
-
-function staffPage(p){
-
-let v=document.getElementById("staffView");
-
-if(p==="rules"){
-v.innerHTML="1. No Z13 access<br>2. Report anomalies<br>3. No solo tape viewing";
-}
-
-if(p==="tape5"){
-v.innerHTML="TAPE 5: MEETING 0678 - Luminar failure event";
-}
-
-if(p==="pass"){
-v.innerHTML="Passwords: THROUGHOUT / VOSSE13 / STAFF-LAYER";
-}
-
-if(p==="news"){
-v.innerHTML="Luminar experiments caused biological collapse zones. Reference: VOSSE13 (Ethan Vosse code name).";
-}
-}
-
-/* ================= DIRECTOR ================= */
-
-function unlockDirector(){
-if(code.value==="VOSSE13"){
-dirContent.innerHTML=
-"<button>Tapes 6 & 7</button><br><button>Lake Pine Map</button>";
-}else dirContent.innerText="DENIED";
-}
-
-/* ================= DEBUG ================= */
-
-let LOGS=[];
-
-function runDeepScan(){
-alert("SYSTEM SCAN COMPLETE - CHECK CONSOLE");
-}
-
-function openBugConsole(){
-let w=window.open("","LOGS","width=400,height=500");
-w.document.write("<pre>"+LOGS.join("\n")+"</pre>");
-}
-
-/* CLOCK */
-setInterval(()=>clock.innerText=new Date().toLocaleTimeString(),1000);
 
 </script>
 
