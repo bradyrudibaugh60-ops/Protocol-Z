@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>PROTOCOL Z v3.4.1</title>
+<title>PROTOCOL Z v3.4.3</title>
 
 <style>
 body{
@@ -51,18 +51,13 @@ body{
 .icon .emoji{font-size:30px;}
 .icon span{display:block;font-size:12px;}
 
-.youtube{top:80px;left:40px;}
+.tapes{top:80px;left:40px;}
 .cams{top:160px;left:40px;}
-.aol{top:240px;left:40px;}
-.staff{top:320px;left:40px;}
-.notes{top:400px;left:40px;}
-.files{top:480px;left:40px;}
-.tapes{top:560px;left:40px;}
 
 /* WINDOWS */
 .window{
   width:460px;
-  height:330px;
+  height:340px;
   background:#c0c0c0;
   border:2px solid black;
   position:absolute;
@@ -84,7 +79,7 @@ body{
 
 .content{padding:10px;font-size:12px;}
 
-/* TASKBAR (INSIDE DESKTOP ONLY) */
+/* TASKBAR */
 .taskbar{
   position:absolute;
   bottom:0;
@@ -102,7 +97,7 @@ body{
 
 <body>
 
-<!-- BOOT 1 -->
+<!-- BOOT -->
 <div id="boot1" class="screen">LUMINAR BIOS CHECK... OK</div>
 
 <!-- LOGIN -->
@@ -122,77 +117,65 @@ body{
 <div id="desktop">
 
 <!-- ICONS -->
-<div class="icon youtube" onclick="openW('yt')"><div class="emoji">▶</div><span>YouTube</span></div>
-<div class="icon cams" onclick="openW('cams')"><div class="emoji">📹</div><span>Cameras</span></div>
-<div class="icon aol" onclick="openW('aol')"><div class="emoji">💬</div><span>AOL</span></div>
-<div class="icon staff" onclick="openW('staff')"><div class="emoji">🧪</div><span>Staff</span></div>
-<div class="icon notes" onclick="openW('notes')"><div class="emoji">📝</div><span>Notes</span></div>
-<div class="icon files" onclick="openW('files')"><div class="emoji">📁</div><span>Files</span></div>
-<div class="icon tapes" onclick="openW('tapes')"><div class="emoji">📼</div><span>Tapes</span></div>
-
-<!-- WINDOWS -->
-<div id="yt" class="window">
-<div class="bar">YouTube <span class="close" onclick="closeW('yt')">X</span></div>
-<div class="content">
-<input id="yturl" placeholder="YouTube URL">
-<button onclick="loadYT()">Load</button>
-<div id="ytframe"></div>
-</div>
+<div class="icon tapes" onclick="openW('tapes')">
+<div class="emoji">📼</div><span>Tapes</span>
 </div>
 
-<div id="cams" class="window">
-<div class="bar">Cameras <span class="close" onclick="closeW('cams')">X</span></div>
-<div class="content">
-<input id="camurl" placeholder="Feed URL">
-<button onclick="loadCam()">Connect</button>
-<div id="camview"></div>
-</div>
+<div class="icon cams" onclick="openW('cams')">
+<div class="emoji">📹</div><span>Cameras</span>
 </div>
 
-<div id="aol" class="window">
-<div class="bar">AOL 1997 <span class="close" onclick="closeW('aol')">X</span></div>
-<div class="content">
-<button onclick="switchTab('chat')">Chat</button>
-<button onclick="switchTab('mail')">Mail</button>
-<button onclick="switchTab('news')">News</button>
-
-<div id="chat">
-<div id="chatlog" style="height:120px;overflow:auto;border:1px solid black;"></div>
-<input id="chatInput">
-<button onclick="sendChat()">Send</button>
-</div>
-
-<div id="mail" style="display:none;">You’ve Got Mail: 0</div>
-<div id="news" style="display:none;">Luminar instability rising...</div>
-</div>
-</div>
-
-<div id="notes" class="window">
-<div class="bar">Notes <span class="close" onclick="closeW('notes')">X</span></div>
-<div class="content" id="notesContent">- Z-13 unstable</div>
-</div>
-
-<div id="files" class="window">
-<div class="bar">Files <span class="close" onclick="closeW('files')">X</span></div>
-<div class="content" id="filesContent">log.txt</div>
-</div>
-
+<!-- =========================
+     📼 TAPES (4 TAPES SYSTEM)
+========================= -->
 <div id="tapes" class="window">
-<div class="bar">Tapes <span class="close" onclick="closeW('tapes')">X</span></div>
-<div class="content" id="tapesContent">Tape 1 Available</div>
-</div>
+<div class="bar">Tape Archive <span class="close" onclick="closeW('tapes')">X</span></div>
 
-<div id="staff" class="window">
-<div class="bar">Staff <span class="close" onclick="closeW('staff')">X</span></div>
 <div class="content">
-<input id="suser" placeholder="User">
-<input id="spass" placeholder="Pass">
-<button onclick="staffLogin()">Login</button>
-<p id="smsg"></p>
+
+<button onclick="playTape('https://www.youtube.com/watch?v=dQw4w9WgXcQ')">
+Tape 1: Entry Log
+</button><br><br>
+
+<button onclick="playTape('https://www.youtube.com/watch?v=ysz5S6PUM-U')">
+Tape 2: Subject Test
+</button><br><br>
+
+<button onclick="playTape('https://www.youtube.com/watch?v=aqz-KE-bpKQ')">
+Tape 3: Containment Failure
+</button><br><br>
+
+<button onclick="playTape('https://www.youtube.com/watch?v=ScMzIvxBSi4')">
+Tape 4: Facility Breach
+</button><br><br>
+
+<div id="tapePlayer">No tape loaded.</div>
+
 </div>
 </div>
 
-<!-- TASKBAR (FIXED LOCATION) -->
+<!-- =========================
+     📹 CAMERAS
+========================= -->
+<div id="cams" class="window">
+<div class="bar">Security Cameras <span class="close" onclick="closeW('cams')">X</span></div>
+
+<div class="content">
+
+<button onclick="playCam('https://www.youtube.com/watch?v=21X5lGlDOfg')">
+Camera 01 - Hallway
+</button><br><br>
+
+<button onclick="playCam('https://www.youtube.com/watch?v=hHW1oY26kxQ')">
+Camera 02 - Lab
+</button><br><br>
+
+<div id="camPlayer">No feed active.</div>
+
+</div>
+</div>
+
+<!-- TASKBAR -->
 <div class="taskbar">
 <div>
 <button onclick="alert('Settings')">⚙</button>
@@ -208,7 +191,9 @@ body{
 
 <script>
 
-/* HARD RESET BOOT SYSTEM */
+/* =========================
+   🔥 SAFE BOOT SYSTEM
+========================= */
 window.onload=function(){
 
 document.getElementById("boot1").style.display="flex";
@@ -248,43 +233,32 @@ document.getElementById("msg").innerText="DENIED";
 function openW(id){document.getElementById(id).style.display="block";}
 function closeW(id){document.getElementById(id).style.display="none";}
 
-/* YOUTUBE */
-function loadYT(){
-let url=document.getElementById("yturl").value;
-document.getElementById("ytframe").innerHTML =
-'<iframe width="400" height="200" src="'+url.replace("watch?v=","embed/")+'"></iframe>';
+/* =========================
+   🎞 VIDEO SYSTEM
+========================= */
+
+/* convert youtube link */
+function convertYT(url){
+if(url.includes("watch?v=")){
+return url.replace("watch?v=","embed/");
+}
+return url;
 }
 
-/* CAMERA */
-function loadCam(){
-let url=document.getElementById("camurl").value;
-document.getElementById("camview").innerHTML =
-'<iframe width="400" height="200" src="'+url+'"></iframe>';
+/* play tape */
+function playTape(url){
+let embed = convertYT(url);
+
+document.getElementById("tapePlayer").innerHTML =
+'<iframe width="100%" height="220" src="'+embed+'" frameborder="0" allowfullscreen></iframe>';
 }
 
-/* AOL */
-function switchTab(t){
-document.getElementById("chat").style.display="none";
-document.getElementById("mail").style.display="none";
-document.getElementById("news").style.display="none";
-document.getElementById(t).style.display="block";
-}
+/* play camera */
+function playCam(url){
+let embed = convertYT(url);
 
-/* CHAT */
-function sendChat(){
-let input=document.getElementById("chatInput").value.toLowerCase();
-let log=document.getElementById("chatlog");
-
-log.innerHTML+="<div>You: "+input+"</div>";
-
-let r="...";
-
-if(input.includes("z13")) r="Kane: It's unstable.";
-if(input.includes("octogal")) r="Octogal: I see you.";
-if(input.includes("tape")) r="Kane: Check archive.";
-
-log.innerHTML+="<div>"+r+"</div>";
-document.getElementById("chatInput").value="";
+document.getElementById("camPlayer").innerHTML =
+'<iframe width="100%" height="220" src="'+embed+'" frameborder="0" allowfullscreen></iframe>';
 }
 
 /* CLOCK */
