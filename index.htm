@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>PROTOCOL Z v3.5.1 BETA</title>
+<title>PROTOCOL Z v3.5.4 ALPHA</title>
 
 <style>
 body{margin:0;background:#007070;font-family:"MS Sans Serif";overflow:hidden;}
@@ -12,7 +12,8 @@ body{margin:0;background:#007070;font-family:"MS Sans Serif";overflow:hidden;}
 
 /* ICONS */
 .icon{position:absolute;width:110px;text-align:center;cursor:pointer;}
-.icon .emoji{font-size:30px;} .icon span{display:block;font-size:12px;}
+.icon .emoji{font-size:30px;}
+.icon span{display:block;font-size:12px;}
 
 .tapes{top:80px;left:40px;}
 .cams{top:160px;left:40px;}
@@ -21,7 +22,7 @@ body{margin:0;background:#007070;font-family:"MS Sans Serif";overflow:hidden;}
 .notes{top:400px;left:40px;}
 .staff{top:480px;left:40px;}
 .brief{top:560px;left:40px;}
-.yt{top:640px;left:40px;}
+.director{top:640px;left:40px;}
 
 /* WINDOWS */
 .window{width:460px;height:340px;background:#c0c0c0;border:2px solid black;position:absolute;display:none;}
@@ -30,14 +31,21 @@ body{margin:0;background:#007070;font-family:"MS Sans Serif";overflow:hidden;}
 .content{padding:10px;font-size:12px;overflow:auto;height:280px;}
 
 /* TASKBAR */
-.taskbar{position:absolute;bottom:0;width:100%;height:28px;background:#c0c0c0;display:flex;justify-content:space-between;align-items:center;padding:0 10px;border-top:2px solid white;}
+.taskbar{
+position:absolute;bottom:0;width:100%;height:28px;
+background:#c0c0c0;display:flex;
+justify-content:space-between;align-items:center;
+padding:0 10px;border-top:2px solid white;
+}
 </style>
 </head>
 
 <body>
 
+<!-- BOOT -->
 <div id="boot1" class="screen">LUMINAR BIOS CHECK... OK</div>
 
+<!-- LOGIN -->
 <div id="login" class="screen">
 <div>
 <input id="user" placeholder="User"><br>
@@ -47,8 +55,10 @@ body{margin:0;background:#007070;font-family:"MS Sans Serif";overflow:hidden;}
 </div>
 </div>
 
+<!-- BOOT 2 -->
 <div id="boot2" class="screen" style="display:none;">VERIFYING SYSTEM...</div>
 
+<!-- DESKTOP -->
 <div id="desktop">
 
 <!-- ICONS -->
@@ -59,16 +69,16 @@ body{margin:0;background:#007070;font-family:"MS Sans Serif";overflow:hidden;}
 <div class="icon notes" onclick="openW('notes')"><div class="emoji">📝</div><span>Notes</span></div>
 <div class="icon staff" onclick="openW('staff')"><div class="emoji">🧪</div><span>Staff</span></div>
 <div class="icon brief" onclick="openW('brief')"><div class="emoji">🔒</div><span>Briefcase</span></div>
-<div class="icon yt" onclick="openW('yt')"><div class="emoji">▶</div><span>YouTube</span></div>
+<div class="icon director" onclick="openW('director')"><div class="emoji">🧬</div><span>Director</span></div>
 
 <!-- TAPES -->
 <div id="tapes" class="window">
 <div class="bar">Tapes <span class="close" onclick="closeW('tapes')">X</span></div>
 <div class="content">
-<button onclick="playTape('https://www.youtube.com/watch?v=ysz5S6PUM-U')">Tape 1</button><br><br>
-<button onclick="playTape('https://www.youtube.com/watch?v=CW7RUt_lpBs&t=23s')">Tape 2</button><br><br>
-<button onclick="playTape('https://www.youtube.com/watch?v=JsDZQFBxBkA&t=4s')">Tape 3</button><br><br>
-<button onclick="playTape('https://www.youtube.com/watch?v=jIgBe5GCs1M')">Tape 4</button><br><br>
+<button onclick="playTape(1)">Tape 1</button><br><br>
+<button onclick="unlockTape(2)">Tape 2 (LOCKED)</button><br><br>
+<button onclick="unlockTape(3)">Tape 3 (LOCKED)</button><br><br>
+<button onclick="unlockTape(4)">Tape 4 (LOCKED)</button><br><br>
 <div id="tapePlayer">No tape loaded</div>
 </div>
 </div>
@@ -87,34 +97,42 @@ body{margin:0;background:#007070;font-family:"MS Sans Serif";overflow:hidden;}
 <div id="aol" class="window">
 <div class="bar">AOL 1997 <span class="close" onclick="closeW('aol')">X</span></div>
 <div class="content">
-<button onclick="tab('chat')">Chat</button>
-<button onclick="tab('mail')">Mail</button>
-<button onclick="tab('news')">News</button>
+
+<button onclick="aolTab('chat')">Chat</button>
+<button onclick="aolTab('mail')">Mail</button>
+<button onclick="aolTab('news')">News</button>
 
 <div id="chat">
 <div id="chatlog" style="height:100px;overflow:auto;border:1px solid black;"></div>
-<input id="chatInput"><button onclick="sendChat()">Send</button>
+<input id="chatInput">
+<button onclick="sendChat()">Send</button>
 </div>
 
 <div id="mail" style="display:none;">You've Got Mail: 1</div>
-<div id="news" style="display:none;">Luminar breach suspected...</div>
+<div id="news" style="display:none;">Luminar anomaly detected...</div>
+
 </div>
 </div>
 
 <!-- FILES -->
-<div id="files" class="window"><div class="bar">Files <span class="close" onclick="closeW('files')">X</span></div><div class="content" id="filesContent">log.txt</div></div>
+<div id="files" class="window">
+<div class="bar">Files <span class="close" onclick="closeW('files')">X</span></div>
+<div class="content" id="filesContent">log.txt</div>
+</div>
 
 <!-- NOTES -->
-<div id="notes" class="window"><div class="bar">Notes <span class="close" onclick="closeW('notes')">X</span></div><div class="content" id="notesContent">- Z13 unstable</div></div>
+<div id="notes" class="window">
+<div class="bar">Notes <span class="close" onclick="closeW('notes')">X</span></div>
+<div class="content" id="notesContent">- Z13 unstable</div>
+</div>
 
 <!-- STAFF -->
 <div id="staff" class="window">
 <div class="bar">Staff <span class="close" onclick="closeW('staff')">X</span></div>
 <div class="content">
-<input id="suser"><input id="spass"><button onclick="staffLogin()">Login</button>
-<div id="labHome" style="display:none;">
-<button onclick="openW('director')">Director Terminal</button>
-</div>
+<input id="suser"><input id="spass">
+<button onclick="staffLogin()">Login</button>
+<div id="labHome" style="display:none;">Lab Access Granted</div>
 </div>
 </div>
 
@@ -122,25 +140,17 @@ body{margin:0;background:#007070;font-family:"MS Sans Serif";overflow:hidden;}
 <div id="director" class="window">
 <div class="bar">Director Mode <span class="close" onclick="closeW('director')">X</span></div>
 <div class="content">
-<input id="code"><button onclick="unlockDirector()">Unlock</button>
+<input id="code">
+<button onclick="unlockDirector()">Enter</button>
 <div id="dirContent"></div>
-</div>
-</div>
-
-<!-- YOUTUBE -->
-<div id="yt" class="window">
-<div class="bar">YouTube <span class="close" onclick="closeW('yt')">X</span></div>
-<div class="content">
-<input id="yturl"><button onclick="loadYT()">Load</button>
-<div id="ytframe"></div>
 </div>
 </div>
 
 <!-- TASKBAR -->
 <div class="taskbar">
 <div>
-<button onclick="alert('Settings')">⚙</button>
-<button onclick="alert('Volume')">🔊</button>
+<button onclick="runSystemScan()">🧪 Scan</button>
+<button onclick="openDebug()">🧠 Logs</button>
 </div>
 <div><span>🌤 72°F</span> | <span id="clock"></span></div>
 </div>
@@ -150,104 +160,130 @@ body{margin:0;background:#007070;font-family:"MS Sans Serif";overflow:hidden;}
 <script>
 
 /* =========================
-   🔥 FIXED BOOT SYSTEM
+   🧪 DEBUG SYSTEM v3.5.4
 ========================= */
-window.onload = function(){
 
-  const boot1El = document.getElementById("boot1");
-  const loginEl = document.getElementById("login");
-  const boot2El = document.getElementById("boot2");
-  const desktopEl = document.getElementById("desktop");
+let DEBUG = [];
+let progress = { tape: 1 };
 
-  boot1El.style.display = "flex";
-  loginEl.style.display = "none";
-  boot2El.style.display = "none";
-  desktopEl.style.display = "none";
+function logBug(type,msg){
+DEBUG.push("["+type+"] "+msg);
+console.warn(type+": "+msg);
+}
 
-  setTimeout(function(){
-    boot1El.style.display = "none";
-    loginEl.style.display = "flex";
-  },1500);
-
+window.onerror = function(msg,src,line){
+logBug("RUNTIME ERROR",msg+" @ "+line);
+return false;
 };
 
-/* LOGIN (FIXED) */
+function runSystemScan(){
+let report = "SYSTEM SCAN:\n";
+let ids = ["boot1","login","boot2","desktop","tapes","aol","files","notes","staff"];
+ids.forEach(id=>{
+if(!document.getElementById(id)){
+logBug("MISSING",id);
+report += id+": FAIL\n";
+}else report += id+": OK\n";
+});
+alert(report);
+}
+
+function openDebug(){
+let w = window.open("","DEBUG","width=400,height=500");
+w.document.write("<h3>LOGS</h3><pre>"+DEBUG.join("\n")+"</pre>");
+}
+
+/* =========================
+   BOOT FIX
+========================= */
+
+window.onload=function(){
+setTimeout(()=>{
+boot1.style.display="none";
+login.style.display="flex";
+},1500);
+};
+
+/* LOGIN */
 function login(){
-
-  const loginEl = document.getElementById("login");
-  const boot2El = document.getElementById("boot2");
-  const desktopEl = document.getElementById("desktop");
-  const msgEl = document.getElementById("msg");
-
-  const u = document.getElementById("user").value;
-  const p = document.getElementById("pass").value;
-
-  if(u === "LTrainer_87" && p === "Z13X17"){
-
-    loginEl.style.display = "none";
-    boot2El.style.display = "flex";
-
-    setTimeout(function(){
-      boot2El.style.display = "none";
-      desktopEl.style.display = "block";
-    },1500);
-
-  } else {
-    msgEl.innerText = "DENIED";
-  }
+if(user.value==="LTrainer_87" && pass.value==="Z13X17"){
+login.style.display="none";
+boot2.style.display="flex";
+setTimeout(()=>{
+boot2.style.display="none";
+desktop.style.display="block";
+},1500);
+}else msg.innerText="DENIED";
 }
 
 /* WINDOWS */
 function openW(id){document.getElementById(id).style.display="block";}
 function closeW(id){document.getElementById(id).style.display="none";}
 
-/* VIDEO */
-function convertYT(u){return u.includes("watch?v=")?u.replace("watch?v=","embed/"):u;}
-function playTape(u){tapePlayer.innerHTML='<iframe width="100%" height="220" src="'+convertYT(u)+'"></iframe>';}
-function playCam(u){camPlayer.innerHTML='<iframe width="100%" height="220" src="'+convertYT(u)+'"></iframe>';}
-function loadYT(){ytframe.innerHTML='<iframe width="100%" height="220" src="'+convertYT(yturl.value)+'"></iframe>';}
-
-/* AOL */
-function tab(t){
-chat.style.display="none";mail.style.display="none";news.style.display="none";
-document.getElementById(t).style.display="block";
+/* TAPES */
+function unlockTape(t){
+if(progress.tape>=t){
+playTape(t);
+}else alert("LOCKED");
 }
 
-/* AI CHAT */
+function playTape(t){
+let links=[
+"",
+"https://www.youtube.com/embed/ysz5S6PUM-U",
+"https://www.youtube.com/embed/CW7RUt_lpBs",
+"https://www.youtube.com/embed/JsDZQFBxBkA",
+"https://www.youtube.com/embed/jIgBe5GCs1M"
+];
+tapePlayer.innerHTML='<iframe width="100%" height="220" src="'+links[t]+'"></iframe>';
+if(progress.tape===t && progress.tape<4){
+progress.tape++;
+notesContent.innerHTML+="<br>Tape unlocked: "+progress.tape;
+}
+}
+
+/* CAMS */
+function playCam(u){
+camPlayer.innerHTML='<iframe width="100%" height="220" src="'+u+'"></iframe>';
+}
+
+/* AOL AI (YES/NO SYSTEM) */
 function sendChat(){
-let i=chatInput.value.toLowerCase();
+let i = chatInput.value.trim().toLowerCase();
 chatlog.innerHTML+="<div>You: "+i+"</div>";
 
 let r="...";
 
-if(i.includes("z13")){
-r="Kane: It's evolving.";
-notesContent.innerHTML+="<br>- escalation noted";
+if(i==="hello"){
+r="Kane: Do you trust Luminar? (yes/no)";
 }
-if(i.includes("octogal")){
-r="Octogal: I am already here.";
-filesContent.innerHTML+="<br>octo.log";
+else if(i==="yes"){
+r="Octogal: Good.";
+filesContent.innerHTML+="<br>trust.log";
 }
-if(i.includes("tape")){
-r="Kane: Another tape unlocked.";
-tapes.innerHTML+="<br>Hidden Tape Added";
+else if(i==="no"){
+r="Kane: Noted.";
+}
+else{
+r="...";
 }
 
 chatlog.innerHTML+="<div>"+r+"</div>";
 chatInput.value="";
 }
 
-/* STAFF */
-function staffLogin(){
-if(suser.value==="LeeTrainer" && spass.value==="Z13X17"){
-labHome.style.display="block";
-}
+/* AOL TABS */
+function aolTab(t){
+chat.style.display="none";
+mail.style.display="none";
+news.style.display="none";
+document.getElementById(t).style.display="block";
 }
 
 /* DIRECTOR */
 function unlockDirector(){
 if(code.value==="VOSSE13"){
-dirContent.innerHTML="Dr. Vosse Serum: SUCCESS.";
+dirContent.innerText="SERUM ACTIVE";
 }else dirContent.innerText="DENIED";
 }
 
