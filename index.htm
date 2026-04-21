@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>PROTOCOL Z v3.5.4 ALPHA</title>
+<title>PROTOCOL Z v3.6 ALPHA</title>
 
 <style>
 body{margin:0;background:#007070;font-family:"MS Sans Serif";overflow:hidden;}
@@ -37,6 +37,49 @@ background:#c0c0c0;display:flex;
 justify-content:space-between;align-items:center;
 padding:0 10px;border-top:2px solid white;
 }
+
+/* LOGIN STYLE */
+.loginBox{
+width:340px;
+background:#c0c0c0;
+border:2px solid black;
+box-shadow:4px 4px black;
+}
+
+.loginTitle{
+background:#000080;
+color:white;
+padding:6px;
+font-size:13px;
+}
+
+.loginBody{
+padding:15px;
+text-align:center;
+}
+
+input{
+width:90%;
+margin:4px 0;
+padding:4px;
+border:2px inset #fff;
+background:white;
+font-family:"MS Sans Serif";
+}
+
+button{
+margin-top:8px;
+padding:4px 10px;
+border:2px outset #fff;
+background:#c0c0c0;
+cursor:pointer;
+}
+
+#statusText{
+font-size:11px;
+margin-bottom:10px;
+font-family:monospace;
+}
 </style>
 </head>
 
@@ -47,12 +90,26 @@ padding:0 10px;border-top:2px solid white;
 
 <!-- LOGIN -->
 <div id="login" class="screen">
-<div>
-<input id="user" placeholder="User"><br>
-<input id="pass" type="password" placeholder="Pass"><br>
-<button onclick="login()">ENTER</button>
+
+<div class="loginBox" id="loginBox">
+<div class="loginTitle">Windows 95 Network Logon</div>
+
+<div class="loginBody">
+
+<div style="font-size:40px;">🪟</div>
+
+<div id="statusText">Connecting to LUMINAR network...</div>
+
+<input id="user" placeholder="Username" disabled><br>
+<input id="pass" type="password" placeholder="Password" disabled><br>
+
+<button id="loginBtn" onclick="login()" disabled>OK</button>
+
 <p id="msg"></p>
+
 </div>
+</div>
+
 </div>
 
 <!-- BOOT 2 -->
@@ -61,7 +118,6 @@ padding:0 10px;border-top:2px solid white;
 <!-- DESKTOP -->
 <div id="desktop">
 
-<!-- ICONS -->
 <div class="icon tapes" onclick="openW('tapes')"><div class="emoji">📼</div><span>Tapes</span></div>
 <div class="icon cams" onclick="openW('cams')"><div class="emoji">📹</div><span>Cameras</span></div>
 <div class="icon aol" onclick="openW('aol')"><div class="emoji">💬</div><span>AOL</span></div>
@@ -87,8 +143,8 @@ padding:0 10px;border-top:2px solid white;
 <div id="cams" class="window">
 <div class="bar">Cameras <span class="close" onclick="closeW('cams')">X</span></div>
 <div class="content">
-<button onclick="playCam('https://www.youtube.com/watch?v=21X5lGlDOfg')">Cam 1</button><br><br>
-<button onclick="playCam('https://www.youtube.com/watch?v=hHW1oY26kxQ')">Cam 2</button><br><br>
+<button onclick="playCam('https://www.youtube.com/embed/21X5lGlDOfg')">Cam 1</button><br><br>
+<button onclick="playCam('https://www.youtube.com/embed/hHW1oY26kxQ')">Cam 2</button><br><br>
 <div id="camPlayer"></div>
 </div>
 </div>
@@ -109,22 +165,16 @@ padding:0 10px;border-top:2px solid white;
 </div>
 
 <div id="mail" style="display:none;">You've Got Mail: 1</div>
-<div id="news" style="display:none;">Luminar anomaly detected...</div>
+<div id="news" style="display:none;">Luminar instability rising...</div>
 
 </div>
 </div>
 
 <!-- FILES -->
-<div id="files" class="window">
-<div class="bar">Files <span class="close" onclick="closeW('files')">X</span></div>
-<div class="content" id="filesContent">log.txt</div>
-</div>
+<div id="files" class="window"><div class="bar">Files <span class="close" onclick="closeW('files')">X</span></div><div class="content" id="filesContent">log.txt</div></div>
 
 <!-- NOTES -->
-<div id="notes" class="window">
-<div class="bar">Notes <span class="close" onclick="closeW('notes')">X</span></div>
-<div class="content" id="notesContent">- Z13 unstable</div>
-</div>
+<div id="notes" class="window"><div class="bar">Notes <span class="close" onclick="closeW('notes')">X</span></div><div class="content" id="notesContent">- Z13 unstable</div></div>
 
 <!-- STAFF -->
 <div id="staff" class="window">
@@ -160,65 +210,90 @@ padding:0 10px;border-top:2px solid white;
 <script>
 
 /* =========================
-   🧪 DEBUG SYSTEM v3.5.4
+   🧪 DEBUG SYSTEM
 ========================= */
 
-let DEBUG = [];
-let progress = { tape: 1 };
+let DEBUG=[];
+let progress={tape:1};
 
-function logBug(type,msg){
-DEBUG.push("["+type+"] "+msg);
-console.warn(type+": "+msg);
+function logBug(t,m){
+DEBUG.push("["+t+"] "+m);
+console.warn(t,m);
 }
 
-window.onerror = function(msg,src,line){
-logBug("RUNTIME ERROR",msg+" @ "+line);
+window.onerror=function(m,s,l){
+logBug("RUNTIME",m+" @"+l);
 return false;
 };
 
-function runSystemScan(){
-let report = "SYSTEM SCAN:\n";
-let ids = ["boot1","login","boot2","desktop","tapes","aol","files","notes","staff"];
-ids.forEach(id=>{
-if(!document.getElementById(id)){
-logBug("MISSING",id);
-report += id+": FAIL\n";
-}else report += id+": OK\n";
-});
-alert(report);
-}
-
-function openDebug(){
-let w = window.open("","DEBUG","width=400,height=500");
-w.document.write("<h3>LOGS</h3><pre>"+DEBUG.join("\n")+"</pre>");
-}
-
 /* =========================
-   BOOT FIX
+   BOOT + LOGIN SYSTEM
 ========================= */
 
 window.onload=function(){
+
 setTimeout(()=>{
 boot1.style.display="none";
 login.style.display="flex";
+
+startLogin();
 },1500);
+
 };
+
+function startLogin(){
+
+let status=document.getElementById("statusText");
+let user=document.getElementById("user");
+let pass=document.getElementById("pass");
+let btn=document.getElementById("loginBtn");
+
+let steps=[
+"Connecting to LUMINAR network...",
+"Handshake complete.",
+"Security layer verified.",
+"Authentication ready."
+];
+
+let i=0;
+
+let interval=setInterval(()=>{
+
+status.innerText=steps[i];
+i++;
+
+if(i===steps.length){
+clearInterval(interval);
+status.innerText="ACCESS REQUIRED";
+user.disabled=false;
+pass.disabled=false;
+btn.disabled=false;
+}
+
+},900);
+}
 
 /* LOGIN */
 function login(){
+
 if(user.value==="LTrainer_87" && pass.value==="Z13X17"){
+
 login.style.display="none";
 boot2.style.display="flex";
+
 setTimeout(()=>{
 boot2.style.display="none";
 desktop.style.display="block";
 },1500);
-}else msg.innerText="DENIED";
+
+}else{
+msg.innerText="DENIED";
+}
 }
 
 /* WINDOWS */
-function openW(id){document.getElementById(id).style.display="block";}
-function closeW(id){document.getElementById(id).style.display="none";}
+function openW(i){document.getElementById(i).style.display="block";}
+function closeW(i){document.getElementById(i).style.display="none";}
 
 /* TAPES */
 function unlockTape(t){
@@ -235,7 +310,9 @@ let links=[
 "https://www.youtube.com/embed/JsDZQFBxBkA",
 "https://www.youtube.com/embed/jIgBe5GCs1M"
 ];
+
 tapePlayer.innerHTML='<iframe width="100%" height="220" src="'+links[t]+'"></iframe>';
+
 if(progress.tape===t && progress.tape<4){
 progress.tape++;
 notesContent.innerHTML+="<br>Tape unlocked: "+progress.tape;
@@ -247,9 +324,17 @@ function playCam(u){
 camPlayer.innerHTML='<iframe width="100%" height="220" src="'+u+'"></iframe>';
 }
 
-/* AOL AI (YES/NO SYSTEM) */
+/* AOL */
+function aolTab(t){
+chat.style.display="none";
+mail.style.display="none";
+news.style.display="none";
+document.getElementById(t).style.display="block";
+}
+
+/* AOL CHAT */
 function sendChat(){
-let i = chatInput.value.trim().toLowerCase();
+let i=chatInput.value.toLowerCase();
 chatlog.innerHTML+="<div>You: "+i+"</div>";
 
 let r="...";
@@ -272,12 +357,11 @@ chatlog.innerHTML+="<div>"+r+"</div>";
 chatInput.value="";
 }
 
-/* AOL TABS */
-function aolTab(t){
-chat.style.display="none";
-mail.style.display="none";
-news.style.display="none";
-document.getElementById(t).style.display="block";
+/* STAFF */
+function staffLogin(){
+if(suser.value==="LeeTrainer" && spass.value==="Z13X17"){
+labHome.style.display="block";
+}
 }
 
 /* DIRECTOR */
